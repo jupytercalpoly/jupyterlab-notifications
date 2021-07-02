@@ -5,9 +5,9 @@
 Toast notifications for JupyterLab
 
 
-## Press Release
+# Press Release
 
-Jupyter Notify
+## Jupyter Notify
 
 A notification system for JupyterLab
  
