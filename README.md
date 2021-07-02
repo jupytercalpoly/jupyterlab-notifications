@@ -8,6 +8,7 @@ Toast notifications for JupyterLab
 ## Press Release
 
 Jupyter Notify
+
 A notification system for JupyterLab
  
 Would you like to have customizable notifications from notebooks and other extensions while working inside JupyterLab? Well, now you can! Jupyter Notify provides a notification system for JupyterLab that includes the ability for extensions to send notifications to users as well as a platform where users can get back to past notifications.
