@@ -1,6 +1,6 @@
 
 import {useState, useEffect} from "react"
-export let store: any = {ls: ["g1", "ra1"]}
+export let store: any = {ls: ["card1", "card2"]}
 let listeners: React.Dispatch<any>[] = []
 
 // setStore(store => ({...store, isFoo: false}))

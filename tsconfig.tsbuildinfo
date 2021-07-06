@@ -3767,7 +3767,7 @@
         "affectsGlobalScope": false
       },
       "./src/useStore.ts": {
-        "version": "f7132270c5ddb79e23c29c312cf060540969d8b80721f6ae98c67a5229bef725",
+        "version": "57a2dea83affc6ffc57d93fb604425c3432b764384d3ff76e3232ec822c04b32",
         "signature": "4d8bb226beda6a31da1d718199a9fecffaeca0f54f25091b0097b515cf35279e",
         "affectsGlobalScope": false
       },
@@ -3797,6 +3797,7 @@
       "strictNullChecks": true,
       "target": 4,
       "types": [],
+      "watch": true,
       "configFilePath": "./tsconfig.json"
     },
     "referencedMap": {

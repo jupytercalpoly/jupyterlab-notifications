@@ -11,13 +11,13 @@ var _JUPYTERLAB;
 
 var moduleMap = {
 	"./index": () => {
-		return Promise.all([__webpack_require__.e("vendors-node_modules_css-loader_dist_runtime_api_js-node_modules_css-loader_dist_runtime_cssW-926fd9"), __webpack_require__.e("vendors-node_modules_material-ui_core_esm_Card_Card_js-node_modules_material-ui_core_esm_Card-c3a4c4"), __webpack_require__.e("lib_index_js-webpack_sharing_consume_default_react-dom")]).then(() => (() => ((__webpack_require__(/*! ./lib/index.js */ "./lib/index.js")))));
+		return Promise.all([__webpack_require__.e("vendors-node_modules_material-ui_core_esm_Card_Card_js-node_modules_material-ui_core_esm_Card-c3a4c4"), __webpack_require__.e("lib_index_js-webpack_sharing_consume_default_react-dom")]).then(() => (() => ((__webpack_require__(/*! ./lib/index.js */ "./lib/index.js")))));
 	},
 	"./extension": () => {
-		return Promise.all([__webpack_require__.e("vendors-node_modules_css-loader_dist_runtime_api_js-node_modules_css-loader_dist_runtime_cssW-926fd9"), __webpack_require__.e("vendors-node_modules_material-ui_core_esm_Card_Card_js-node_modules_material-ui_core_esm_Card-c3a4c4"), __webpack_require__.e("lib_index_js-webpack_sharing_consume_default_react-dom")]).then(() => (() => ((__webpack_require__(/*! ./lib/index.js */ "./lib/index.js")))));
+		return Promise.all([__webpack_require__.e("vendors-node_modules_material-ui_core_esm_Card_Card_js-node_modules_material-ui_core_esm_Card-c3a4c4"), __webpack_require__.e("lib_index_js-webpack_sharing_consume_default_react-dom")]).then(() => (() => ((__webpack_require__(/*! ./lib/index.js */ "./lib/index.js")))));
 	},
 	"./style": () => {
-		return Promise.all([__webpack_require__.e("vendors-node_modules_css-loader_dist_runtime_api_js-node_modules_css-loader_dist_runtime_cssW-926fd9"), __webpack_require__.e("style_index_js")]).then(() => (() => ((__webpack_require__(/*! ./style/index.js */ "./style/index.js")))));
+		return __webpack_require__.e("style_index_js").then(() => (() => ((__webpack_require__(/*! ./style/index.js */ "./style/index.js")))));
 	}
 };
 var get = (module, getScope) => {
@@ -124,7 +124,7 @@ __webpack_require__.d(exports, {
 /******/ 		// This function allow to reference async chunks
 /******/ 		__webpack_require__.u = (chunkId) => {
 /******/ 			// return url for filenames based on template
-/******/ 			return "" + chunkId + "." + {"vendors-node_modules_css-loader_dist_runtime_api_js-node_modules_css-loader_dist_runtime_cssW-926fd9":"394e2b68229590ca82a5","vendors-node_modules_material-ui_core_esm_Card_Card_js-node_modules_material-ui_core_esm_Card-c3a4c4":"ac9ec7e3eb0b3fff5a7c","lib_index_js-webpack_sharing_consume_default_react-dom":"43a33281708d76a64b60","style_index_js":"20ada9ab4df8c3ff5826"}[chunkId] + ".js";
+/******/ 			return "" + chunkId + "." + {"vendors-node_modules_material-ui_core_esm_Card_Card_js-node_modules_material-ui_core_esm_Card-c3a4c4":"924c72d28d6836e0ad7e","lib_index_js-webpack_sharing_consume_default_react-dom":"c3f033f7c5f5f888f68c","style_index_js":"5bcc458f9caba833db5d"}[chunkId] + ".js";
 /******/ 		};
 /******/ 	})();
 /******/ 	
@@ -241,7 +241,7 @@ __webpack_require__.d(exports, {
 /******/ 			var promises = [];
 /******/ 			switch(name) {
 /******/ 				case "default": {
-/******/ 					register("jupyterlab-notifications", "0.1.0", () => (Promise.all([__webpack_require__.e("vendors-node_modules_css-loader_dist_runtime_api_js-node_modules_css-loader_dist_runtime_cssW-926fd9"), __webpack_require__.e("vendors-node_modules_material-ui_core_esm_Card_Card_js-node_modules_material-ui_core_esm_Card-c3a4c4"), __webpack_require__.e("lib_index_js-webpack_sharing_consume_default_react-dom")]).then(() => (() => (__webpack_require__(/*! ./lib/index.js */ "./lib/index.js"))))));
+/******/ 					register("jupyterlab-notifications", "0.1.0", () => (Promise.all([__webpack_require__.e("vendors-node_modules_material-ui_core_esm_Card_Card_js-node_modules_material-ui_core_esm_Card-c3a4c4"), __webpack_require__.e("lib_index_js-webpack_sharing_consume_default_react-dom")]).then(() => (() => (__webpack_require__(/*! ./lib/index.js */ "./lib/index.js"))))));
 /******/ 				}
 /******/ 				break;
 /******/ 			}
@@ -538,4 +538,4 @@ __webpack_require__.d(exports, {
 /******/ 	
 /******/ })()
 ;
-//# sourceMappingURL=remoteEntry.acbb90b905feb410f877.js.map
+//# sourceMappingURL=remoteEntry.a0067033a2103470a871.js.map
