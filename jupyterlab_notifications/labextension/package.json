@@ -74,6 +74,11 @@
   "styleModule": "style/index.js",
   "jupyterlab": {
     "extension": true,
-    "outputDir": "jupyterlab_notifications/labextension"
+    "outputDir": "jupyterlab_notifications/labextension",
+    "_build": {
+      "load": "static/remoteEntry.acbb90b905feb410f877.js",
+      "extension": "./extension",
+      "style": "./style"
+    }
   }
 }
