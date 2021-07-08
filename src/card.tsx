@@ -7,11 +7,11 @@ import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles({
   root: {
-    maxWidth: 345
-  }
+    maxWidth: 345,
+  },
 });
 
-export default function ImgMediaCard(props:any) {
+export default function ImgMediaCard(props: any) {
   const classes = useStyles();
 
   return (

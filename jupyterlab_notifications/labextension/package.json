@@ -45,15 +45,21 @@
     "watch:labextension": "jupyter labextension watch ."
   },
   "dependencies": {
-    "@jupyterlab/application": "^3.0.6",
-    "@jupyterlab/notebook": "^3.0.6",
+    "@jupyterlab/application": "^3.1.0-beta.0",
+    "@jupyterlab/cells": "^3.1.0-beta.0",
+    "@jupyterlab/codeeditor": "^3.1.0-beta.0",
+    "@jupyterlab/notebook": "^3.1.0-beta.0",
+    "@jupyterlab/shared-models": "^3.1.0-beta.0",
+    "@jupyterlab/ui-components": "^3.1.0-beta.0",
+    "@lumino/widgets": "^1.23.0",
     "@material-ui/core": "^4.11.4",
     "@material-ui/icons": "^4.11.2",
     "bootstrap": "^4.6.0",
     "jquery": "^1.9.1",
     "react": "^17.0.2",
     "react-bootstrap": "^1.6.1",
-    "react-toastify": "^7.0.4"
+    "react-toastify": "^7.0.4",
+    "yjs": "^13.5.10"
   },
   "devDependencies": {
     "@jupyterlab/builder": "^3.0.0",
@@ -76,7 +82,7 @@
     "extension": true,
     "outputDir": "jupyterlab_notifications/labextension",
     "_build": {
-      "load": "static/remoteEntry.acbb90b905feb410f877.js",
+      "load": "static/remoteEntry.f2819521ce327a6545be.js",
       "extension": "./extension",
       "style": "./style"
     }
