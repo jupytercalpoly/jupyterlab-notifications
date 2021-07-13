@@ -4,22 +4,23 @@ import React from "react";
 import ImgMediaCard from "./card";
 import { ReactWidget } from "@jupyterlab/apputils";
 
-export function systemNotification(title: string, desc: string, url: string) {
+
+export function systemNotification(notification : any) {
   if (Notification.permission !== "granted") {
     Notification.requestPermission();
   } else {
-    const notification = new Notification(title, {
+    const notificationObj = new Notification(notification.title, {
       icon: "http://Your_Website.com/logo.png",
-      body: desc,
+      body: notification.body,
     });
 
     /* Remove the notification from Notification Center when clicked.*/
-    notification.onclick = function () {
-      window.open(url);
+    notificationObj.onclick = function () {
+      window.open(notification.url);
     };
 
     /* Callback function when the notification is closed. */
-    notification.onclose = function () {
+    notificationObj.onclose = function () {
       console.log("Notification closed");
     };
   }
@@ -30,7 +31,7 @@ export function NotificationCenter(props: any) {
 
   let handleClick = () => {
     console.log(store);
-    setStore({ ls: [...store.ls, "newElement"] });
+    setStore({ ls: [...store.ls, ["newElement", "newBody"]] });
     // const yarray = ydoc.getArray('notif')
     // console.log(yarray.toArray(), "yjs print");
     // ydoc.getArray('notif').insert(0, [6,7,8]);
@@ -38,17 +39,19 @@ export function NotificationCenter(props: any) {
   };
   return (
     <div>
-      {store.ls.map((image: string): any => (
-        <ImgMediaCard title={image} />
+      {store.ls.map((notif: string[]): any => (
+        <ImgMediaCard title={notif[0]} body={notif[1]} />
       ))}
       <button onClick={() => handleClick()}>Activate Lasers</button>
     </div>
   );
 }
 
-export function addNotification(name: string) {
+export function notifyInCenter(notification : any) {
+  const title = notification.title;
+  const body = notification.body;
   let store = getStore();
-  setStore({ ls: [...store.ls, name] });
+  setStore({ ls: [...store.ls, [title, body]] });
 }
 
 export class notificationWidget extends ReactWidget {
@@ -63,3 +66,4 @@ export class notificationWidget extends ReactWidget {
     );
   }
 }
+

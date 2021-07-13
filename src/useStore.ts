@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-export let store: any = { ls: ["card1", "card2"] };
+export let store: any = { ls: [["card1", "body1"]] };
 let listeners: React.Dispatch<any>[] = [];
 
 // setStore(store => ({...store, isFoo: false}))
