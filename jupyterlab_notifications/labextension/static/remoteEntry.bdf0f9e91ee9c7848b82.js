@@ -11,10 +11,10 @@ var _JUPYTERLAB;
 
 var moduleMap = {
 	"./index": () => {
-		return Promise.all([__webpack_require__.e("vendors-node_modules_css-loader_dist_runtime_api_js-node_modules_css-loader_dist_runtime_cssW-926fd9"), __webpack_require__.e("vendors-node_modules_material-ui_core_esm_Card_Card_js-node_modules_material-ui_core_esm_Card-c3a4c4"), __webpack_require__.e("lib_index_js-webpack_sharing_consume_default_react-dom")]).then(() => (() => ((__webpack_require__(/*! ./lib/index.js */ "./lib/index.js")))));
+		return Promise.all([__webpack_require__.e("vendors-node_modules_css-loader_dist_runtime_api_js-node_modules_css-loader_dist_runtime_cssW-926fd9"), __webpack_require__.e("vendors-node_modules_material-ui_core_esm_Card_Card_js-node_modules_material-ui_core_esm_Card-e01956"), __webpack_require__.e("lib_index_js-webpack_sharing_consume_default_react-dom")]).then(() => (() => ((__webpack_require__(/*! ./lib/index.js */ "./lib/index.js")))));
 	},
 	"./extension": () => {
-		return Promise.all([__webpack_require__.e("vendors-node_modules_css-loader_dist_runtime_api_js-node_modules_css-loader_dist_runtime_cssW-926fd9"), __webpack_require__.e("vendors-node_modules_material-ui_core_esm_Card_Card_js-node_modules_material-ui_core_esm_Card-c3a4c4"), __webpack_require__.e("lib_index_js-webpack_sharing_consume_default_react-dom")]).then(() => (() => ((__webpack_require__(/*! ./lib/index.js */ "./lib/index.js")))));
+		return Promise.all([__webpack_require__.e("vendors-node_modules_css-loader_dist_runtime_api_js-node_modules_css-loader_dist_runtime_cssW-926fd9"), __webpack_require__.e("vendors-node_modules_material-ui_core_esm_Card_Card_js-node_modules_material-ui_core_esm_Card-e01956"), __webpack_require__.e("lib_index_js-webpack_sharing_consume_default_react-dom")]).then(() => (() => ((__webpack_require__(/*! ./lib/index.js */ "./lib/index.js")))));
 	},
 	"./style": () => {
 		return Promise.all([__webpack_require__.e("vendors-node_modules_css-loader_dist_runtime_api_js-node_modules_css-loader_dist_runtime_cssW-926fd9"), __webpack_require__.e("style_index_js")]).then(() => (() => ((__webpack_require__(/*! ./style/index.js */ "./style/index.js")))));
@@ -124,7 +124,7 @@ __webpack_require__.d(exports, {
 /******/ 		// This function allow to reference async chunks
 /******/ 		__webpack_require__.u = (chunkId) => {
 /******/ 			// return url for filenames based on template
-/******/ 			return "" + chunkId + "." + {"vendors-node_modules_css-loader_dist_runtime_api_js-node_modules_css-loader_dist_runtime_cssW-926fd9":"394e2b68229590ca82a5","vendors-node_modules_material-ui_core_esm_Card_Card_js-node_modules_material-ui_core_esm_Card-c3a4c4":"ac9ec7e3eb0b3fff5a7c","lib_index_js-webpack_sharing_consume_default_react-dom":"c838a0c5de58fbd52fc1","style_index_js":"20ada9ab4df8c3ff5826"}[chunkId] + ".js";
+/******/ 			return "" + chunkId + "." + {"vendors-node_modules_css-loader_dist_runtime_api_js-node_modules_css-loader_dist_runtime_cssW-926fd9":"394e2b68229590ca82a5","vendors-node_modules_material-ui_core_esm_Card_Card_js-node_modules_material-ui_core_esm_Card-e01956":"4d7d5fb9fe4624733899","lib_index_js-webpack_sharing_consume_default_react-dom":"9a4dd41943160922e518","style_index_js":"20ada9ab4df8c3ff5826"}[chunkId] + ".js";
 /******/ 		};
 /******/ 	})();
 /******/ 	
@@ -241,7 +241,7 @@ __webpack_require__.d(exports, {
 /******/ 			var promises = [];
 /******/ 			switch(name) {
 /******/ 				case "default": {
-/******/ 					register("jupyterlab-notifications", "0.1.0", () => (Promise.all([__webpack_require__.e("vendors-node_modules_css-loader_dist_runtime_api_js-node_modules_css-loader_dist_runtime_cssW-926fd9"), __webpack_require__.e("vendors-node_modules_material-ui_core_esm_Card_Card_js-node_modules_material-ui_core_esm_Card-c3a4c4"), __webpack_require__.e("lib_index_js-webpack_sharing_consume_default_react-dom")]).then(() => (() => (__webpack_require__(/*! ./lib/index.js */ "./lib/index.js"))))));
+/******/ 					register("jupyterlab-notifications", "0.1.0", () => (Promise.all([__webpack_require__.e("vendors-node_modules_css-loader_dist_runtime_api_js-node_modules_css-loader_dist_runtime_cssW-926fd9"), __webpack_require__.e("vendors-node_modules_material-ui_core_esm_Card_Card_js-node_modules_material-ui_core_esm_Card-e01956"), __webpack_require__.e("lib_index_js-webpack_sharing_consume_default_react-dom")]).then(() => (() => (__webpack_require__(/*! ./lib/index.js */ "./lib/index.js"))))));
 /******/ 				}
 /******/ 				break;
 /******/ 			}
@@ -536,4 +536,4 @@ __webpack_require__.d(exports, {
 /******/ 	
 /******/ })()
 ;
-//# sourceMappingURL=remoteEntry.95a767152a64bc287f15.js.map
+//# sourceMappingURL=remoteEntry.bdf0f9e91ee9c7848b82.js.map

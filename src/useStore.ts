@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
-export let store: any = { ls: [["card1", "body1"]] };
+export let store: any = {
+  ls: [{ title: "card1.0", body: "body1.0", id: Date.now().toString() }],
+};
 let listeners: React.Dispatch<any>[] = [];
 
 // setStore(store => ({...store, isFoo: false}))
@@ -23,9 +25,11 @@ export function getStore() {
 
 export default function useStore() {
   const listener = useState<any>()[1];
+  var ezYpZ= 5;
+  console.log(ezYpZ);
   useEffect(() => {
     listeners.push(listener);
-    return () => void (listeners = listeners.filter((l) => l === listener));
+    return () => void (listeners = listeners.filter((l) => l === listener));   
   }, []);
   return [store, setStore];
 }

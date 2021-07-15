@@ -14,17 +14,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "webpack/sharing/consume/default/react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _material_ui_core_styles__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material-ui/core/styles */ "./node_modules/@material-ui/core/esm/styles/makeStyles.js");
-/* harmony import */ var _material_ui_core_Card__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material-ui/core/Card */ "./node_modules/@material-ui/core/esm/Card/Card.js");
-/* harmony import */ var _material_ui_core_CardActionArea__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @material-ui/core/CardActionArea */ "./node_modules/@material-ui/core/esm/CardActionArea/CardActionArea.js");
-/* harmony import */ var _material_ui_core_CardContent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @material-ui/core/CardContent */ "./node_modules/@material-ui/core/esm/CardContent/CardContent.js");
-/* harmony import */ var _material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @material-ui/core/Typography */ "./node_modules/@material-ui/core/esm/Typography/Typography.js");
+/* harmony import */ var _material_ui_core_Card__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @material-ui/core/Card */ "./node_modules/@material-ui/core/esm/Card/Card.js");
+/* harmony import */ var _material_ui_core_CardActionArea__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @material-ui/core/CardActionArea */ "./node_modules/@material-ui/core/esm/CardActionArea/CardActionArea.js");
+/* harmony import */ var _material_ui_core_CardContent__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @material-ui/core/CardContent */ "./node_modules/@material-ui/core/esm/CardContent/CardContent.js");
+/* harmony import */ var _material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @material-ui/core/Typography */ "./node_modules/@material-ui/core/esm/Typography/Typography.js");
+/* harmony import */ var _useStore__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./useStore */ "./lib/useStore.js");
+/* harmony import */ var _material_ui_core_IconButton__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @material-ui/core/IconButton */ "./node_modules/@material-ui/core/esm/IconButton/IconButton.js");
+/* harmony import */ var _material_ui_icons_Delete__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @material-ui/icons/Delete */ "./node_modules/@material-ui/icons/Delete.js");
 
 
 
 
 
 
-// import { setStore, getStore } from "./useStore";
+
+
+
 const useStyles = (0,_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_1__.default)({
     root: {
         maxWidth: 345,
@@ -32,16 +37,29 @@ const useStyles = (0,_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_1__.defau
 });
 function ImgMediaCard(props) {
     const classes = useStyles();
-    let handleClick = () => {
+    let openUrl = () => {
         const newWindow = window.open("https://jupyter.org/", "_blank", "noopener,noreferrer");
         if (newWindow)
             newWindow.opener = null;
     };
-    return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_material_ui_core_Card__WEBPACK_IMPORTED_MODULE_2__.default, { className: classes.root, onClick: () => handleClick() },
-        react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_material_ui_core_CardActionArea__WEBPACK_IMPORTED_MODULE_3__.default, null,
-            react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_material_ui_core_CardContent__WEBPACK_IMPORTED_MODULE_4__.default, null,
-                react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_5__.default, { gutterBottom: true, variant: "h5", component: "h2" }, props.title),
-                react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_5__.default, { variant: "body2", color: "textSecondary", component: "p" }, props.body)))));
+    let triggerDelete = (id) => {
+        const store = [...(0,_useStore__WEBPACK_IMPORTED_MODULE_2__.getStore)().ls];
+        let i = store.findIndex((task) => task.id === id);
+        store.splice(i, 1);
+        (0,_useStore__WEBPACK_IMPORTED_MODULE_2__.setStore)({ ls: store });
+        console.log("This was triggered");
+    };
+    return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_material_ui_core_Card__WEBPACK_IMPORTED_MODULE_3__.default, { className: classes.root },
+        react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_material_ui_core_CardActionArea__WEBPACK_IMPORTED_MODULE_4__.default, null,
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_material_ui_core_CardContent__WEBPACK_IMPORTED_MODULE_5__.default, null,
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_6__.default, { gutterBottom: true, variant: "h5", component: "h2" }, props.title),
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_6__.default, { variant: "body2", color: "textSecondary", component: "p", onClick: () => openUrl() }, props.body),
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_material_ui_core_IconButton__WEBPACK_IMPORTED_MODULE_7__.default, { "aria-label": "delete" },
+                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_material_ui_icons_Delete__WEBPACK_IMPORTED_MODULE_8__.default, { onClick: (e) => {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            triggerDelete(props.id);
+                        }, style: { top: 3, right: 3 } }))))));
 }
 
 
@@ -196,21 +214,26 @@ function NotificationCenter(props) {
     const [store, setStore] = (0,_useStore__WEBPACK_IMPORTED_MODULE_2__.default)();
     let handleClick = () => {
         console.log(store);
-        setStore({ ls: [...store.ls, ["newElement", "newBody"]] });
+        setStore({
+            ls: [
+                ...store.ls,
+                { title: "newElement", body: "newBody", id: Date.now().toString() },
+            ],
+        });
         // const yarray = ydoc.getArray('notif')
         // console.log(yarray.toArray(), "yjs print");
         // ydoc.getArray('notif').insert(0, [6,7,8]);
         // console.log(ydoc.getArray('notif').toArray(), "print2");
     };
     return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null,
-        store.ls.map((notif) => (react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_card__WEBPACK_IMPORTED_MODULE_3__.default, { title: notif[0], body: notif[1] }))),
-        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", { onClick: () => handleClick() }, "Activate Lasers")));
+        store.ls.map((notif) => (react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_card__WEBPACK_IMPORTED_MODULE_3__.default, { title: notif.title, body: notif.body, id: notif.id }))),
+        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", { onClick: () => handleClick() }, "Activat Lasers")));
 }
 function notifyInCenter(notification) {
     const title = notification.title;
     const body = notification.body;
     let store = (0,_useStore__WEBPACK_IMPORTED_MODULE_2__.getStore)();
-    (0,_useStore__WEBPACK_IMPORTED_MODULE_2__.setStore)({ ls: [...store.ls, [title, body]] });
+    (0,_useStore__WEBPACK_IMPORTED_MODULE_2__.setStore)({ ls: [...store.ls, { title: title, body: body, id: Date.now().toString() }] });
 }
 class notificationWidget extends _jupyterlab_apputils__WEBPACK_IMPORTED_MODULE_1__.ReactWidget {
     constructor() {
@@ -242,7 +265,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "webpack/sharing/consume/default/react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 
-let store = { ls: [["card1", "body1"]] };
+let store = { ls: [{ title: "card1.0", body: "body1.0", id: Date.now().toString() }] };
 let listeners = [];
 // setStore(store => ({...store, isFoo: false}))
 function setStore(val) {
@@ -274,4 +297,4 @@ function useStore() {
 /***/ })
 
 }]);
-//# sourceMappingURL=lib_index_js-webpack_sharing_consume_default_react-dom.c838a0c5de58fbd52fc1.js.map
+//# sourceMappingURL=lib_index_js-webpack_sharing_consume_default_react-dom.9a4dd41943160922e518.js.map

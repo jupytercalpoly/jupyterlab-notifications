@@ -1886,8 +1886,18 @@
         "signature": "fc0ac89371bc2776d24072e29199fc9fd38b3548677e7313b7900ddae613e0f4",
         "affectsGlobalScope": false
       },
+      "./src/useStore.ts": {
+        "version": "41397e8705952c295785be1deaaff2b4aa2096e7bfd3a17a51c4959b0d7ac9c3",
+        "signature": "4d8bb226beda6a31da1d718199a9fecffaeca0f54f25091b0097b515cf35279e",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@material-ui/icons/Delete.d.ts": {
+        "version": "865950dbe055cab1e6850f12d921894f46972e039f3f557791d77a214eb4d090",
+        "signature": "865950dbe055cab1e6850f12d921894f46972e039f3f557791d77a214eb4d090",
+        "affectsGlobalScope": false
+      },
       "./src/card.tsx": {
-        "version": "570c03b014472240349b234c463fada0127ba3d9709327457bb1a6a19732ce33",
+        "version": "0aee98495a347a9982f7d5e92156d778dc001968ef876958e6f6081a08e3ac07",
         "signature": "c1c2623d7399fc1780deb71d8f6b7e4886c6ca862655543ebbe2c8039800e76d",
         "affectsGlobalScope": false
       },
@@ -4066,17 +4076,12 @@
         "signature": "4db7ae8b183bf7eceb57417b7af31b734d6e941939c6ad81bee671f8403a42d4",
         "affectsGlobalScope": false
       },
-      "./src/useStore.ts": {
-        "version": "254256321d4ec8bbc2b972d3d89267a55f782ced92ce0fa37bc4162d69ac5711",
-        "signature": "4d8bb226beda6a31da1d718199a9fecffaeca0f54f25091b0097b515cf35279e",
-        "affectsGlobalScope": false
-      },
       "./src/notifications.tsx": {
-        "version": "404f19d408b3057f83a1142a3c85828a4d2540da601ba2bac4a18a83149903f3",
+        "version": "e5a4ef307f327b989bb5a8d2bdffc0ae0de3ecd55b8cebd314b872a663121a44",
         "signature": "ff2da7f0fc1c21b9abd6ab9a4b3df941b688800fbb510e976d1d908a39c92d01",
         "affectsGlobalScope": false
       },
-      "./src/index.tsx": {
+      "./src/index.ts": {
         "version": "afd020180cdc0db96f3e5e08d3a27be306a6077d03a6737cc61f71f8d4b0fef0",
         "signature": "1d351240db19e04098877ed5dee76b11309787c68e6518cd30e40533cce347c9",
         "affectsGlobalScope": false
@@ -4089,6 +4094,11 @@
       "./src/snackbar.tsx": {
         "version": "a29ac4b7af64f01a56361a3d473a3b5845b5ba01fd59b2b88d4246be996be61d",
         "signature": "0b40881f8764ec261c3513ce424fde6e6f3d3d35d898a870a5ef68f56992dce5",
+        "affectsGlobalScope": false
+      },
+      "./src/temp.tsx": {
+        "version": "db941602705e8211d836e1112afe90c799eac35cbe784b94b21eae7406816865",
+        "signature": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "affectsGlobalScope": false
       }
     },
@@ -7496,6 +7506,9 @@
       "./node_modules/@material-ui/icons/Close.d.ts": [
         "./node_modules/@material-ui/core/SvgIcon/index.d.ts"
       ],
+      "./node_modules/@material-ui/icons/Delete.d.ts": [
+        "./node_modules/@material-ui/core/SvgIcon/index.d.ts"
+      ],
       "./node_modules/@material-ui/styles/ServerStyleSheets/ServerStyleSheets.d.ts": [
         "./node_modules/@material-ui/styles/StylesProvider/index.d.ts",
         "./node_modules/@types/react/index.d.ts"
@@ -7947,11 +7960,14 @@
         "./node_modules/@material-ui/core/Card/index.d.ts",
         "./node_modules/@material-ui/core/CardActionArea/index.d.ts",
         "./node_modules/@material-ui/core/CardContent/index.d.ts",
+        "./node_modules/@material-ui/core/IconButton/index.d.ts",
         "./node_modules/@material-ui/core/Typography/index.d.ts",
         "./node_modules/@material-ui/core/styles/index.d.ts",
-        "./node_modules/@types/react/index.d.ts"
+        "./node_modules/@material-ui/icons/Delete.d.ts",
+        "./node_modules/@types/react/index.d.ts",
+        "./src/useStore.ts"
       ],
-      "./src/index.tsx": [
+      "./src/index.ts": [
         "./node_modules/@jupyterlab/application/lib/index.d.ts",
         "./node_modules/@jupyterlab/apputils/lib/index.d.ts",
         "./node_modules/@jupyterlab/docregistry/lib/index.d.ts",
@@ -11360,6 +11376,9 @@
       "./node_modules/@material-ui/icons/Close.d.ts": [
         "./node_modules/@material-ui/core/SvgIcon/index.d.ts"
       ],
+      "./node_modules/@material-ui/icons/Delete.d.ts": [
+        "./node_modules/@material-ui/core/SvgIcon/index.d.ts"
+      ],
       "./node_modules/@material-ui/styles/ServerStyleSheets/ServerStyleSheets.d.ts": [
         "./node_modules/@material-ui/styles/StylesProvider/index.d.ts",
         "./node_modules/@types/react/index.d.ts"
@@ -11807,7 +11826,7 @@
         "./node_modules/yjs/dist/src/utils/UpdateDecoder.d.ts",
         "./node_modules/yjs/dist/src/utils/UpdateEncoder.d.ts"
       ],
-      "./src/index.tsx": [
+      "./src/index.ts": [
         "./node_modules/@jupyterlab/application/lib/index.d.ts"
       ],
       "./src/notifications.tsx": [
@@ -12514,6 +12533,7 @@
       "./node_modules/@material-ui/core/withWidth/index.d.ts",
       "./node_modules/@material-ui/core/withWidth/withWidth.d.ts",
       "./node_modules/@material-ui/icons/Close.d.ts",
+      "./node_modules/@material-ui/icons/Delete.d.ts",
       "./node_modules/@material-ui/styles/ServerStyleSheets/ServerStyleSheets.d.ts",
       "./node_modules/@material-ui/styles/ServerStyleSheets/index.d.ts",
       "./node_modules/@material-ui/styles/StylesProvider/StylesProvider.d.ts",
@@ -12629,9 +12649,10 @@
       "./node_modules/yjs/dist/src/utils/logging.d.ts",
       "./node_modules/yjs/dist/src/utils/updates.d.ts",
       "./src/card.tsx",
-      "./src/index.tsx",
+      "./src/index.ts",
       "./src/notifications.tsx",
       "./src/snackbar.tsx",
+      "./src/temp.tsx",
       "./src/useStore.ts"
     ]
   },

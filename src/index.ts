@@ -42,7 +42,7 @@ class ButtonExtension
         const notification = {
           title: "Button Press",
           body: "Button in Notebook has been pressed!",
-          url : "url"
+          url: "url",
         };
         systemNotification(notification);
         notifyInCenter(notification);
@@ -89,7 +89,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
           const notification = {
             title: "Cell Execution!",
             body: `Cell has finished executing in ${notebookName}.ipynb!`,
-            url : "www.google.com"
+            url: "www.google.com",
           };
           notifyInCenter(notification);
         }

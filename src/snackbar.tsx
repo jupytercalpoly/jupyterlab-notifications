@@ -1,8 +1,8 @@
-import React from 'react';
-import Button from '@material-ui/core/Button';
-import Snackbar from '@material-ui/core/Snackbar';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
+import React from "react";
+import Button from "@material-ui/core/Button";
+import Snackbar from "@material-ui/core/Snackbar";
+import IconButton from "@material-ui/core/IconButton";
+import CloseIcon from "@material-ui/icons/Close";
 
 export default function SimpleSnackbar() {
   const [open, setOpen] = React.useState(false);
@@ -12,11 +12,10 @@ export default function SimpleSnackbar() {
   setOpen(true);
   return (
     <div>
-    
       <Snackbar
         anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
+          vertical: "bottom",
+          horizontal: "left",
         }}
         open={open}
         autoHideDuration={6000}
@@ -27,7 +26,12 @@ export default function SimpleSnackbar() {
             <Button color="secondary" size="small" onClick={handleClose}>
               UNDO
             </Button>
-            <IconButton size="small" aria-label="close" color="inherit" onClick={handleClose}>
+            <IconButton
+              size="small"
+              aria-label="close"
+              color="inherit"
+              onClick={handleClose}
+            >
               <CloseIcon fontSize="small" />
             </IconButton>
           </React.Fragment>

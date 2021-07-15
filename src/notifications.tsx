@@ -4,8 +4,7 @@ import React from "react";
 import ImgMediaCard from "./card";
 import { ReactWidget } from "@jupyterlab/apputils";
 
-
-export function systemNotification(notification : any) {
+export function systemNotification(notification: any) {
   if (Notification.permission !== "granted") {
     Notification.requestPermission();
   } else {
@@ -31,7 +30,12 @@ export function NotificationCenter(props: any) {
 
   let handleClick = () => {
     console.log(store);
-    setStore({ ls: [...store.ls, ["newElement", "newBody"]] });
+    setStore({
+      ls: [
+        ...store.ls,
+        { title: "newElement", body: "newBody", id: Date.now().toString() },
+      ],
+    });
     // const yarray = ydoc.getArray('notif')
     // console.log(yarray.toArray(), "yjs print");
     // ydoc.getArray('notif').insert(0, [6,7,8]);
@@ -39,19 +43,23 @@ export function NotificationCenter(props: any) {
   };
   return (
     <div>
-      {store.ls.map((notif: string[]): any => (
-        <ImgMediaCard title={notif[0]} body={notif[1]} />
+      {store.ls.map((notif: any): any => (
+        <ImgMediaCard title={notif.title} body={notif.body} id={notif.id}>
+          {/* control={ */}
+        </ImgMediaCard>
       ))}
-      <button onClick={() => handleClick()}>Activate Lasers</button>
+      <button onClick={() => handleClick()}>Activat Lasers</button>
     </div>
   );
 }
 
-export function notifyInCenter(notification : any) {
+export function notifyInCenter(notification: any) {
   const title = notification.title;
   const body = notification.body;
   let store = getStore();
-  setStore({ ls: [...store.ls, [title, body]] });
+  setStore({
+    ls: [...store.ls, { title: title, body: body, id: Date.now().toString() }],
+  });
 }
 
 export class notificationWidget extends ReactWidget {
@@ -66,4 +74,3 @@ export class notificationWidget extends ReactWidget {
     );
   }
 }
-
