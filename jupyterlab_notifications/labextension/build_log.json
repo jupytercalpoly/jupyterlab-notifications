@@ -594,6 +594,7 @@
             "@material-ui/icons": {},
             "bootstrap": {},
             "jquery": {},
+            "notistack": {},
             "react-bootstrap": {},
             "react-toastify": {},
             "jupyterlab-notifications": {

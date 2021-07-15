@@ -6,7 +6,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Widget } from "@lumino/widgets";
 import * as Icons from "@jupyterlab/ui-components";
 import "react-toastify/dist/ReactToastify.css";
-import { systemNotification, addNotification } from "./notifications";
+
 // import * as Y from 'yjs'
 // import { YDocument } from '@jupyterlab/shared-models';
 import { NotebookActions } from "@jupyterlab/notebook";
@@ -15,6 +15,15 @@ import { ToolbarButton } from "@jupyterlab/apputils";
 import { DocumentRegistry } from "@jupyterlab/docregistry";
 import { INotebookModel, NotebookPanel } from "@jupyterlab/notebook";
 import { IDisposable } from "@lumino/disposable";
+
+import {
+  systemNotification,
+  notifyInCenter,
+  notificationWidget,
+} from "./notifications";
+
+// import React from 'react';
+
 // import { List } from '@material-ui/core';
 // const ydoc = YDocument.ydoc
 
@@ -28,16 +37,20 @@ class ButtonExtension
     context: DocumentRegistry.IContext<INotebookModel>
   ): IDisposable {
     const mybutton = new ToolbarButton({
-      label: "Push Notification",
+      label: "Push Notif",
       onClick: () => {
-        addNotification("newElement");
-
+        const notification = {
+          title: "Button Press",
+          body: "Button in Notebook has been pressed!",
+          url: "url",
+        };
+        systemNotification(notification);
+        notifyInCenter(notification);
         document.addEventListener("DOMContentLoaded", () => {
           if (Notification.permission !== "granted") {
             Notification.requestPermission();
           }
         });
-        systemNotification("myTitle", "myDesc", "www.example.com");
       },
     });
 
@@ -73,7 +86,12 @@ const plugin: JupyterFrontEndPlugin<void> = {
       if (codeCell && nonEmptyCell) {
         if (metadata.has("execution")) {
           const notebookName = notebook.title.label.replace(/\.[^/.]+$/, "");
-          addNotification(notebookName);
+          const notification = {
+            title: "Cell Execution!",
+            body: `Cell has finished executing in ${notebookName}.ipynb!`,
+            url: "www.google.com",
+          };
+          notifyInCenter(notification);
         }
       } else {
         alert(
