@@ -5,6 +5,8 @@
 Toast notifications for JupyterLab
 
 
+### Press Release -https://github.com/jupytercalpoly/jupyterlab-notifications/blob/main/Press_Release.md
+
 
 ## Requirements
 
