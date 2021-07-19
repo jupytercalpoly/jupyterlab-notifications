@@ -80,36 +80,42 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _jupyterlab_ui_components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @jupyterlab/ui-components */ "webpack/sharing/consume/default/@jupyterlab/ui-components");
 /* harmony import */ var _jupyterlab_ui_components__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_jupyterlab_ui_components__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var react_toastify_dist_ReactToastify_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-toastify/dist/ReactToastify.css */ "./node_modules/react-toastify/dist/ReactToastify.css");
-/* harmony import */ var _jupyterlab_notebook__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @jupyterlab/notebook */ "webpack/sharing/consume/default/@jupyterlab/notebook");
-/* harmony import */ var _jupyterlab_notebook__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_jupyterlab_notebook__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _jupyterlab_apputils__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @jupyterlab/apputils */ "webpack/sharing/consume/default/@jupyterlab/apputils");
-/* harmony import */ var _jupyterlab_apputils__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_jupyterlab_apputils__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _notifications__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./notifications */ "./lib/notifications.js");
+/* harmony import */ var yjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! yjs */ "webpack/sharing/consume/default/yjs");
+/* harmony import */ var yjs__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(yjs__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _jupyterlab_notebook__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @jupyterlab/notebook */ "webpack/sharing/consume/default/@jupyterlab/notebook");
+/* harmony import */ var _jupyterlab_notebook__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_jupyterlab_notebook__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _jupyterlab_apputils__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @jupyterlab/apputils */ "webpack/sharing/consume/default/@jupyterlab/apputils");
+/* harmony import */ var _jupyterlab_apputils__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_jupyterlab_apputils__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _notifications__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./notifications */ "./lib/notifications.js");
 
 
 
-// import * as Y from 'yjs'
-// import { YDocument } from '@jupyterlab/shared-models';
+
+// import { YDocument } from "@jupyterlab/shared-models";
 
 
 
 
 // import React from 'react';
 // import { List } from '@material-ui/core';
-// const ydoc = YDocument.ydoc
-// ydoc.getArray('notif') .insert(0, [1, 2, 3])
+const ydoc = new yjs__WEBPACK_IMPORTED_MODULE_3__.Doc();
+ydoc.getArray("notif").insert(0, [1, 2, 3]);
 class ButtonExtension {
     createNew(panel, context) {
-        const mybutton = new _jupyterlab_apputils__WEBPACK_IMPORTED_MODULE_4__.ToolbarButton({
+        const mybutton = new _jupyterlab_apputils__WEBPACK_IMPORTED_MODULE_5__.ToolbarButton({
             label: "Push Notif",
             onClick: () => {
+                const yarray = ydoc.getArray("notif");
+                console.log(yarray.toArray(), "yjs print");
+                ydoc.getArray("notif").insert(0, [6, 7, 8]);
+                console.log(ydoc.getArray("notif").toArray(), "print2");
                 const notification = {
                     title: "Button Press",
                     body: "Button in Notebook has been pressed!",
-                    url: "url"
+                    url: "url",
                 };
-                (0,_notifications__WEBPACK_IMPORTED_MODULE_5__.systemNotification)(notification);
-                (0,_notifications__WEBPACK_IMPORTED_MODULE_5__.notifyInCenter)(notification);
+                (0,_notifications__WEBPACK_IMPORTED_MODULE_6__.systemNotification)(notification);
+                (0,_notifications__WEBPACK_IMPORTED_MODULE_6__.notifyInCenter)(notification);
                 document.addEventListener("DOMContentLoaded", () => {
                     if (Notification.permission !== "granted") {
                         Notification.requestPermission();
@@ -128,17 +134,17 @@ class ButtonExtension {
 const plugin = {
     id: "jupyterlab-todo:plugin",
     autoStart: true,
-    requires: [_jupyterlab_apputils__WEBPACK_IMPORTED_MODULE_4__.ICommandPalette],
+    requires: [_jupyterlab_apputils__WEBPACK_IMPORTED_MODULE_5__.ICommandPalette],
     activate: async (app, palette) => {
-        const content = new _notifications__WEBPACK_IMPORTED_MODULE_5__.notificationWidget();
-        const widget = new _jupyterlab_apputils__WEBPACK_IMPORTED_MODULE_4__.MainAreaWidget({ content });
+        const content = new _notifications__WEBPACK_IMPORTED_MODULE_6__.notificationWidget();
+        const widget = new _jupyterlab_apputils__WEBPACK_IMPORTED_MODULE_5__.MainAreaWidget({ content });
         widget.id = "apod-jupyterlab";
         widget.title.closable = true;
         widget.title.icon = _jupyterlab_ui_components__WEBPACK_IMPORTED_MODULE_1__.jupyterFaviconIcon;
         app.shell.add(widget, "right", { rank: 500 });
         const your_button = new ButtonExtension();
         app.docRegistry.addWidgetExtension("Notebook", your_button);
-        _jupyterlab_notebook__WEBPACK_IMPORTED_MODULE_3__.NotebookActions.executed.connect((_, args) => {
+        _jupyterlab_notebook__WEBPACK_IMPORTED_MODULE_4__.NotebookActions.executed.connect((_, args) => {
             const { cell, notebook } = args;
             const codeCell = cell.model.type === "code";
             const nonEmptyCell = cell.model.value.text.length > 0;
@@ -149,9 +155,9 @@ const plugin = {
                     const notification = {
                         title: "Cell Execution!",
                         body: `Cell has finished executing in ${notebookName}.ipynb!`,
-                        url: "www.google.com"
+                        url: "www.google.com",
                     };
-                    (0,_notifications__WEBPACK_IMPORTED_MODULE_5__.notifyInCenter)(notification);
+                    (0,_notifications__WEBPACK_IMPORTED_MODULE_6__.notifyInCenter)(notification);
                 }
             }
             else {
@@ -233,7 +239,9 @@ function notifyInCenter(notification) {
     const title = notification.title;
     const body = notification.body;
     let store = (0,_useStore__WEBPACK_IMPORTED_MODULE_2__.getStore)();
-    (0,_useStore__WEBPACK_IMPORTED_MODULE_2__.setStore)({ ls: [...store.ls, { title: title, body: body, id: Date.now().toString() }] });
+    (0,_useStore__WEBPACK_IMPORTED_MODULE_2__.setStore)({
+        ls: [...store.ls, { title: title, body: body, id: Date.now().toString() }],
+    });
 }
 class notificationWidget extends _jupyterlab_apputils__WEBPACK_IMPORTED_MODULE_1__.ReactWidget {
     constructor() {
@@ -265,7 +273,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "webpack/sharing/consume/default/react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 
-let store = { ls: [{ title: "card1.0", body: "body1.0", id: Date.now().toString() }] };
+let store = {
+    ls: [{ title: "card1.0", body: "body1.0", id: Date.now().toString() }],
+};
 let listeners = [];
 // setStore(store => ({...store, isFoo: false}))
 function setStore(val) {
@@ -286,6 +296,8 @@ function getStore() {
 // })
 function useStore() {
     const listener = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)()[1];
+    var ezYpZ = 5;
+    console.log(ezYpZ);
     (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
         listeners.push(listener);
         return () => void (listeners = listeners.filter((l) => l === listener));
@@ -297,4 +309,4 @@ function useStore() {
 /***/ })
 
 }]);
-//# sourceMappingURL=lib_index_js-webpack_sharing_consume_default_react-dom.9a4dd41943160922e518.js.map
+//# sourceMappingURL=lib_index_js-webpack_sharing_consume_default_react-dom.b3d04e6b23149715a2cf.js.map

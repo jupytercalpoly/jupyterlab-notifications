@@ -65,8 +65,8 @@
   "devDependencies": {
     "@jupyterlab/builder": "^3.0.0",
     "@typescript-eslint/eslint-plugin": "^4.8.1",
-    "@typescript-eslint/parser": "^4.8.1",
-    "eslint": "^7.14.0",
+    "@typescript-eslint/parser": "^4.28.3",
+    "eslint": "^7.30.0",
     "eslint-config-prettier": "^6.15.0",
     "eslint-plugin-prettier": "^3.1.4",
     "npm-run-all": "^4.1.5",
@@ -83,7 +83,7 @@
     "extension": true,
     "outputDir": "jupyterlab_notifications/labextension",
     "_build": {
-      "load": "static/remoteEntry.bdf0f9e91ee9c7848b82.js",
+      "load": "static/remoteEntry.f76f4176ef05e4df735a.js",
       "extension": "./extension",
       "style": "./style"
     }

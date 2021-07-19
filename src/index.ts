@@ -7,8 +7,8 @@ import { Widget } from "@lumino/widgets";
 import * as Icons from "@jupyterlab/ui-components";
 import "react-toastify/dist/ReactToastify.css";
 
-// import * as Y from 'yjs'
-// import { YDocument } from '@jupyterlab/shared-models';
+import * as Y from "yjs";
+// import { YDocument } from "@jupyterlab/shared-models";
 import { NotebookActions } from "@jupyterlab/notebook";
 import { ICommandPalette, MainAreaWidget } from "@jupyterlab/apputils";
 import { ToolbarButton } from "@jupyterlab/apputils";
@@ -25,9 +25,9 @@ import {
 // import React from 'react';
 
 // import { List } from '@material-ui/core';
-// const ydoc = YDocument.ydoc
+const ydoc = new Y.Doc();
 
-// ydoc.getArray('notif') .insert(0, [1, 2, 3])
+ydoc.getArray("notif").insert(0, [1, 2, 3]);
 
 class ButtonExtension
   implements DocumentRegistry.IWidgetExtension<NotebookPanel, INotebookModel>
@@ -39,6 +39,10 @@ class ButtonExtension
     const mybutton = new ToolbarButton({
       label: "Push Notif",
       onClick: () => {
+        const yarray = ydoc.getArray("notif");
+        console.log(yarray.toArray(), "yjs print");
+        ydoc.getArray("notif").insert(0, [6, 7, 8]);
+        console.log(ydoc.getArray("notif").toArray(), "print2");
         const notification = {
           title: "Button Press",
           body: "Button in Notebook has been pressed!",
