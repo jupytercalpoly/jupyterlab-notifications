@@ -28,7 +28,7 @@ def _load_jupyter_server_extension(server_app):
     This function is called when the extension is loaded.
     """
     handlers = [
-        ('/notifications/', NotificationHandler)
+        ('/notifications', NotificationHandler)
     ]
     server_app.web_app.add_handlers('.*$', handlers)
 
