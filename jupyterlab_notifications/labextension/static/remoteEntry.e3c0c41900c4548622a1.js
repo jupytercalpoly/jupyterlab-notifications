@@ -124,7 +124,7 @@ __webpack_require__.d(exports, {
 /******/ 		// This function allow to reference async chunks
 /******/ 		__webpack_require__.u = (chunkId) => {
 /******/ 			// return url for filenames based on template
-/******/ 			return "" + chunkId + "." + {"vendors-node_modules_css-loader_dist_runtime_api_js-node_modules_css-loader_dist_runtime_cssW-926fd9":"394e2b68229590ca82a5","vendors-node_modules_material-ui_core_esm_Card_Card_js-node_modules_material-ui_core_esm_Card-e01956":"4d7d5fb9fe4624733899","lib_index_js-webpack_sharing_consume_default_react-dom":"9a4dd41943160922e518","style_index_js":"20ada9ab4df8c3ff5826"}[chunkId] + ".js";
+/******/ 			return "" + chunkId + "." + {"vendors-node_modules_css-loader_dist_runtime_api_js-node_modules_css-loader_dist_runtime_cssW-926fd9":"394e2b68229590ca82a5","vendors-node_modules_material-ui_core_esm_Card_Card_js-node_modules_material-ui_core_esm_Card-e01956":"4d7d5fb9fe4624733899","lib_index_js-webpack_sharing_consume_default_react-dom":"f4ab47a8f79fc7e4d06c","style_index_js":"20ada9ab4df8c3ff5826"}[chunkId] + ".js";
 /******/ 		};
 /******/ 	})();
 /******/ 	
@@ -393,9 +393,9 @@ __webpack_require__.d(exports, {
 /******/ 		});
 /******/ 		var installedModules = {};
 /******/ 		var moduleToHandlerMapping = {
-/******/ 			"webpack/sharing/consume/default/@jupyterlab/ui-components": () => (loadSingletonVersionCheck("default", "@jupyterlab/ui-components", [1,3,1,0,,"beta",0])),
-/******/ 			"webpack/sharing/consume/default/@jupyterlab/notebook": () => (loadSingletonVersionCheck("default", "@jupyterlab/notebook", [1,3,1,0,,"beta",0])),
-/******/ 			"webpack/sharing/consume/default/@jupyterlab/apputils": () => (loadSingletonVersionCheck("default", "@jupyterlab/apputils", [1,3,1,0,,"beta",0])),
+/******/ 			"webpack/sharing/consume/default/@jupyterlab/ui-components": () => (loadSingletonVersionCheck("default", "@jupyterlab/ui-components", [1,3,0,6])),
+/******/ 			"webpack/sharing/consume/default/@jupyterlab/notebook": () => (loadSingletonVersionCheck("default", "@jupyterlab/notebook", [1,3,0,9])),
+/******/ 			"webpack/sharing/consume/default/@jupyterlab/apputils": () => (loadSingletonVersionCheck("default", "@jupyterlab/apputils", [1,3,0,7])),
 /******/ 			"webpack/sharing/consume/default/react": () => (loadSingletonVersionCheck("default", "react", [1,17,0,1])),
 /******/ 			"webpack/sharing/consume/default/react-dom": () => (loadSingletonVersionCheck("default", "react-dom", [1,17,0,1]))
 /******/ 		};
@@ -536,4 +536,4 @@ __webpack_require__.d(exports, {
 /******/ 	
 /******/ })()
 ;
-//# sourceMappingURL=remoteEntry.bdf0f9e91ee9c7848b82.js.map
+//# sourceMappingURL=remoteEntry.e3c0c41900c4548622a1.js.map
