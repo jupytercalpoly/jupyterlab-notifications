@@ -1,6 +1,8 @@
 
 import json
 from pathlib import Path
+from .handlers import setup_handlers
+
 
 from ._version import __version__
 
@@ -15,3 +17,13 @@ def _jupyter_labextension_paths():
         "dest": data["name"]
     }]
 
+def _load_jupyter_server_extension(server_app):
+    """Registers the API handler to receive HTTP requests from the frontend extension.
+    Parameters
+    ----------
+    server_app: jupyterlab.labapp.LabApp
+        JupyterLab application instance
+    """
+    # config = JupyterLabGit(config=server_app.config)
+    # server_app.web_app.settings["git"] = Git(config)
+    setup_handlers(server_app.web_app)
