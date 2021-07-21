@@ -93,6 +93,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+//import { requestAPI } from './handler';
 
 // import React from 'react';
 // import { List } from '@material-ui/core';
@@ -106,7 +107,7 @@ class ButtonExtension {
                 const notification = {
                     title: "Button Press",
                     body: "Button in Notebook has been pressed!",
-                    url: "url"
+                    url: "url",
                 };
                 (0,_notifications__WEBPACK_IMPORTED_MODULE_5__.systemNotification)(notification);
                 (0,_notifications__WEBPACK_IMPORTED_MODULE_5__.notifyInCenter)(notification);
@@ -130,6 +131,14 @@ const plugin = {
     autoStart: true,
     requires: [_jupyterlab_apputils__WEBPACK_IMPORTED_MODULE_4__.ICommandPalette],
     activate: async (app, palette) => {
+        // console.log('Attempting GET');
+        // // GET request
+        // try {
+        //   const data = await requestAPI<any>('hello');
+        //   console.log(data);
+        // } catch (reason) {
+        //   console.error(`Error on GET /jlab-ext-example/hello.\n${reason}`);
+        // }
         const content = new _notifications__WEBPACK_IMPORTED_MODULE_5__.notificationWidget();
         const widget = new _jupyterlab_apputils__WEBPACK_IMPORTED_MODULE_4__.MainAreaWidget({ content });
         widget.id = "apod-jupyterlab";
@@ -149,7 +158,7 @@ const plugin = {
                     const notification = {
                         title: "Cell Execution!",
                         body: `Cell has finished executing in ${notebookName}.ipynb!`,
-                        url: "www.google.com"
+                        url: "www.google.com",
                     };
                     (0,_notifications__WEBPACK_IMPORTED_MODULE_5__.notifyInCenter)(notification);
                 }
@@ -233,7 +242,9 @@ function notifyInCenter(notification) {
     const title = notification.title;
     const body = notification.body;
     let store = (0,_useStore__WEBPACK_IMPORTED_MODULE_2__.getStore)();
-    (0,_useStore__WEBPACK_IMPORTED_MODULE_2__.setStore)({ ls: [...store.ls, { title: title, body: body, id: Date.now().toString() }] });
+    (0,_useStore__WEBPACK_IMPORTED_MODULE_2__.setStore)({
+        ls: [...store.ls, { title: title, body: body, id: Date.now().toString() }],
+    });
 }
 class notificationWidget extends _jupyterlab_apputils__WEBPACK_IMPORTED_MODULE_1__.ReactWidget {
     constructor() {
@@ -265,7 +276,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "webpack/sharing/consume/default/react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 
-let store = { ls: [{ title: "card1.0", body: "body1.0", id: Date.now().toString() }] };
+let store = {
+    ls: [{ title: "card1.0", body: "body1.0", id: Date.now().toString() }],
+};
 let listeners = [];
 // setStore(store => ({...store, isFoo: false}))
 function setStore(val) {
@@ -286,6 +299,8 @@ function getStore() {
 // })
 function useStore() {
     const listener = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)()[1];
+    var ezYpZ = 5;
+    console.log(ezYpZ);
     (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
         listeners.push(listener);
         return () => void (listeners = listeners.filter((l) => l === listener));
@@ -297,4 +312,4 @@ function useStore() {
 /***/ })
 
 }]);
-//# sourceMappingURL=lib_index_js-webpack_sharing_consume_default_react-dom.9a4dd41943160922e518.js.map
+//# sourceMappingURL=lib_index_js-webpack_sharing_consume_default_react-dom.f4ab47a8f79fc7e4d06c.js.map
