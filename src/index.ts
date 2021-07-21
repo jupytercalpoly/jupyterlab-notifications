@@ -6,6 +6,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Widget } from "@lumino/widgets";
 import * as Icons from "@jupyterlab/ui-components";
 import "react-toastify/dist/ReactToastify.css";
+import { requestAPI } from './handler';
 
 import * as Y from "yjs";
 // import { YDocument } from "@jupyterlab/shared-models";
@@ -37,8 +38,15 @@ class ButtonExtension
     context: DocumentRegistry.IContext<INotebookModel>
   ): IDisposable {
     const mybutton = new ToolbarButton({
+      
       label: "Push Notif",
-      onClick: () => {
+      onClick: async () => {
+        try {
+          const data = await requestAPI<any>('');
+          console.log(data);
+        } catch (reason) {
+          console.error(`Error on GET /jlab-ext-example/notifications.\n${reason}`);
+        }
         const yarray = ydoc.getArray("notif");
         console.log(yarray.toArray(), "yjs print");
         ydoc.getArray("notif").insert(0, [6, 7, 8]);

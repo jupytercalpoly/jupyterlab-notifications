@@ -65,6 +65,51 @@ function ImgMediaCard(props) {
 
 /***/ }),
 
+/***/ "./lib/handler.js":
+/*!************************!*\
+  !*** ./lib/handler.js ***!
+  \************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "requestAPI": () => (/* binding */ requestAPI)
+/* harmony export */ });
+/* harmony import */ var _jupyterlab_coreutils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @jupyterlab/coreutils */ "webpack/sharing/consume/default/@jupyterlab/coreutils");
+/* harmony import */ var _jupyterlab_coreutils__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_jupyterlab_coreutils__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _jupyterlab_services__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @jupyterlab/services */ "webpack/sharing/consume/default/@jupyterlab/services");
+/* harmony import */ var _jupyterlab_services__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_jupyterlab_services__WEBPACK_IMPORTED_MODULE_1__);
+
+
+/**
+ * Call the API extension
+ *
+ * @param endPoint API REST end point for the extension
+ * @param init Initial values for the request
+ * @returns The response body interpreted as JSON
+ */
+async function requestAPI(endPoint = '', init = {}) {
+    // Make request to Jupyter API
+    const settings = _jupyterlab_services__WEBPACK_IMPORTED_MODULE_1__.ServerConnection.makeSettings();
+    const requestUrl = _jupyterlab_coreutils__WEBPACK_IMPORTED_MODULE_0__.URLExt.join(settings.baseUrl, 'notifications', endPoint);
+    let response;
+    try {
+        response = await _jupyterlab_services__WEBPACK_IMPORTED_MODULE_1__.ServerConnection.makeRequest(requestUrl, init, settings);
+    }
+    catch (error) {
+        throw new _jupyterlab_services__WEBPACK_IMPORTED_MODULE_1__.ServerConnection.NetworkError(error);
+    }
+    const data = await response.json();
+    if (!response.ok) {
+        throw new _jupyterlab_services__WEBPACK_IMPORTED_MODULE_1__.ServerConnection.ResponseError(response, data.message);
+    }
+    return data;
+}
+
+
+/***/ }),
+
 /***/ "./lib/index.js":
 /*!**********************!*\
   !*** ./lib/index.js ***!
@@ -80,13 +125,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _jupyterlab_ui_components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @jupyterlab/ui-components */ "webpack/sharing/consume/default/@jupyterlab/ui-components");
 /* harmony import */ var _jupyterlab_ui_components__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_jupyterlab_ui_components__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var react_toastify_dist_ReactToastify_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-toastify/dist/ReactToastify.css */ "./node_modules/react-toastify/dist/ReactToastify.css");
+/* harmony import */ var _handler__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./handler */ "./lib/handler.js");
 /* harmony import */ var yjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! yjs */ "webpack/sharing/consume/default/yjs");
 /* harmony import */ var yjs__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(yjs__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var _jupyterlab_notebook__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @jupyterlab/notebook */ "webpack/sharing/consume/default/@jupyterlab/notebook");
 /* harmony import */ var _jupyterlab_notebook__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_jupyterlab_notebook__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _jupyterlab_apputils__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @jupyterlab/apputils */ "webpack/sharing/consume/default/@jupyterlab/apputils");
 /* harmony import */ var _jupyterlab_apputils__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_jupyterlab_apputils__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _notifications__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./notifications */ "./lib/notifications.js");
+/* harmony import */ var _notifications__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./notifications */ "./lib/notifications.js");
+
 
 
 
@@ -104,7 +151,14 @@ class ButtonExtension {
     createNew(panel, context) {
         const mybutton = new _jupyterlab_apputils__WEBPACK_IMPORTED_MODULE_5__.ToolbarButton({
             label: "Push Notif",
-            onClick: () => {
+            onClick: async () => {
+                try {
+                    const data = await (0,_handler__WEBPACK_IMPORTED_MODULE_6__.requestAPI)('');
+                    console.log(data);
+                }
+                catch (reason) {
+                    console.error(`Error on GET /jlab-ext-example/notifications.\n${reason}`);
+                }
                 const yarray = ydoc.getArray("notif");
                 console.log(yarray.toArray(), "yjs print");
                 ydoc.getArray("notif").insert(0, [6, 7, 8]);
@@ -114,8 +168,8 @@ class ButtonExtension {
                     body: "Button in Notebook has been pressed!",
                     url: "url",
                 };
-                (0,_notifications__WEBPACK_IMPORTED_MODULE_6__.systemNotification)(notification);
-                (0,_notifications__WEBPACK_IMPORTED_MODULE_6__.notifyInCenter)(notification);
+                (0,_notifications__WEBPACK_IMPORTED_MODULE_7__.systemNotification)(notification);
+                (0,_notifications__WEBPACK_IMPORTED_MODULE_7__.notifyInCenter)(notification);
                 document.addEventListener("DOMContentLoaded", () => {
                     if (Notification.permission !== "granted") {
                         Notification.requestPermission();
@@ -136,7 +190,7 @@ const plugin = {
     autoStart: true,
     requires: [_jupyterlab_apputils__WEBPACK_IMPORTED_MODULE_5__.ICommandPalette],
     activate: async (app, palette) => {
-        const content = new _notifications__WEBPACK_IMPORTED_MODULE_6__.notificationWidget();
+        const content = new _notifications__WEBPACK_IMPORTED_MODULE_7__.notificationWidget();
         const widget = new _jupyterlab_apputils__WEBPACK_IMPORTED_MODULE_5__.MainAreaWidget({ content });
         widget.id = "apod-jupyterlab";
         widget.title.closable = true;
@@ -157,7 +211,7 @@ const plugin = {
                         body: `Cell has finished executing in ${notebookName}.ipynb!`,
                         url: "www.google.com",
                     };
-                    (0,_notifications__WEBPACK_IMPORTED_MODULE_6__.notifyInCenter)(notification);
+                    (0,_notifications__WEBPACK_IMPORTED_MODULE_7__.notifyInCenter)(notification);
                 }
             }
             else {
@@ -309,4 +363,4 @@ function useStore() {
 /***/ })
 
 }]);
-//# sourceMappingURL=lib_index_js-webpack_sharing_consume_default_react-dom.b3d04e6b23149715a2cf.js.map
+//# sourceMappingURL=lib_index_js-webpack_sharing_consume_default_react-dom.c6f95b62cdd6274b7414.js.map

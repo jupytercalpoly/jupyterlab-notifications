@@ -17,6 +17,13 @@ def _jupyter_labextension_paths():
         "dest": data["name"]
     }]
 
+def _jupyter_server_extension_points():
+    """
+    Returns a list of dictionaries with metadata describing
+    where to find the `_load_jupyter_server_extension` function.
+    """
+    return [{"module": "jupyterlab_notifications"}]
+
 def _load_jupyter_server_extension(server_app):
     """Registers the API handler to receive HTTP requests from the frontend extension.
     Parameters
@@ -27,3 +34,6 @@ def _load_jupyter_server_extension(server_app):
     # config = JupyterLabGit(config=server_app.config)
     # server_app.web_app.settings["git"] = Git(config)
     setup_handlers(server_app.web_app)
+
+
+load_jupyter_server_extension = _load_jupyter_server_extension
