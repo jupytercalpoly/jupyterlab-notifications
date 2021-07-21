@@ -83,7 +83,7 @@
     "extension": true,
     "outputDir": "jupyterlab_notifications/labextension",
     "_build": {
-      "load": "static/remoteEntry.e3c0c41900c4548622a1.js",
+      "load": "static/remoteEntry.f6e5a13181e445917d79.js",
       "extension": "./extension",
       "style": "./style"
     }
