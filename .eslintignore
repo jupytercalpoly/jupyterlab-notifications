@@ -1,0 +1,7 @@
+.eslintrc.js
+node_modules
+**/node_modules
+lib
+coverage
+**/*.d.ts
+**/static

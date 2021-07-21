@@ -5,20 +5,21 @@
     "declaration": true,
     "esModuleInterop": true,
     "incremental": true,
+    "inlineSources": true,
     "jsx": "react",
     "module": "esnext",
     "moduleResolution": "node",
     "noEmitOnError": true,
     "noImplicitAny": true,
     "noUnusedLocals": true,
+    "outDir": "lib",
     "preserveWatchOutput": true,
     "resolveJsonModule": true,
-    "outDir": "lib",
     "rootDir": "src",
+    "sourceMap": true,
     "strict": true,
     "strictNullChecks": true,
-    "target": "es2017",
-    "types": []
+    "target": "es2017"
   },
-  "include": ["src/*"]
+  "include": ["src/**/*"]
 }
