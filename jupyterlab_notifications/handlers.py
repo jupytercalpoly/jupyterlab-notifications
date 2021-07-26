@@ -4,6 +4,7 @@ import json
 import os
 from pathlib import Path
 from typing import Tuple, Union
+import time
 
 import tornado
 from jupyter_server.base.handlers import APIHandler, path_regex
@@ -28,12 +29,27 @@ c.close()
 class notifyBaseHandler(APIHandler):
     @tornado.web.authenticated
     async def get(self, path: str = ""):
+        # a = self.get_arguments('created')
+        args = (self.request.arguments)
+        created, origin=  "", ""
         con = sqlite3.connect('/mnt/f/git/jupyterlab-notifications/notif.db')
         cur = con.cursor()
-
-# Create table
-        cur.execute('SELECT * FROM notifs')
-        data = cur.fetchall()
+        data = ""
+        if "created" in args and "origin" in args:
+            created, origin = args["created"][0].decode(), args["origin"][0].decode()
+            cur.execute('SELECT * FROM notifs where created >= ? and origin = ?', (str(created), str(origin)))
+            data = cur.fetchall()
+        elif "created" in args:
+            created = args["created"][0].decode()
+            cur.execute('SELECT * FROM notifs where created >= ?', (str(created),))
+            data = cur.fetchall()
+        elif "origin" in args:
+            origin = args["origin"][0].decode()
+            cur.execute('SELECT * FROM notifs where origin = ?', (str(origin),))
+            data = cur.fetchall()
+        else:
+            cur.execute('SELECT * FROM notifs')
+            data = cur.fetchall()
         self.finish(json.dumps({"data": data}))
 
     @tornado.web.authenticated
@@ -49,7 +65,7 @@ class notifyBaseHandler(APIHandler):
         Ephemeral = data["Ephemeral"]
         NotifTimeout = data["NotifTimeout"]
         NotifType = data["NotifType"]
-        Created = data["Created"]
+        Created = time.time_ns()
 
         insertData = (origin, Title, Body, LinkURL, Ephemeral, NotifTimeout, NotifType, Created)
         # Insert a row of data
@@ -64,15 +80,14 @@ class notifyBaseHandler(APIHandler):
         con.close()
 
 
-class notifyOriginHandler(APIHandler):
+class notifyIDHandler(APIHandler):
     @tornado.web.authenticated
-    async def get(self, origin):
-        print(origin)
+    async def get(self, NotificationID):
         con = sqlite3.connect('/mnt/f/git/jupyterlab-notifications/notif.db')
         cur = con.cursor()
 
 # Create table
-        cur.execute('SELECT * FROM notifs where origin = ?',( origin, ))
+        cur.execute('SELECT * FROM notifs where NotificationID = ?',( NotificationID, ))
         data = cur.fetchall()
         self.finish(json.dumps({"data": data}))
 
@@ -84,7 +99,7 @@ def setup_handlers(web_app):
 
     handlers = [
         ("/api/notifications", notifyBaseHandler),
-        (r"/api/notifications/([^/]+)", notifyOriginHandler),
+        (r"/api/notifications/([^/]+)", notifyIDHandler),
     ]
     base_url = web_app.settings["base_url"]
     notify_handlers = [
