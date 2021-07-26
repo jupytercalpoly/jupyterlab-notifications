@@ -83,7 +83,11 @@
     "extension": true,
     "outputDir": "jupyterlab_notifications/labextension",
     "_build": {
+<<<<<<< HEAD
       "load": "static/remoteEntry.f76f4176ef05e4df735a.js",
+=======
+      "load": "static/remoteEntry.f6e5a13181e445917d79.js",
+>>>>>>> upstream/main
       "extension": "./extension",
       "style": "./style"
     }

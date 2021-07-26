@@ -4,14 +4,15 @@ node_modules/
 *.egg-info/
 .ipynb_checkpoints
 *.tsbuildinfo
-jupyterlab_git/labextension
+jupyterlab_notifications/labextension
 
 # Created by https://www.gitignore.io/api/python
 # Edit at https://www.gitignore.io/?templates=python
 
 ### Python ###
 # Byte-compiled / optimized / DLL files
-__pycache__/
+__pycache__
+/jupyterlab_notifications/__pycache__
 *.py[cod]
 *$py.class
 

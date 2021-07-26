@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 
 import setuptools
+from setuptools import setup
 
 HERE = Path(__file__).parent.resolve()
 
@@ -47,6 +48,12 @@ setup_args = dict(
     ],
     zip_safe=False,
     include_package_data=True,
+    data_files=[
+        (
+            "etc/jupyter/jupyter_server_config.d",
+            ["jupyter-config/jupyter_server_config.d/jupyterlab_notifications.json"]
+        ),
+    ],
     python_requires=">=3.6",
     platforms="Linux, Mac OS X, Windows",
     keywords=["Jupyter", "JupyterLab", "JupyterLab3"],

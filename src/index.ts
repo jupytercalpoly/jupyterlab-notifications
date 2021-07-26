@@ -15,6 +15,7 @@ import { ToolbarButton } from "@jupyterlab/apputils";
 import { DocumentRegistry } from "@jupyterlab/docregistry";
 import { INotebookModel, NotebookPanel } from "@jupyterlab/notebook";
 import { IDisposable } from "@lumino/disposable";
+//import { requestAPI } from './handler';
 
 import {
   systemNotification,
@@ -74,6 +75,16 @@ const plugin: JupyterFrontEndPlugin<void> = {
   requires: [ICommandPalette],
 
   activate: async (app: JupyterFrontEnd, palette: ICommandPalette) => {
+    
+    // console.log('Attempting GET');
+    // // GET request
+    // try {
+    //   const data = await requestAPI<any>('hello');
+    //   console.log(data);
+    // } catch (reason) {
+    //   console.error(`Error on GET /jlab-ext-example/hello.\n${reason}`);
+    // }
+
     const content: Widget = new notificationWidget();
     const widget = new MainAreaWidget({ content });
     widget.id = "apod-jupyterlab";
