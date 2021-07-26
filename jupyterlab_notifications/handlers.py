@@ -16,7 +16,7 @@ NAMESPACE = "/api"
 conn = sqlite3.connect('/mnt/f/git/jupyterlab-notifications/notif.db')
 c = conn.cursor()
 try:
-    c.execute('''CREATE TABLE IF NOT EXISTS notifs (NotificationID  INTEGER PRIMARY KEY, origin text, Title text,Body text, LinkURL text,Ephemeral boolean, NotifTimeout INTEGER, NotifType text,Created INTEGER)''')
+    c.execute('''CREATE TABLE IF NOT EXISTS notifs (notificationId  INTEGER PRIMARY KEY, origin text, Title text,Body text, LinkURL text,Ephemeral boolean, NotifTimeout INTEGER, NotifType text,Created INTEGER)''')
 except sqlite3.OperationalError:
     pass
 c.close()
@@ -75,12 +75,12 @@ class notifyBaseHandler(APIHandler):
 
 class notifyIDHandler(APIHandler):
     @tornado.web.authenticated
-    async def get(self, NotificationID):
+    async def get(self, notificationId):
         con = sqlite3.connect('/mnt/f/git/jupyterlab-notifications/notif.db')
         cur = con.cursor()
 
 # Create table
-        cur.execute('SELECT * FROM notifs where NotificationID = ?',( NotificationID, ))
+        cur.execute('SELECT * FROM notifs where notificationId = ?',( notificationId, ))
         data = cur.fetchall()
         self.finish(json.dumps({"data": data}))
 
