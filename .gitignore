@@ -136,3 +136,4 @@ dmypy.json
 *.swp
 notif.db
 tsconfig.tsbuildinfo
+notebook2.ipynb
