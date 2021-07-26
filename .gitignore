@@ -134,3 +134,6 @@ dmypy.json
 
 # vim stuff
 *.swp
+notif.db
+tsconfig.tsbuildinfo
+notebook2.ipynb
