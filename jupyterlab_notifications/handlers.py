@@ -7,9 +7,31 @@ from typing import Tuple, Union
 import time
 
 import tornado
+import tornado.websocket as websocketT
 from jupyter_server.base.handlers import APIHandler
 from jupyter_server.utils import  url_path_join
 from packaging.version import parse
+
+wss = []
+class wsHandler(websocketT.WebSocketHandler):
+    def open(self):
+        print ('Online')
+        if self not in wss:
+            wss.append(self)
+    def on_message(self, message):
+        for client in wss:
+            if client != self:
+                client.write_message('ECHO: ' + message)
+    def on_close(self):
+        print ('Offline')
+        if self in wss:
+            wss.remove(self)
+
+def wsSend(message):
+    for ws in wss:
+        ws.write_message(message)
+
+
 NAMESPACE = "/api"
 
 
@@ -28,6 +50,7 @@ c.close()
 class notifyBaseHandler(APIHandler):
     @tornado.web.authenticated
     async def get(self, path: str = ""):
+        wsSend("yelooo")
         args = (self.request.arguments)
         created, origin=  "", ""
         con = sqlite3.connect('/mnt/f/git/jupyterlab-notifications/notif.db')
@@ -91,6 +114,7 @@ def setup_handlers(web_app):
     """
 
     handlers = [
+        ("/api/ws", wsHandler),
         ("/api/notifications", notifyBaseHandler),
         (r"/api/notifications/([^/]+)", notifyIDHandler),
     ]

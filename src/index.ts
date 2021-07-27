@@ -85,6 +85,19 @@ const plugin: JupyterFrontEndPlugin<void> = {
     // } catch (reason) {
     //   console.error(`Error on GET /jlab-ext-example/hello.\n${reason}`);
     // }
+    let ws = new WebSocket("ws://localhost:8888/api/ws");
+    ws.onopen = function() {
+      ws.send("Hello, world");
+    };
+    ws.onmessage = function () {
+      const notification = {
+        title: "Button Press",
+        body: "Button in Notebook has been pressed!",
+        url: "url",
+      };
+      systemNotification(notification);
+      notifyInCenter(notification);
+    };
 
     const content: Widget = new notificationWidget();
     const widget = new MainAreaWidget({ content });
