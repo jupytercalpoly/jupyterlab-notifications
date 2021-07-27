@@ -24,7 +24,7 @@ class wsHandler(websocketT.WebSocketHandler):
     def on_message(self, message):
         for client in wss:
             if client != self:
-                client.write_message('ECHO: ' + message)
+                client.write_message(message)
 
     def on_close(self):
         print('Offline')
@@ -105,15 +105,19 @@ class notifyBaseHandler(APIHandler):
                       NotifTimeout, NotifType, Created)
         cur.execute(
             "INSERT INTO notifs ( origin , Title ,Body , LinkURL ,Ephemeral , NotifTimeout , NotifType ,Created ) VALUES (? , ? ,? , ? ,? , ? , ? ,?)", insertData)
-
+        rowId = cur.lastrowid
         con.commit()
         con.close()
-        wsSend("yelooo")
+        self.set_status(201)
+        self.add_header("location", str(rowId))
+        self.write(json.dumps({"RowId":str(rowId)}))
+        wsSend(str(rowId))
 
 
 class notifyIDHandler(APIHandler):
     @tornado.web.authenticated
     async def get(self, notificationId):
+        print(notificationId, "THIS WHAT I GOT")
         con = sqlite3.connect('/mnt/f/git/jupyterlab-notifications/notif.db')
         cur = con.cursor()
 
@@ -121,7 +125,12 @@ class notifyIDHandler(APIHandler):
         cur.execute('SELECT * FROM notifs where notificationId = ?',
                     (notificationId, ))
         data = cur.fetchall()
-        self.finish(json.dumps({"data": data}))
+        response = {}
+        for row in data:
+            response = {"INotificationResponse": {"notificationId": row[0], "origin": row[1], "title": row[2], "body": row[3],
+                        "linkURL": row[4], "ephemeral": row[5], "notifTimeout": row[6], "notifType": row[7], "created": row[8]}}
+            # responses.append({"INotificationResponse": response})
+        self.finish(json.dumps({"Response": response}))
 
 
 def setup_handlers(web_app):
