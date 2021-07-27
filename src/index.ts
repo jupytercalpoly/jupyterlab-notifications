@@ -6,7 +6,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Widget } from "@lumino/widgets";
 import * as Icons from "@jupyterlab/ui-components";
 import "react-toastify/dist/ReactToastify.css";
-import "../style/main.css"
+import "../style/main.css";
 
 import * as Y from "yjs";
 // import { YDocument } from "@jupyterlab/shared-models";
@@ -17,7 +17,7 @@ import { DocumentRegistry } from "@jupyterlab/docregistry";
 import { INotebookModel, NotebookPanel } from "@jupyterlab/notebook";
 import { IDisposable } from "@lumino/disposable";
 //import { requestAPI } from './handler';
-
+import { requestAPI } from "./handler";
 import {
   systemNotification,
   notifyInCenter,
@@ -40,18 +40,32 @@ class ButtonExtension
   ): IDisposable {
     const mybutton = new ToolbarButton({
       label: "Push Notif",
-      onClick: () => {
+      onClick: async () => {
+        const dataToSend = {
+          INotificationEvent: {
+          origin: "google",
+          Title: Math.random().toString(),
+          Body: "this is notif",
+          LinkURL: "google.com",
+          Ephemeral: true,
+          NotifTimeout: 18,
+          NotifType: "web",}
+        };
+        try {
+          const reply = await requestAPI<any>("notifications", {
+            body: JSON.stringify(dataToSend),
+            method: "POST",
+          });
+          console.log(reply);
+        } catch (reason) {
+          console.error(
+            `Error on POST /jlab-ext-example/hello ${dataToSend}.\n${reason}`
+          );
+        }
         const yarray = ydoc.getArray("notif");
         console.log(yarray.toArray(), "yjs print");
         ydoc.getArray("notif").insert(0, [6, 7, 8]);
         console.log(ydoc.getArray("notif").toArray(), "print2");
-        const notification = {
-          title: "Button Press",
-          body: "Button in Notebook has been pressed!",
-          url: "url",
-        };
-        systemNotification(notification);
-        notifyInCenter(notification);
         document.addEventListener("DOMContentLoaded", () => {
           if (Notification.permission !== "granted") {
             Notification.requestPermission();
@@ -76,7 +90,6 @@ const plugin: JupyterFrontEndPlugin<void> = {
   requires: [ICommandPalette],
 
   activate: async (app: JupyterFrontEnd, palette: ICommandPalette) => {
-    
     // console.log('Attempting GET');
     // // GET request
     // try {
@@ -86,17 +99,27 @@ const plugin: JupyterFrontEndPlugin<void> = {
     //   console.error(`Error on GET /jlab-ext-example/hello.\n${reason}`);
     // }
     let ws = new WebSocket("ws://localhost:8888/api/ws");
-    ws.onopen = function() {
+    ws.onopen = function () {
       ws.send("Hello, world");
     };
-    ws.onmessage = function () {
-      const notification = {
-        title: "Button Press",
-        body: "Button in Notebook has been pressed!",
-        url: "url",
-      };
-      systemNotification(notification);
-      notifyInCenter(notification);
+    ws.onmessage = async function () {
+      try {
+        const data = await requestAPI<any>("notifications");
+        console.log(data);
+        const ls = data["Response"][data["Response"].length -1];
+        console.log(ls);
+        const notification = {
+          title: ls["INotificationResponse"]["title"],
+          body: ls["INotificationResponse"]["body"],
+          url: ls["INotificationResponse"]["linkURL"],
+        };
+        systemNotification(notification);
+        notifyInCenter(notification);
+      } catch (reason) {
+        console.error(
+          `Error on GET /jlab-ext-example/notifications.\n${reason}`
+        );
+      }
     };
 
     const content: Widget = new notificationWidget();

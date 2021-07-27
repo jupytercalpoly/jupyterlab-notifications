@@ -9,23 +9,28 @@ import time
 import tornado
 import tornado.websocket as websocketT
 from jupyter_server.base.handlers import APIHandler
-from jupyter_server.utils import  url_path_join
+from jupyter_server.utils import url_path_join
 from packaging.version import parse
 
 wss = []
+
+
 class wsHandler(websocketT.WebSocketHandler):
     def open(self):
-        print ('Online')
+        print('Online')
         if self not in wss:
             wss.append(self)
+
     def on_message(self, message):
         for client in wss:
             if client != self:
                 client.write_message('ECHO: ' + message)
+
     def on_close(self):
-        print ('Offline')
+        print('Offline')
         if self in wss:
             wss.remove(self)
+
 
 def wsSend(message):
     for ws in wss:
@@ -38,47 +43,55 @@ NAMESPACE = "/api"
 conn = sqlite3.connect('/mnt/f/git/jupyterlab-notifications/notif.db')
 c = conn.cursor()
 try:
-    c.execute('''CREATE TABLE IF NOT EXISTS notifs (notificationId  INTEGER PRIMARY KEY, origin text, Title text,Body text, LinkURL text,Ephemeral boolean, NotifTimeout INTEGER, NotifType text,Created INTEGER)''')
+    c.execute('''CREATE TABLE IF NOT EXISTS notifs (notificationId  INTEGER PRIMARY KEY, origin text, title text,body text, linkURL text,ephemeral boolean, notifTimeout INTEGER, notifType text,created INTEGER)''')
 except sqlite3.OperationalError:
     pass
 c.close()
 
 
-
-
-
 class notifyBaseHandler(APIHandler):
     @tornado.web.authenticated
     async def get(self, path: str = ""):
-        wsSend("yelooo")
+
         args = (self.request.arguments)
-        created, origin=  "", ""
+        created, origin = "", ""
         con = sqlite3.connect('/mnt/f/git/jupyterlab-notifications/notif.db')
         cur = con.cursor()
         data = ""
         if "created" in args and "origin" in args:
-            created, origin = args["created"][0].decode(), args["origin"][0].decode()
-            cur.execute('SELECT * FROM notifs where created >= ? and origin = ?', (str(created), str(origin)))
+            created, origin = args["created"][0].decode(
+            ), args["origin"][0].decode()
+            cur.execute('SELECT * FROM notifs where created >= ? and origin = ?',
+                        (str(created), str(origin)))
             data = cur.fetchall()
         elif "created" in args:
             created = args["created"][0].decode()
-            cur.execute('SELECT * FROM notifs where created >= ?', (str(created),))
+            cur.execute('SELECT * FROM notifs where created >= ?',
+                        (str(created),))
             data = cur.fetchall()
         elif "origin" in args:
             origin = args["origin"][0].decode()
-            cur.execute('SELECT * FROM notifs where origin = ?', (str(origin),))
+            cur.execute('SELECT * FROM notifs where origin = ?',
+                        (str(origin),))
             data = cur.fetchall()
         else:
             cur.execute('SELECT * FROM notifs')
             data = cur.fetchall()
-        self.finish(json.dumps({"data": data}))
+        responses = []
+        for row in data:
+            response = {"notificationId": row[0], "origin": row[1], "title": row[2], "body": row[3],
+                        "linkURL": row[4], "ephemeral": row[5], "notifTimeout": row[6], "notifType": row[7], "created": row[8]}
+            responses.append({"INotificationResponse": response})
+        self.finish(json.dumps({"Response": responses}))
 
     @tornado.web.authenticated
     async def post(self, path: str = ""):
         con = sqlite3.connect('/mnt/f/git/jupyterlab-notifications/notif.db')
         cur = con.cursor()
-
-        data = self.get_json_body()
+        # input_data = self.get_json_body()
+        # data = {"greetings": "Hello {}, enjoy JupyterLab!".format(input_data["name"])}
+        # self.finish(json.dumps(data))
+        data = self.get_json_body()["INotificationEvent"]
         origin = data["origin"]
         Title = data["Title"]
         Body = data["Body"]
@@ -88,12 +101,14 @@ class notifyBaseHandler(APIHandler):
         NotifType = data["NotifType"]
         Created = time.time_ns()
 
-        insertData = (origin, Title, Body, LinkURL, Ephemeral, NotifTimeout, NotifType, Created)
+        insertData = (origin, Title, Body, LinkURL, Ephemeral,
+                      NotifTimeout, NotifType, Created)
         cur.execute(
             "INSERT INTO notifs ( origin , Title ,Body , LinkURL ,Ephemeral , NotifTimeout , NotifType ,Created ) VALUES (? , ? ,? , ? ,? , ? , ? ,?)", insertData)
 
         con.commit()
         con.close()
+        wsSend("yelooo")
 
 
 class notifyIDHandler(APIHandler):
@@ -103,9 +118,11 @@ class notifyIDHandler(APIHandler):
         cur = con.cursor()
 
 # Create table
-        cur.execute('SELECT * FROM notifs where notificationId = ?',( notificationId, ))
+        cur.execute('SELECT * FROM notifs where notificationId = ?',
+                    (notificationId, ))
         data = cur.fetchall()
         self.finish(json.dumps({"data": data}))
+
 
 def setup_handlers(web_app):
     """
