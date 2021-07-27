@@ -1,0 +1,152 @@
+openapi: 3.0.0
+info:
+  version: '0.1'
+  title: Jupyter Notifications API
+  license:
+    name: Modified BSD License
+servers:
+  - url: 'http://localhost:8888/api/'
+paths:
+  /notifications:
+    post:
+      summary: Add notification
+      description: Allows you to add single notification
+      operationId: addNotification
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/INotificationEvent'
+      responses:
+        '201':
+          description: notificationId assigned by the server
+          content:
+            application/json:
+              schema:
+                type: integer
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    get:
+      summary: Returns an array of notification objects stored
+      operationId: getNotifs
+      parameters:
+        - name: created
+          in: query
+          description: Get notifications created after certain ms since epoch
+          schema:
+            type: integer
+        - name: origin
+          in: query
+          description: Get notifications from the origin
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Requested notifications
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/INotificationResponse'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/notifications/{id}':
+    get:
+      summary: Get a notification by Id
+      operationId: getNotif
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 0
+      responses:
+        '200':
+          description: notification with requested Id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/INotificationResponse'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    INotificationEvent:
+      type: object
+      required:
+        - origin
+        - title
+        - body
+      properties:
+        origin:
+          type: string
+        title:
+          type: string
+        body:
+          type: string
+        linkUrl:
+          type: string
+        ephemeral:
+          type: boolean
+        notifTimeout:
+          type: integer
+          format: int64
+        notifType:
+          type: string
+    INotificationResponse:
+      type: object
+      required:
+        - notificationId
+        - origin
+        - title
+      properties:
+        notificationId:
+          type: integer
+        origin:
+          type: string
+        title:
+          type: string
+        body:
+          type: string
+        linkUrl:
+          type: string
+        ephemeral:
+          type: boolean
+        notifTimeout:
+          type: integer
+        notifType:
+          type: string
+        created:
+          type: string
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+security:
+  - bearerAuth: []
+
