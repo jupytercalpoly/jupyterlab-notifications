@@ -110,8 +110,13 @@ class notifyBaseHandler(APIHandler):
         con.close()
         self.set_status(201)
         self.add_header("location", str(rowId))
-        self.write(json.dumps({"RowId":str(rowId)}))
-        wsSend(str(rowId))
+        # self.write(json.dumps({"RowId":str(rowId)}))
+        self.finish(json.dumps({"RowId":str(rowId)}))
+        self.flush()
+        # tornado.ioloop.IOLoop.make_current()
+        # time.sleep(3)
+        tornado.ioloop.IOLoop.current().spawn_callback(wsSend, str(rowId))
+        # wsSend(str(rowId))
 
 
 class notifyIDHandler(APIHandler):

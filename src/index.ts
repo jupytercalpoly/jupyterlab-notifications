@@ -18,7 +18,7 @@ import { IDisposable } from "@lumino/disposable";
 //import { requestAPI } from './handler';
 import { requestAPI } from "./handler";
 import {
-  systemNotification,
+  // systemNotification,
   notifyInCenter,
   notificationWidget,
 } from "./notifications";
@@ -55,8 +55,8 @@ class ButtonExtension
             body: JSON.stringify(dataToSend),
             method: "POST",
           });
-          console.log(reply);
           ignoreNotifs.set(reply["RowId"], null);
+          console.log(reply);
           console.log("this was invoked");
         } catch (reason) {
           console.error(
@@ -104,8 +104,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
         console.log(rowId.data);
         console.log("this was also invoked");
         console.log(ignoreNotifs);
-        console.log(ignoreNotifs.entries().next().value);
-        if (!ignoreNotifs.has("45")) {
+        if (!ignoreNotifs.has(rowId.data)) {
           const data = await requestAPI<any>("notifications/" + rowId.data);
           // console.log(data);
           const ls = data["Response"];
@@ -115,7 +114,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
             body: ls["INotificationResponse"]["body"],
             url: ls["INotificationResponse"]["linkURL"],
           };
-          systemNotification(notification);
+          // systemNotification(notification);
           notifyInCenter(notification);
         }
       } catch (reason) {
