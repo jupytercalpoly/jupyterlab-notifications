@@ -85,7 +85,7 @@ class notifyBaseHandler(APIHandler):
         self.finish(json.dumps({"Response": responses}))
 
     @tornado.web.authenticated
-    async def post(self, path: str = ""):
+    def post(self, path: str = ""):
         con = sqlite3.connect('/mnt/f/git/jupyterlab-notifications/notif.db')
         cur = con.cursor()
         # input_data = self.get_json_body()

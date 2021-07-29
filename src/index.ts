@@ -132,7 +132,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
     app.shell.add(widget, "right", { rank: 500 });
     const your_button = new ButtonExtension();
     app.docRegistry.addWidgetExtension("Notebook", your_button);
-    NotebookActions.executed.connect((_, args) => {
+    NotebookActions.executed.connect(async (_, args) => {
       const { cell, notebook } = args;
       const codeCell = cell.model.type === "code";
       const nonEmptyCell = cell.model.value.text.length > 0;
@@ -140,12 +140,30 @@ const plugin: JupyterFrontEndPlugin<void> = {
       if (codeCell && nonEmptyCell) {
         if (metadata.has("execution")) {
           const notebookName = notebook.title.label.replace(/\.[^/.]+$/, "");
-          const notification = {
-            title: "Cell Execution!",
-            body: `Cell has finished executing in ${notebookName}.ipynb!`,
-            url: "www.google.com",
+          const dataToSend = {
+            INotificationEvent: {
+              origin: "google",
+              Title: Math.random().toString(),
+              Body: notebookName,
+              LinkURL: "google.com",
+              Ephemeral: true,
+              NotifTimeout: 18,
+              NotifType: "web",
+            },
           };
-          notifyInCenter(notification);
+          try {
+            const reply = await requestAPI<any>("notifications", {
+              body: JSON.stringify(dataToSend),
+              method: "POST",
+            });
+            ignoreNotifs.set(reply["RowId"], null);
+            console.log(reply);
+            console.log("this was invoked");
+          } catch (reason) {
+            console.error(
+              `Error on POST /jlab-ext-example/hello ${dataToSend}.\n${reason}`
+            );
+          }
         }
       } else {
         alert(
