@@ -40,7 +40,7 @@ def wsSend(message):
 NAMESPACE = "/api"
 
 
-conn = sqlite3.connect('/mnt/f/git/jupyterlab-notifications/notif.db')
+conn = sqlite3.connect('notif.db')
 c = conn.cursor()
 try:
     c.execute('''CREATE TABLE IF NOT EXISTS notifs (notificationId  INTEGER PRIMARY KEY, origin text, title text,body text, linkURL text,ephemeral boolean, notifTimeout INTEGER, notifType text,created INTEGER)''')
@@ -55,7 +55,7 @@ class notifyBaseHandler(APIHandler):
 
         args = (self.request.arguments)
         created, origin = "", ""
-        con = sqlite3.connect('/mnt/f/git/jupyterlab-notifications/notif.db')
+        con = sqlite3.connect('notif.db')
         cur = con.cursor()
         data = ""
         if "created" in args and "origin" in args:
@@ -86,7 +86,7 @@ class notifyBaseHandler(APIHandler):
 
     @tornado.web.authenticated
     async def post(self, path: str = ""):
-        con = sqlite3.connect('/mnt/f/git/jupyterlab-notifications/notif.db')
+        con = sqlite3.connect('notif.db')
         cur = con.cursor()
         # input_data = self.get_json_body()
         # data = {"greetings": "Hello {}, enjoy JupyterLab!".format(input_data["name"])}
@@ -123,7 +123,7 @@ class notifyIDHandler(APIHandler):
     @tornado.web.authenticated
     async def get(self, notificationId):
         print(notificationId, "THIS WHAT I GOT")
-        con = sqlite3.connect('/mnt/f/git/jupyterlab-notifications/notif.db')
+        con = sqlite3.connect('notif.db')
         cur = con.cursor()
 
 # Create table
