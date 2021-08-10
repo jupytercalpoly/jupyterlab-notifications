@@ -19,13 +19,35 @@ import { IDisposable } from "@lumino/disposable";
 import { requestAPI } from "./handler";
 import {
   // systemNotification,
-  notifyInCenter,
   notificationWidget,
+  notifyInCenter
 } from "./notifications";
 
 // import React from 'react';
 
 // import { List } from '@material-ui/core';
+
+export interface INotificationResponse {
+  notificationId: number, 
+  origin: string,
+  title: string,
+  body: string,
+  linkUrl: string,
+  ephemeral: boolean,
+  notifTimeout: number,
+  notifType: string,
+  created: string
+}
+
+export interface INotificationEvent {
+  origin: string,
+  title: string,
+  body: string,
+  linkUrl: string,
+  ephemeral: boolean,
+  notifTimeout: number,
+  notifType: string
+}
 
 const ignoreNotifs = new Map();
 
