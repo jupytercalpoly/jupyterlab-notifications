@@ -24,7 +24,7 @@ class wsHandler(websocketT.WebSocketHandler):
     def on_message(self, message):
         for client in wss:
             if client != self:
-                client.write_message('ECHO: ' + message)
+                client.write_message(message)
 
     def on_close(self):
         print('Offline')
@@ -40,7 +40,7 @@ def wsSend(message):
 NAMESPACE = "/api"
 
 
-conn = sqlite3.connect('/mnt/f/git/jupyterlab-notifications/notif.db')
+conn = sqlite3.connect('notif.db')
 c = conn.cursor()
 try:
     c.execute('''CREATE TABLE IF NOT EXISTS notifs (notificationId  INTEGER PRIMARY KEY, origin text, title text,body text, linkURL text,ephemeral boolean, notifTimeout INTEGER, notifType text,created INTEGER)''')
@@ -55,7 +55,7 @@ class notifyBaseHandler(APIHandler):
 
         args = (self.request.arguments)
         created, origin = "", ""
-        con = sqlite3.connect('/mnt/f/git/jupyterlab-notifications/notif.db')
+        con = sqlite3.connect('notif.db')
         cur = con.cursor()
         data = ""
         if "created" in args and "origin" in args:
@@ -86,7 +86,7 @@ class notifyBaseHandler(APIHandler):
 
     @tornado.web.authenticated
     async def post(self, path: str = ""):
-        con = sqlite3.connect('/mnt/f/git/jupyterlab-notifications/notif.db')
+        con = sqlite3.connect('notif.db')
         cur = con.cursor()
         # input_data = self.get_json_body()
         # data = {"greetings": "Hello {}, enjoy JupyterLab!".format(input_data["name"])}
@@ -105,23 +105,37 @@ class notifyBaseHandler(APIHandler):
                       NotifTimeout, NotifType, Created)
         cur.execute(
             "INSERT INTO notifs ( origin , Title ,Body , LinkURL ,Ephemeral , NotifTimeout , NotifType ,Created ) VALUES (? , ? ,? , ? ,? , ? , ? ,?)", insertData)
-
+        rowId = cur.lastrowid
         con.commit()
         con.close()
-        wsSend("yelooo")
+        self.set_status(201)
+        self.add_header("location", str(rowId))
+        # self.write(json.dumps({"RowId":str(rowId)}))
+        self.finish(json.dumps({"RowId":str(rowId)}))
+        self.flush()
+        # tornado.ioloop.IOLoop.make_current()
+        # time.sleep(3)
+        tornado.ioloop.IOLoop.current().spawn_callback(wsSend, str(rowId))
+        # wsSend(str(rowId))
 
 
 class notifyIDHandler(APIHandler):
     @tornado.web.authenticated
     async def get(self, notificationId):
-        con = sqlite3.connect('/mnt/f/git/jupyterlab-notifications/notif.db')
+        print(notificationId, "THIS WHAT I GOT")
+        con = sqlite3.connect('notif.db')
         cur = con.cursor()
 
 # Create table
         cur.execute('SELECT * FROM notifs where notificationId = ?',
                     (notificationId, ))
         data = cur.fetchall()
-        self.finish(json.dumps({"data": data}))
+        response = {}
+        for row in data:
+            response = {"INotificationResponse": {"notificationId": row[0], "origin": row[1], "title": row[2], "body": row[3],
+                        "linkURL": row[4], "ephemeral": row[5], "notifTimeout": row[6], "notifType": row[7], "created": row[8]}}
+            # responses.append({"INotificationResponse": response})
+        self.finish(json.dumps({"Response": response}))
 
 
 def setup_handlers(web_app):

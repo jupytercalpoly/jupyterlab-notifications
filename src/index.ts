@@ -8,7 +8,6 @@ import * as Icons from "@jupyterlab/ui-components";
 import "react-toastify/dist/ReactToastify.css";
 import "../style/main.css";
 
-import * as Y from "yjs";
 // import { YDocument } from "@jupyterlab/shared-models";
 import { NotebookActions } from "@jupyterlab/notebook";
 import { ICommandPalette, MainAreaWidget } from "@jupyterlab/apputils";
@@ -19,7 +18,7 @@ import { IDisposable } from "@lumino/disposable";
 //import { requestAPI } from './handler';
 import { requestAPI } from "./handler";
 import {
-  systemNotification,
+  // systemNotification,
   notifyInCenter,
   notificationWidget,
 } from "./notifications";
@@ -27,9 +26,8 @@ import {
 // import React from 'react';
 
 // import { List } from '@material-ui/core';
-const ydoc = new Y.Doc();
 
-ydoc.getArray("notif").insert(0, [1, 2, 3]);
+const ignoreNotifs = new Map();
 
 class ButtonExtension
   implements DocumentRegistry.IWidgetExtension<NotebookPanel, INotebookModel>
@@ -43,29 +41,28 @@ class ButtonExtension
       onClick: async () => {
         const dataToSend = {
           INotificationEvent: {
-          origin: "google",
-          Title: Math.random().toString(),
-          Body: "this is notif",
-          LinkURL: "google.com",
-          Ephemeral: true,
-          NotifTimeout: 18,
-          NotifType: "web",}
+            origin: "google",
+            Title: Math.random().toString(),
+            Body: "this is notif",
+            LinkURL: "google.com",
+            Ephemeral: true,
+            NotifTimeout: 18,
+            NotifType: "web",
+          },
         };
         try {
           const reply = await requestAPI<any>("notifications", {
             body: JSON.stringify(dataToSend),
             method: "POST",
           });
+          ignoreNotifs.set(reply["RowId"], null);
           console.log(reply);
+          console.log("this was invoked");
         } catch (reason) {
           console.error(
             `Error on POST /jlab-ext-example/hello ${dataToSend}.\n${reason}`
           );
         }
-        const yarray = ydoc.getArray("notif");
-        console.log(yarray.toArray(), "yjs print");
-        ydoc.getArray("notif").insert(0, [6, 7, 8]);
-        console.log(ydoc.getArray("notif").toArray(), "print2");
         document.addEventListener("DOMContentLoaded", () => {
           if (Notification.permission !== "granted") {
             Notification.requestPermission();
@@ -102,19 +99,24 @@ const plugin: JupyterFrontEndPlugin<void> = {
     ws.onopen = function () {
       ws.send("Hello, world");
     };
-    ws.onmessage = async function () {
+    ws.onmessage = async function (rowId) {
       try {
-        const data = await requestAPI<any>("notifications");
-        console.log(data);
-        const ls = data["Response"][data["Response"].length -1];
-        console.log(ls);
-        const notification = {
-          title: ls["INotificationResponse"]["title"],
-          body: ls["INotificationResponse"]["body"],
-          url: ls["INotificationResponse"]["linkURL"],
-        };
-        systemNotification(notification);
-        notifyInCenter(notification);
+        console.log(rowId.data);
+        console.log("this was also invoked");
+        console.log(ignoreNotifs);
+        if (!ignoreNotifs.has(rowId.data)) {
+          const data = await requestAPI<any>("notifications/" + rowId.data);
+          // console.log(data);
+          const ls = data["Response"];
+          // console.log(ls);
+          const notification = {
+            title: ls["INotificationResponse"]["title"],
+            body: ls["INotificationResponse"]["body"],
+            url: ls["INotificationResponse"]["linkURL"],
+          };
+          // systemNotification(notification);
+          notifyInCenter(notification);
+        }
       } catch (reason) {
         console.error(
           `Error on GET /jlab-ext-example/notifications.\n${reason}`
