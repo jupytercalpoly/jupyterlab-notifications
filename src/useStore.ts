@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 export let store: any = {
   ls: [{ title: "card1.0", body: "body1.0", id: Date.now().toString() }],
 };
@@ -25,7 +25,7 @@ export function getStore() {
 
 export default function useStore() {
   const listener = useState<any>()[1];
-  var ezYpZ= 5;
+  let ezYpZ= 5;
   console.log(ezYpZ);
   useEffect(() => {
     listeners.push(listener);

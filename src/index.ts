@@ -19,8 +19,8 @@ import { IDisposable } from "@lumino/disposable";
 import { requestAPI } from "./handler";
 import {
   // systemNotification,
-  notifyInCenter,
   notificationWidget,
+  notifyInCenter
 } from "./notifications";
 
 // import React from 'react';
