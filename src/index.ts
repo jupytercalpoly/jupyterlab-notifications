@@ -28,7 +28,7 @@ import {
 // import { List } from '@material-ui/core';
 
 export interface INotificationResponse {
-  notificationId: number, 
+  notificationId: string, 
   origin: string,
   title: string,
   body: string,
@@ -47,10 +47,6 @@ export interface INotificationEvent {
   ephemeral: boolean,
   notifTimeout: number,
   notifType: string
-}
-
-export interface INotificationStore {
-  notifications: INotificationResponse[]
 }
 
 const ignoreNotifs = new Map();
