@@ -1,5 +1,5 @@
 import useStore from "./useStore";
-import { setStore, getStore } from "./useStore";
+import { getStore, setStore } from "./useStore";
 import React from "react";
 import ImgMediaCard from "./card";
 import { ReactWidget } from "@jupyterlab/apputils";
