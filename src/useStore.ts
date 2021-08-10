@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 export let store: any = {
   ls: [{ title: "card1.0", body: "body1.0", id: Date.now().toString() }],
 };
 let listeners: React.Dispatch<any>[] = [];
 
 // setStore(store => ({...store, isFoo: false}))
-export function setStore(val: object | ((store: any) => object)) {
+export function setStore(val: Record<string, unknown> | ((store: any) => Record<string, unknown>)) : void {
   if (typeof val === "object" && val !== null) {
     store = val;
   } else {
