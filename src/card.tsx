@@ -27,10 +27,10 @@ export default function ImgMediaCard(props: any) {
   };
 
   let triggerDelete = (id: string) => {
-    const store = [...getStore().ls];
-    let i = store.findIndex((task: any) => task.id === id);
+    const store = [...getStore().notifications];
+    let i = store.findIndex((task: any) => task.notificationId === id);
     store.splice(i, 1);
-    setStore({ ls: store });
+    setStore({ notifications: store });
     console.log("This was triggered");
   };
   return (

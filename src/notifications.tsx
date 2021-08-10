@@ -3,6 +3,7 @@ import { getStore, setStore } from "./useStore";
 import React from "react";
 import ImgMediaCard from "./card";
 import { ReactWidget } from "@jupyterlab/apputils";
+import {  INotificationResponse } from "./index";
 
 export function systemNotification(notification: any) {
   if (Notification.permission !== "granted") {
@@ -31,8 +32,8 @@ export function NotificationCenter(props: any) {
   let handleClick = () => {
     console.log(store);
     setStore({
-      ls: [
-        ...store.ls,
+      notifications: [
+        ...store.notifications,
         { title: "newElement", body: "newBody", id: Date.now().toString() },
       ],
     });
@@ -43,8 +44,8 @@ export function NotificationCenter(props: any) {
   };
   return (
     <div>
-      {store.ls.map((notif: any): any => (
-        <ImgMediaCard title={notif.title} body={notif.body} id={notif.id}>
+      {store.notifications.map((notif: any): any => (
+        <ImgMediaCard title={notif.title} body={notif.body} id={notif.notificationId}>
           {/* control={ */}
         </ImgMediaCard>
       ))}
@@ -53,12 +54,10 @@ export function NotificationCenter(props: any) {
   );
 }
 
-export function notifyInCenter(notification: any) {
-  const title = notification.title;
-  const body = notification.body;
+export function notifyInCenter(notification: INotificationResponse) {
   let store = getStore();
   setStore({
-    ls: [...store.ls, { title: title, body: body, id: Date.now().toString() }],
+    notifications: [...store.notifications, notification],
   });
 }
 

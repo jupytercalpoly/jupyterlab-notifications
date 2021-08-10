@@ -49,6 +49,10 @@ export interface INotificationEvent {
   notifType: string
 }
 
+export interface INotificationStore {
+  notifications: INotificationResponse[]
+}
+
 const ignoreNotifs = new Map();
 
 class ButtonExtension
@@ -131,11 +135,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
           // console.log(data);
           const ls = data["Response"];
           // console.log(ls);
-          const notification = {
-            title: ls["INotificationResponse"]["title"],
-            body: ls["INotificationResponse"]["body"],
-            url: ls["INotificationResponse"]["linkURL"],
-          };
+          const notification = ls["INotificationResponse"];
           // systemNotification(notification);
           notifyInCenter(notification);
         }

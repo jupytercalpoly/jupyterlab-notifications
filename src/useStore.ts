@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 export let store: any = {
-  ls: [{ title: "card1.0", body: "body1.0", id: Date.now().toString() }],
+  notifications: [{ title: "card1.0", body: "body1.0", notificationId: Date.now().toString() }],
 };
 let listeners: React.Dispatch<any>[] = [];
 
