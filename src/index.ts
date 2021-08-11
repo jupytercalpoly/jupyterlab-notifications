@@ -139,15 +139,19 @@ const plugin: JupyterFrontEndPlugin<void> = {
         const notification = await notifier.getNotification(rowId.data);
         if (notification) {
           let originStore = JSON.parse(localStorage.getItem("originStore")!);
-          const i = originStore.findIndex((obj: { origin: string, notifications : INotificationResponse[] })  => obj.origin === notification["origin"])
-          if (i === -1){
-            originStore.unshift({origin : notification["origin"], notifications : [notification]})
-          }
-          else{
+          const i = originStore.findIndex(
+            (obj: { origin: string; notifications: INotificationResponse[] }) =>
+              obj.origin === notification["origin"]
+          );
+          if (i === -1) {
+            originStore.unshift({
+              origin: notification["origin"],
+              notifications: [notification],
+            });
+          } else {
             let t = originStore.splice(i, 1);
             t[0].notifications.unshift(notification);
             originStore.unshift(t[0]);
-            
           }
           // if (notification["origin"] in originStore) {
           //   originStore[notification["origin"]].push(notification);
