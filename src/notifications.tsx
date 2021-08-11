@@ -1,5 +1,5 @@
 import useStore from "./useStore";
-import { getStore, setStore } from "./useStore";
+import { setStore } from "./useStore";
 import React from "react";
 import ImgMediaCard from "./card";
 import { ReactWidget } from "@jupyterlab/apputils";
@@ -31,12 +31,7 @@ export function NotificationCenter(props: any) {
 
   let handleClick = () => {
     console.log(store);
-    setStore({
-      notifications: [
-        ...store.notifications,
-        { title: "newElement", body: "newBody", id: Date.now().toString() },
-      ],
-    });
+    setStore({ ...store });
     // const yarray = ydoc.getArray('notif')
     // console.log(yarray.toArray(), "yjs print");
     // ydoc.getArray('notif').insert(0, [6,7,8]);
@@ -44,24 +39,30 @@ export function NotificationCenter(props: any) {
   };
   return (
     <div>
-      {store.notifications.map((notif: any): any => (
-        <ImgMediaCard
-          title={notif.title}
-          body={notif.body}
-          id={notif.notificationId}
-        >
-          {/* control={ */}
-        </ImgMediaCard>
+      {store.originStore.map((obj: any): any => (
+        <div key={Date.now().toString()}>
+          {obj.origin}
+          {obj.notifications.map((notif: any) => (
+            <ImgMediaCard
+              title={notif.title}
+              body={notif.body}
+              id={notif.notificationId}
+              key={notif.notificationId}
+              origin={notif.origin}
+            >
+              {/* control={ */}
+            </ImgMediaCard>
+          ))}
+        </div>
       ))}
       <button onClick={() => handleClick()}>Activat Lasers</button>
     </div>
   );
 }
 
-export function notifyInCenter(notification: INotificationStoreObject[]) {
-  let store = getStore();
+export function notifyInCenter(updatedStore: INotificationStoreObject[]) {
   setStore({
-    notifications: [...store.notifications, notification],
+    originStore: updatedStore,
   });
 }
 

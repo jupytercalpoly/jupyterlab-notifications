@@ -25,8 +25,9 @@ export default function ImgMediaCard(props: any) {
     if (newWindow) newWindow.opener = null;
   };
 
-  let triggerDelete = (id: string) => {
-    const store = [...getStore().notifications];
+  let triggerDelete = (id: string, origin: string) => {
+    const store = [...getStore().originStore];
+    console.log("origin", origin);
     let i = store.findIndex((task) => task.notificationId === id);
     store.splice(i, 1);
     setStore({ notifications: store });
@@ -52,7 +53,7 @@ export default function ImgMediaCard(props: any) {
               onClick={(e) => {
                 e.stopPropagation();
                 e.preventDefault();
-                triggerDelete(props.id);
+                triggerDelete(props.id, props.orign);
               }}
               style={{ top: 3, right: 3 }}
             />

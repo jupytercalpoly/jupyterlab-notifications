@@ -24,7 +24,6 @@ import {
 
 import { activateNotifier } from "./token";
 import { v4 as uuidv4 } from "uuid";
-
 // import React from 'react';
 
 // import { List } from '@material-ui/core';
@@ -132,6 +131,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
       console.log("UUID = ", localStorage.getItem("UUID"));
       console.log("originStore = ", localStorage.getItem("originStore"));
     }
+    notifyInCenter(JSON.parse(localStorage.getItem("originStore")!));
     let ws = new WebSocket("ws://localhost:8888/api/ws");
     ws.onopen = function () {
       ws.send("Hello, world");
