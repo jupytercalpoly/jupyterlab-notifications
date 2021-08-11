@@ -3,7 +3,7 @@ import { getStore, setStore } from "./useStore";
 import React from "react";
 import ImgMediaCard from "./card";
 import { ReactWidget } from "@jupyterlab/apputils";
-import { INotificationResponse, INotificationStoreObject } from "./index";
+import { INotificationStoreObject } from "./index";
 
 export function systemNotification(notification: any) {
   if (Notification.permission !== "granted") {
