@@ -4,7 +4,7 @@ import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
-//import { getStore, setStore } from "./useStore";
+import { getStore, setStore } from "./useStore";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 
@@ -26,12 +26,21 @@ export default function ImgMediaCard(props: any) {
   };
 
   let triggerDelete = (id: string, origin: string) => {
-    // const store = [...getStore().originStore];
+    const store = [...getStore().originStore];
     console.log("origin", origin);
-    // let i = store.findIndex((task) => task.notificationId === id);
-    // store.splice(i, 1);
-    // setStore({ notifications: store });
-    // console.log("This was triggered");
+    console.log("id", id);
+    const o = store.findIndex((obj) => obj.origin === origin);
+    let i = store[o].notifications.findIndex(
+      (task: any) => task.notificationId === id
+    );
+    store[o].notifications.splice(i,1);
+    
+    
+    setStore({
+      originStore: store,
+    });
+    localStorage.setItem("originStore", JSON.stringify(store));
+    console.log("This was triggered");
   };
   return (
     <Card className={classes.root}>
@@ -53,7 +62,7 @@ export default function ImgMediaCard(props: any) {
               onClick={(e) => {
                 e.stopPropagation();
                 e.preventDefault();
-                triggerDelete(props.id, props.orign);
+                triggerDelete(props.id, props.origin);
               }}
               style={{ top: 3, right: 3 }}
             />

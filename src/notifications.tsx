@@ -40,7 +40,7 @@ export function NotificationCenter(props: any) {
   return (
     <div>
       {store.originStore.map((obj: any): any => (
-        <div key={Date.now().toString()}>
+        <div >
           {obj.origin}
           {obj.notifications.map((notif: any) => (
             <ImgMediaCard
