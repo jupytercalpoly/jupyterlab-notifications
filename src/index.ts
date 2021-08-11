@@ -23,7 +23,7 @@ import {
 } from "./notifications";
 
 import { activateNotifier } from "./token";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 // import React from 'react';
 
@@ -50,7 +50,6 @@ export interface INotificationEvent {
   notifTimeout: number;
   notifType: string;
 }
-
 
 class ButtonExtension
   implements DocumentRegistry.IWidgetExtension<NotebookPanel, INotebookModel>
@@ -119,13 +118,14 @@ const plugin: JupyterFrontEndPlugin<void> = {
     //   console.error(`Error on GET /jlab-ext-example/hello.\n${reason}`);
     // }
 
-    if (!localStorage.getItem("UUID")){
+    if (!localStorage.getItem("UUID")) {
       localStorage.setItem("UUID", uuidv4());
-      localStorage.setItem("originStore", JSON.stringify({}));
-    }
-    else{
+      localStorage.setItem("originStore", JSON.stringify([]));
       console.log("UUID = ", localStorage.getItem("UUID"));
-      console.log("originStore = ", localStorage.getItem("originStore"))
+      console.log("originStore = ", localStorage.getItem("originStore"));
+    } else {
+      console.log("UUID = ", localStorage.getItem("UUID"));
+      console.log("originStore = ", localStorage.getItem("originStore"));
     }
     let ws = new WebSocket("ws://localhost:8888/api/ws");
     ws.onopen = function () {
@@ -139,14 +139,23 @@ const plugin: JupyterFrontEndPlugin<void> = {
         const notification = await notifier.getNotification(rowId.data);
         if (notification) {
           let originStore = JSON.parse(localStorage.getItem("originStore")!);
-          if (notification['origin'] in originStore){
-            originStore[notification['origin']].push(notification);
+          const i = originStore.findIndex((obj: { origin: string, notifications : INotificationResponse[] })  => obj.origin === notification["origin"])
+          if (i === -1){
+            originStore.unshift({origin : notification["origin"], notifications : [notification]})
           }
           else{
-            originStore[notification['origin']] =[notification];
+            let t = originStore.splice(i, 1);
+            t[0].notifications.unshift(notification);
+            originStore.unshift(t[0]);
+            
           }
+          // if (notification["origin"] in originStore) {
+          //   originStore[notification["origin"]].push(notification);
+          // } else {
+          //   originStore[notification["origin"]] = [notification];
+          // }
           localStorage.setItem("originStore", JSON.stringify(originStore));
-          console.log("originStore = ", localStorage.getItem("originStore"))
+          console.log("originStore = ", localStorage.getItem("originStore"));
           notifyInCenter(notification);
         }
       } catch (reason) {
