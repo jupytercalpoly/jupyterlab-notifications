@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { INotificationResponse } from ".";
+import { INotificationStoreObject } from ".";
 
 export interface INotificationStore {
-  notifications: INotificationResponse[];
+  originStore: INotificationStoreObject[];
 }
 
 export let store: any = {
-  notifications: [],
+  originStore: [],
 };
 let listeners: React.Dispatch<any>[] = [];
 

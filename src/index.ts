@@ -51,6 +51,11 @@ export interface INotificationEvent {
   notifType: string;
 }
 
+export interface INotificationStoreObject {
+  origin: string;
+  notifications: INotificationResponse[];
+}
+
 class ButtonExtension
   implements DocumentRegistry.IWidgetExtension<NotebookPanel, INotebookModel>
 {
@@ -138,10 +143,11 @@ const plugin: JupyterFrontEndPlugin<void> = {
         let notifier = activateNotifier();
         const notification = await notifier.getNotification(rowId.data);
         if (notification) {
-          let originStore = JSON.parse(localStorage.getItem("originStore")!);
+          let originStore: INotificationStoreObject[] = JSON.parse(
+            localStorage.getItem("originStore")!
+          );
           const i = originStore.findIndex(
-            (obj: { origin: string; notifications: INotificationResponse[] }) =>
-              obj.origin === notification["origin"]
+            (obj) => obj.origin === notification["origin"]
           );
           if (i === -1) {
             originStore.unshift({
@@ -160,7 +166,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
           // }
           localStorage.setItem("originStore", JSON.stringify(originStore));
           console.log("originStore = ", localStorage.getItem("originStore"));
-          notifyInCenter(notification);
+          notifyInCenter(originStore);
         }
       } catch (reason) {
         console.error(`Error on GET /api/notifications.\n${reason}`);
