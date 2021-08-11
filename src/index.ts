@@ -23,6 +23,8 @@ import {
   notifyInCenter
 } from "./notifications";
 
+import { activateNotifier } from './token';
+
 // import React from 'react';
 
 // import { List } from '@material-ui/core';
@@ -72,6 +74,8 @@ class ButtonExtension
             NotifType: "web",
           },
         };
+        // let notifier = activateNotifier();
+        // notifier.post(dataToSend["INotificationEvent"]);
         try {
           const reply = await requestAPI<any>("notifications", {
             body: JSON.stringify(dataToSend),
