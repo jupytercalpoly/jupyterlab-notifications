@@ -82,7 +82,7 @@ class ButtonExtension
           console.log("this was invoked");
         } catch (reason) {
           console.error(
-            `Error on POST /jlab-ext-example/hello ${dataToSend}.\n${reason}`
+            `Error on POST /api/notifications ${dataToSend}.\n${reason}`
           );
         }
         document.addEventListener("DOMContentLoaded", () => {
@@ -137,7 +137,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
         }
       } catch (reason) {
         console.error(
-          `Error on GET /jlab-ext-example/notifications.\n${reason}`
+          `Error on GET /api/notifications.\n${reason}`
         );
       }
     };
@@ -179,7 +179,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
             console.log("this was invoked");
           } catch (reason) {
             console.error(
-              `Error on POST /jlab-ext-example/hello ${dataToSend}.\n${reason}`
+              `Error on POST /api/notifications ${dataToSend}.\n${reason}`
             );
           }
         }
