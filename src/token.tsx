@@ -1,7 +1,6 @@
 import { Token } from '@lumino/coreutils'; 
 import { INotificationEvent, INotificationResponse } from '.';
 import { requestAPI } from './handler';
-import { JupyterFrontEnd } from '@jupyterlab/application';
 
 export const INotifier = new Token<INotifier>('@jupyterlab/coreutils:INotifier');
 
@@ -11,7 +10,6 @@ export interface INotifier {
 }
 
 class Notifier implements INotifier {
-
     constructor() {
         console.log("Notifier constructed");
     }
