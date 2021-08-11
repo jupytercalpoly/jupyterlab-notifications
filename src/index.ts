@@ -23,6 +23,7 @@ import {
 } from "./notifications";
 
 import { activateNotifier } from "./token";
+import { v4 as uuidv4 } from 'uuid';
 
 // import React from 'react';
 
@@ -62,7 +63,7 @@ class ButtonExtension
       label: "Push Notif",
       onClick: async () => {
         const dataToSend = {
-          origin: "google",
+          origin: "button extension",
           title: Math.random().toString(),
           body: "this is notiffrom new",
           linkUrl: "googl.com",
@@ -117,6 +118,15 @@ const plugin: JupyterFrontEndPlugin<void> = {
     // } catch (reason) {
     //   console.error(`Error on GET /jlab-ext-example/hello.\n${reason}`);
     // }
+
+    if (!localStorage.getItem("UUID")){
+      localStorage.setItem("UUID", uuidv4());
+      localStorage.setItem("originStore", JSON.stringify({}));
+    }
+    else{
+      console.log("UUID = ", localStorage.getItem("UUID"));
+      console.log("originStore = ", localStorage.getItem("originStore"))
+    }
     let ws = new WebSocket("ws://localhost:8888/api/ws");
     ws.onopen = function () {
       ws.send("Hello, world");
@@ -128,6 +138,15 @@ const plugin: JupyterFrontEndPlugin<void> = {
         let notifier = activateNotifier();
         const notification = await notifier.getNotification(rowId.data);
         if (notification) {
+          let originStore = JSON.parse(localStorage.getItem("originStore")!);
+          if (notification['origin'] in originStore){
+            originStore[notification['origin']].push(notification);
+          }
+          else{
+            originStore[notification['origin']] =[notification];
+          }
+          localStorage.setItem("originStore", JSON.stringify(originStore));
+          console.log("originStore = ", localStorage.getItem("originStore"))
           notifyInCenter(notification);
         }
       } catch (reason) {
@@ -152,7 +171,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
         if (metadata.has("execution")) {
           const notebookName = notebook.title.label.replace(/\.[^/.]+$/, "");
           const dataToSend = {
-            origin: "google",
+            origin: "cell execution",
             title: Math.random().toString(),
             body: notebookName,
             linkUrl: "googl.com",
