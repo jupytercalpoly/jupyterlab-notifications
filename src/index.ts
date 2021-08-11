@@ -16,42 +16,40 @@ import { DocumentRegistry } from "@jupyterlab/docregistry";
 import { INotebookModel, NotebookPanel } from "@jupyterlab/notebook";
 import { IDisposable } from "@lumino/disposable";
 //import { requestAPI } from './handler';
-import { requestAPI } from "./handler";
 import {
   // systemNotification,
   notificationWidget,
-  notifyInCenter
+  notifyInCenter,
 } from "./notifications";
 
-import { activateNotifier } from './token';
+import { activateNotifier } from "./token";
 
 // import React from 'react';
 
 // import { List } from '@material-ui/core';
 
 export interface INotificationResponse {
-  notificationId: string, 
-  origin: string,
-  title: string,
-  body: string,
-  linkUrl: string,
-  ephemeral: boolean,
-  notifTimeout: number,
-  notifType: string,
-  created: string
+  notificationId: string;
+  origin: string;
+  title: string;
+  body: string;
+  linkUrl: string;
+  ephemeral: boolean;
+  notifTimeout: number;
+  notifType: string;
+  created: string;
 }
 
 export interface INotificationEvent {
-  origin: string,
-  title: string,
-  body: string,
-  linkUrl: string,
-  ephemeral: boolean,
-  notifTimeout: number,
-  notifType: string
+  origin: string;
+  title: string;
+  body: string;
+  linkUrl: string;
+  ephemeral: boolean;
+  notifTimeout: number;
+  notifType: string;
 }
 
-const ignoreNotifs = new Map();
 
 class ButtonExtension
   implements DocumentRegistry.IWidgetExtension<NotebookPanel, INotebookModel>
@@ -64,31 +62,29 @@ class ButtonExtension
       label: "Push Notif",
       onClick: async () => {
         const dataToSend = {
-          INotificationEvent: {
-            origin: "google",
-            Title: Math.random().toString(),
-            Body: "this is notif",
-            LinkURL: "google.com",
-            Ephemeral: true,
-            NotifTimeout: 18,
-            NotifType: "web",
-          },
+          origin: "google",
+          title: Math.random().toString(),
+          body: "this is notiffrom new",
+          linkUrl: "googl.com",
+          ephemeral: true,
+          notifTimeout: 18,
+          notifType: "web",
         };
-        // let notifier = activateNotifier();
-        // notifier.post(dataToSend["INotificationEvent"]);
-        try {
-          const reply = await requestAPI<any>("notifications", {
-            body: JSON.stringify(dataToSend),
-            method: "POST",
-          });
-          ignoreNotifs.set(reply["RowId"], null);
-          console.log(reply);
-          console.log("this was invoked");
-        } catch (reason) {
-          console.error(
-            `Error on POST /api/notifications ${dataToSend}.\n${reason}`
-          );
-        }
+        let notifier = activateNotifier();
+        notifier.post(dataToSend);
+        // try {
+        //   const reply = await requestAPI<any>("notifications", {
+        //     body: JSON.stringify(dataToSend),
+        //     method: "POST",
+        //   });
+        //   ignoreNotifs.set(reply["RowId"], null);
+        //   console.log(reply);
+        //   console.log("this was invoked");
+        // } catch (reason) {
+        //   console.error(
+        //     `Error on POST /api/notifications ${dataToSend}.\n${reason}`
+        //   );
+        // }
         document.addEventListener("DOMContentLoaded", () => {
           if (Notification.permission !== "granted") {
             Notification.requestPermission();
@@ -129,20 +125,13 @@ const plugin: JupyterFrontEndPlugin<void> = {
       try {
         console.log(rowId.data);
         console.log("this was also invoked");
-        console.log(ignoreNotifs);
-        if (!ignoreNotifs.has(rowId.data)) {
-          const data = await requestAPI<any>("notifications/" + rowId.data);
-          // console.log(data);
-          const ls = data["Response"];
-          // console.log(ls);
-          const notification = ls["INotificationResponse"];
-          // systemNotification(notification);
+        let notifier = activateNotifier();
+        const notification = await notifier.getNotification(rowId.data);
+        if (notification) {
           notifyInCenter(notification);
         }
       } catch (reason) {
-        console.error(
-          `Error on GET /api/notifications.\n${reason}`
-        );
+        console.error(`Error on GET /api/notifications.\n${reason}`);
       }
     };
 
@@ -163,29 +152,29 @@ const plugin: JupyterFrontEndPlugin<void> = {
         if (metadata.has("execution")) {
           const notebookName = notebook.title.label.replace(/\.[^/.]+$/, "");
           const dataToSend = {
-            INotificationEvent: {
-              origin: "google",
-              Title: Math.random().toString(),
-              Body: notebookName,
-              LinkURL: "google.com",
-              Ephemeral: true,
-              NotifTimeout: 18,
-              NotifType: "web",
-            },
+            origin: "google",
+            title: Math.random().toString(),
+            body: notebookName,
+            linkUrl: "googl.com",
+            ephemeral: true,
+            notifTimeout: 18,
+            notifType: "web",
           };
-          try {
-            const reply = await requestAPI<any>("notifications", {
-              body: JSON.stringify(dataToSend),
-              method: "POST",
-            });
-            ignoreNotifs.set(reply["RowId"], null);
-            console.log(reply);
-            console.log("this was invoked");
-          } catch (reason) {
-            console.error(
-              `Error on POST /api/notifications ${dataToSend}.\n${reason}`
-            );
-          }
+          let notifier = activateNotifier();
+          notifier.post(dataToSend);
+          // try {
+          //   const reply = await requestAPI<any>("notifications", {
+          //     body: JSON.stringify(dataToSend),
+          //     method: "POST",
+          //   });
+          //   ignoreNotifs.set(reply["RowId"], null);
+          //   console.log(reply);
+          //   console.log("this was invoked");
+          // } catch (reason) {
+          //   console.error(
+          //     `Error on POST /api/notifications ${dataToSend}.\n${reason}`
+          //   );
+          // }
         }
       } else {
         alert(

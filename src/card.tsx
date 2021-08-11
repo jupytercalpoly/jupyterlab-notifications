@@ -8,7 +8,6 @@ import { getStore, setStore } from "./useStore";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 
-
 const useStyles = makeStyles({
   root: {
     maxWidth: 345,
@@ -28,7 +27,7 @@ export default function ImgMediaCard(props: any) {
 
   let triggerDelete = (id: string) => {
     const store = [...getStore().notifications];
-    let i = store.findIndex(task => task.notificationId === id);
+    let i = store.findIndex((task) => task.notificationId === id);
     store.splice(i, 1);
     setStore({ notifications: store });
     console.log("This was triggered");
@@ -63,7 +62,3 @@ export default function ImgMediaCard(props: any) {
     </Card>
   );
 }
-
-
-
-

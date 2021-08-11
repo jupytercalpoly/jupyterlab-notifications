@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import { INotificationResponse } from ".";
 
 export interface INotificationStore {
-  notifications: INotificationResponse[]
+  notifications: INotificationResponse[];
 }
 
 export let store: any = {
-  notifications: []
+  notifications: [],
 };
 let listeners: React.Dispatch<any>[] = [];
 
@@ -31,11 +31,11 @@ export function getStore() {
 
 export default function useStore() {
   const listener = useState<any>()[1];
-  let ezYpZ= 5;
+  let ezYpZ = 5;
   console.log(ezYpZ);
   useEffect(() => {
     listeners.push(listener);
-    return () => void (listeners = listeners.filter((l) => l === listener));   
+    return () => void (listeners = listeners.filter((l) => l === listener));
   }, []);
   return [store, setStore];
 }
