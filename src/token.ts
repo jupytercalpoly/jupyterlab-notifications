@@ -1,8 +1,8 @@
 import { Token } from "@lumino/coreutils";
 import {
   INotificationEvent,
-  INotificationResponse,
   INotificationRequestParameters,
+  INotificationResponse,
 } from ".";
 import { requestAPI } from "./handler";
 
@@ -13,6 +13,9 @@ export const INotifier = new Token<INotifier>(
 export interface INotifier {
   post(notification: INotificationEvent): void;
   getNotification(id: string): Promise<INotificationResponse | undefined>;
+  getNotificationWithParameters(
+    parameters: INotificationRequestParameters
+  ): Promise<INotificationResponse[] | undefined>;
 }
 
 class Notifier implements INotifier {
@@ -56,20 +59,19 @@ class Notifier implements INotifier {
     parameters: INotificationRequestParameters
   ): Promise<INotificationResponse[] | undefined> => {
     try {
-      let parameterString = ""
-      if (parameters.created !== ""){
+      let parameterString = "";
+      if (parameters.created !== "") {
         parameterString += "?created=" + parameters.created;
       }
-      if (parameters.recipient !== ""){
+      if (parameters.recipient !== "") {
         parameterString += "?recipient=" + parameters.recipient;
       }
-      if (parameters.subject !== ""){
+      if (parameters.subject !== "") {
         parameterString += "?subject=" + parameters.subject;
       }
-      const data = await requestAPI<any>("notifications" + parameterString)
+      const data = await requestAPI<any>("notifications" + parameterString);
       const notifications = data["Response"];
       return notifications;
-      
     } catch (reason) {
       console.error(
         `Error on get /api/notitifications/parameters ${notification}.\n${reason}`
