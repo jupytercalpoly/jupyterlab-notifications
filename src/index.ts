@@ -54,6 +54,12 @@ export interface INotificationEvent {
   notifType?: string;
 }
 
+export interface INotificationRequestParameters {
+  subject: string;
+  recipient: string;
+  created: string;
+}
+
 export interface INotificationStoreObject {
   origin: string;
   notifications: INotificationResponse[];
@@ -174,7 +180,10 @@ const plugin: JupyterFrontEndPlugin<void> = {
           localStorage.setItem("originStore", JSON.stringify(originStore));
           console.log("originStore = ", localStorage.getItem("originStore"));
           notifyInCenter(originStore);
-          localStorage.setItem("notifications-lastDate", notification["created"]);
+          localStorage.setItem(
+            "notifications-lastDate",
+            notification["created"]
+          );
         }
       } catch (reason) {
         console.error(`Error on GET /api/notifications.\n${reason}`);
