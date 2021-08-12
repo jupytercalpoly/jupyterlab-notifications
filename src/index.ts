@@ -15,6 +15,7 @@ import { ToolbarButton } from "@jupyterlab/apputils";
 import { DocumentRegistry } from "@jupyterlab/docregistry";
 import { INotebookModel, NotebookPanel } from "@jupyterlab/notebook";
 import { IDisposable } from "@lumino/disposable";
+import { getStore, setStore } from "./useStore";
 //import { requestAPI } from './handler';
 import {
   // systemNotification,
@@ -24,6 +25,7 @@ import {
 
 import { activateNotifier } from "./token";
 import { v4 as uuidv4 } from "uuid";
+import { StoreRounded } from "@material-ui/icons";
 // import React from 'react';
 
 // import { List } from '@material-ui/core';
@@ -39,7 +41,7 @@ export interface INotificationResponse {
   ephemeral?: boolean;
   notifTimeout?: number;
   notifType?: string;
-  created?: string;
+  created: string;
 }
 
 export interface INotificationEvent {
@@ -52,6 +54,12 @@ export interface INotificationEvent {
   ephemeral?: boolean;
   notifTimeout?: number;
   notifType?: string;
+}
+
+export interface INotificationRequestParameters {
+  subject: string;
+  recipient: string;
+  created: string;
 }
 
 export interface INotificationStoreObject {
@@ -133,9 +141,39 @@ const plugin: JupyterFrontEndPlugin<void> = {
       console.log("originStore = ", localStorage.getItem("originStore"));
       let username = prompt("Enter your username", "");
       localStorage.setItem("notifications-username", username!);
+      localStorage.setItem("notifications-lastDate", "0");
     } else {
       console.log("UUID = ", localStorage.getItem("notifications-UUID"));
       console.log("originStore = ", localStorage.getItem("originStore"));
+
+      const parameters = {
+        subject: "",
+        recipient: localStorage.getItem("notifications-username")!,
+        created: localStorage.getItem("notifications-lastDate")!,
+      };
+      let notifier = activateNotifier();
+      const notificationsList = await notifier.getNotificationWithParameters(
+        parameters
+      );
+      if (notificationsList) {
+        const store = [...getStore().originStore];
+        for (let index = 0; index < notificationsList.length; index++) {
+          const o = store.findIndex(
+            (obj) => obj.origin === notificationsList[index].origin
+          );
+          if (o == -1) {
+            store.push({
+              origin: notificationsList[index].origin,
+              notifications: [notificationsList[index]],
+            });
+          } else {
+            store[o].notifications.push(notificationsList[index]);
+          }
+        }
+        setStore({
+          originStore: store,
+        });
+      }
     }
     notifyInCenter(JSON.parse(localStorage.getItem("originStore")!));
     let ws = new WebSocket("ws://localhost:8888/api/ws");
@@ -173,6 +211,10 @@ const plugin: JupyterFrontEndPlugin<void> = {
           localStorage.setItem("originStore", JSON.stringify(originStore));
           console.log("originStore = ", localStorage.getItem("originStore"));
           notifyInCenter(originStore);
+          localStorage.setItem(
+            "notifications-lastDate",
+            notification["created"]
+          );
         }
       } catch (reason) {
         console.error(`Error on GET /api/notifications.\n${reason}`);
