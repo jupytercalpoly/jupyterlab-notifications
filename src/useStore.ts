@@ -7,7 +7,9 @@ export let store = {
 let listeners: React.Dispatch<any>[] = [];
 
 // setStore(store => ({...store, isFoo: false}))
-export function setStore(val: typeof store | ((s: typeof store) => typeof store)): void {
+export function setStore(
+  val: typeof store | ((s: typeof store) => typeof store)
+): void {
   if (typeof val === "object" && val !== null) {
     store = val;
   } else {
@@ -16,7 +18,7 @@ export function setStore(val: typeof store | ((s: typeof store) => typeof store)
   listeners.forEach((l) => l(val));
 }
 
-export function getStore(): (typeof store) {
+export function getStore(): typeof store {
   return { ...store };
 }
 
@@ -24,9 +26,7 @@ export function getStore(): (typeof store) {
 //     return {...store }
 // })
 
-export default function useStore(): [
-  (typeof store), typeof setStore
-] {
+export default function useStore(): [typeof store, typeof setStore] {
   const listener = useState<any>()[1];
   useEffect(() => {
     listeners.push(listener);
