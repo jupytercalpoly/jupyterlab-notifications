@@ -32,6 +32,8 @@ export interface INotificationResponse {
   notificationId: string;
   origin: string;
   title: string;
+  subject: string;
+  recipient: string;
   body: string;
   linkUrl: string;
   ephemeral: boolean;
@@ -43,6 +45,8 @@ export interface INotificationResponse {
 export interface INotificationEvent {
   origin: string;
   title: string;
+  subject: string;
+  recipient: string;
   body: string;
   linkUrl: string;
   ephemeral: boolean;
