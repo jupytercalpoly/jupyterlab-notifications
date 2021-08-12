@@ -148,7 +148,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
 
       const parameters = {
         subject: "",
-        recipient: "",
+        recipient: localStorage.getItem("notifications-username")!,
         created: localStorage.getItem("notifications-lastDate")!,
       };
       let notifier = activateNotifier();
