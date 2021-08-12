@@ -39,7 +39,7 @@ export interface INotificationResponse {
   ephemeral?: boolean;
   notifTimeout?: number;
   notifType?: string;
-  created?: string;
+  created: string;
 }
 
 export interface INotificationEvent {
@@ -133,6 +133,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
       console.log("originStore = ", localStorage.getItem("originStore"));
       let username = prompt("Enter your username", "");
       localStorage.setItem("notifications-username", username!);
+      localStorage.setItem("notifications-lastDate", "0");
     } else {
       console.log("UUID = ", localStorage.getItem("notifications-UUID"));
       console.log("originStore = ", localStorage.getItem("originStore"));
@@ -173,6 +174,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
           localStorage.setItem("originStore", JSON.stringify(originStore));
           console.log("originStore = ", localStorage.getItem("originStore"));
           notifyInCenter(originStore);
+          localStorage.setItem("notifications-lastDate", notification["created"]);
         }
       } catch (reason) {
         console.error(`Error on GET /api/notifications.\n${reason}`);
