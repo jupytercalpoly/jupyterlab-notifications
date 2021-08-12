@@ -43,9 +43,11 @@ NAMESPACE = "/api"
 conn = sqlite3.connect('notif.db')
 c = conn.cursor()
 try:
-    c.execute('''CREATE TABLE IF NOT EXISTS notifs (notificationId  INTEGER PRIMARY KEY, origin text, title text,body text, linkURL text,ephemeral boolean, notifTimeout INTEGER, notifType text,created INTEGER)''')
+    c.execute('''CREATE TABLE IF NOT EXISTS notifs (notificationId  INTEGER PRIMARY KEY, origin text, title text,body text, linkUrl text,ephemeral boolean, notifTimeout INTEGER, notifType text,created INTEGER)''')
 except sqlite3.OperationalError:
     pass
+except:
+    print("BOOM?")
 c.close()
 
 
@@ -80,7 +82,7 @@ class notifyBaseHandler(APIHandler):
         responses = []
         for row in data:
             response = {"notificationId": row[0], "origin": row[1], "title": row[2], "body": row[3],
-                        "linkURL": row[4], "ephemeral": row[5], "notifTimeout": row[6], "notifType": row[7], "created": row[8]}
+                        "linkUrl": row[4], "ephemeral": row[5], "notifTimeout": row[6], "notifType": row[7], "created": row[8]}
             responses.append({"INotificationResponse": response})
         self.finish(json.dumps({"Response": responses}))
 
@@ -92,37 +94,39 @@ class notifyBaseHandler(APIHandler):
         # data = {"greetings": "Hello {}, enjoy JupyterLab!".format(input_data["name"])}
         # self.finish(json.dumps(data))
         data = self.get_json_body()["INotificationEvent"]
+        # print(data)
         origin = data["origin"]
-        Title = data["Title"]
-        Body = data["Body"]
-        LinkURL = data["LinkURL"]
-        Ephemeral = data["Ephemeral"]
-        NotifTimeout = data["NotifTimeout"]
-        NotifType = data["NotifType"]
-        Created = time.time_ns()
+        title = data["title"]
+        body = data["body"]
+        linkUrl = data["linkUrl"]
+        ephemeral = data["ephemeral"]
+        notifTimeout = data["notifTimeout"]
+        notifType = data["notifType"]
+        created = time.time_ns()
 
-        insertData = (origin, Title, Body, LinkURL, Ephemeral,
-                      NotifTimeout, NotifType, Created)
+        insertData = (origin, title, body, linkUrl, ephemeral,
+                      notifTimeout, notifType, created)
         cur.execute(
-            "INSERT INTO notifs ( origin , Title ,Body , LinkURL ,Ephemeral , NotifTimeout , NotifType ,Created ) VALUES (? , ? ,? , ? ,? , ? , ? ,?)", insertData)
+            "INSERT INTO notifs ( origin , title ,body , linkUrl ,ephemeral , notifTimeout , notifType ,created ) VALUES (? , ? ,? , ? ,? , ? , ? ,?)", insertData)
         rowId = cur.lastrowid
         con.commit()
         con.close()
         self.set_status(201)
         self.add_header("location", str(rowId))
         # self.write(json.dumps({"RowId":str(rowId)}))
-        self.finish(json.dumps({"RowId":str(rowId)}))
+        self.finish(json.dumps({"RowId": str(rowId)}))
         self.flush()
         # tornado.ioloop.IOLoop.make_current()
         # time.sleep(3)
-        tornado.ioloop.IOLoop.current().spawn_callback(wsSend, str(rowId))
-        # wsSend(str(rowId))
+        # tornado.ioloop.IOLoop.current().spawn_callback(wsSend, str(rowId))
+        # print("here sennding ws")
+        wsSend(str(rowId))
 
 
 class notifyIDHandler(APIHandler):
     @tornado.web.authenticated
     async def get(self, notificationId):
-        print(notificationId, "THIS WHAT I GOT")
+        # print(notificationId, "THIS WHAT I GOT")
         con = sqlite3.connect('notif.db')
         cur = con.cursor()
 
@@ -133,7 +137,7 @@ class notifyIDHandler(APIHandler):
         response = {}
         for row in data:
             response = {"INotificationResponse": {"notificationId": row[0], "origin": row[1], "title": row[2], "body": row[3],
-                        "linkURL": row[4], "ephemeral": row[5], "notifTimeout": row[6], "notifType": row[7], "created": row[8]}}
+                        "linkUrl": row[4], "ephemeral": row[5], "notifTimeout": row[6], "notifType": row[7], "created": row[8]}}
             # responses.append({"INotificationResponse": response})
         self.finish(json.dumps({"Response": response}))
 
