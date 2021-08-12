@@ -122,13 +122,15 @@ const plugin: JupyterFrontEndPlugin<void> = {
     //   console.error(`Error on GET /jlab-ext-example/hello.\n${reason}`);
     // }
 
-    if (!localStorage.getItem("UUID")) {
-      localStorage.setItem("UUID", uuidv4());
+    if (!localStorage.getItem("notifications-UUID")) {
+      localStorage.setItem("notifications-UUID", uuidv4());
       localStorage.setItem("originStore", JSON.stringify([]));
       console.log("UUID = ", localStorage.getItem("UUID"));
       console.log("originStore = ", localStorage.getItem("originStore"));
+      let username = prompt("Enter your username", "");
+      localStorage.setItem("notifications-username", username!);
     } else {
-      console.log("UUID = ", localStorage.getItem("UUID"));
+      console.log("UUID = ", localStorage.getItem("notifications-UUID"));
       console.log("originStore = ", localStorage.getItem("originStore"));
     }
     notifyInCenter(JSON.parse(localStorage.getItem("originStore")!));
