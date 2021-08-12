@@ -8,7 +8,6 @@ import { getStore, setStore } from "./useStore";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 
-
 const useStyles = makeStyles({
   root: {
     maxWidth: 345,
@@ -26,11 +25,21 @@ export default function ImgMediaCard(props: any) {
     if (newWindow) newWindow.opener = null;
   };
 
-  let triggerDelete = (id: string) => {
-    const store = [...getStore().ls];
-    let i = store.findIndex((task: any) => task.id === id);
-    store.splice(i, 1);
-    setStore({ ls: store });
+  let triggerDelete = (id: string, origin: string) => {
+    const store = [...getStore().originStore];
+    console.log("origin", origin);
+    console.log("id", id);
+    const o = store.findIndex((obj) => obj.origin === origin);
+    let i = store[o].notifications.findIndex(
+      (task: any) => task.notificationId === id
+    );
+    store[o].notifications.splice(i,1);
+    
+    
+    setStore({
+      originStore: store,
+    });
+    localStorage.setItem("originStore", JSON.stringify(store));
     console.log("This was triggered");
   };
   return (
@@ -53,7 +62,7 @@ export default function ImgMediaCard(props: any) {
               onClick={(e) => {
                 e.stopPropagation();
                 e.preventDefault();
-                triggerDelete(props.id);
+                triggerDelete(props.id, props.origin);
               }}
               style={{ top: 3, right: 3 }}
             />
@@ -63,7 +72,3 @@ export default function ImgMediaCard(props: any) {
     </Card>
   );
 }
-
-
-
-

@@ -1,6 +1,6 @@
-import { URLExt } from '@jupyterlab/coreutils';
+import { URLExt } from "@jupyterlab/coreutils";
 
-import { ServerConnection } from '@jupyterlab/services';
+import { ServerConnection } from "@jupyterlab/services";
 
 /**
  * Call the API extension
@@ -10,16 +10,12 @@ import { ServerConnection } from '@jupyterlab/services';
  * @returns The response body interpreted as JSON
  */
 export async function requestAPI<T>(
-  endPoint = '',
+  endPoint = "",
   init: RequestInit = {}
 ): Promise<T> {
   // Make request to Jupyter API
   const settings = ServerConnection.makeSettings();
-  const requestUrl = URLExt.join(
-    settings.baseUrl,
-    '/api',
-    endPoint
-  );
+  const requestUrl = URLExt.join(settings.baseUrl, "/api", endPoint);
 
   let response: Response;
   try {
