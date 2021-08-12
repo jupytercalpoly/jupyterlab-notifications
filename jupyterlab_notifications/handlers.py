@@ -43,7 +43,7 @@ NAMESPACE = "/api"
 conn = sqlite3.connect('notif.db')
 c = conn.cursor()
 try:
-    c.execute('''CREATE TABLE IF NOT EXISTS notifs (notificationId  INTEGER PRIMARY KEY, origin text, title text,body text, linkUrl text,ephemeral boolean, notifTimeout INTEGER, notifType text,created INTEGER)''')
+    c.execute('''CREATE TABLE IF NOT EXISTS notifs (notificationId  INTEGER PRIMARY KEY, origin text, title text, body text, subject text, recipient text, linkUrl text, ephemeral boolean, notifTimeout INTEGER, notifType text, created INTEGER)''')
 except sqlite3.OperationalError:
     pass
 except:
@@ -60,11 +60,29 @@ class notifyBaseHandler(APIHandler):
         con = sqlite3.connect('notif.db')
         cur = con.cursor()
         data = ""
+        if "created" in args and "origin" in args and "recipient" in args:
+            created, origin, recipient = args["created"][0].decode(
+            ), args["origin"][0].decode(), args["recipient"][0].decode() 
+            cur.execute('SELECT * FROM notifs where created >= ? and origin = ? and recipient = ?',
+                        (str(created), str(origin), str(recipient)))
+            data = cur.fetchall()
         if "created" in args and "origin" in args:
             created, origin = args["created"][0].decode(
             ), args["origin"][0].decode()
             cur.execute('SELECT * FROM notifs where created >= ? and origin = ?',
                         (str(created), str(origin)))
+            data = cur.fetchall()
+        if "created" in args and "recipient" in args:
+            created, recipient = args["created"][0].decode(
+            ), args["recipient"][0].decode()
+            cur.execute('SELECT * FROM notifs where created >= ? and recipient = ?',
+                        (str(created), str(recipient)))
+            data = cur.fetchall()
+        if "origin" in args and "recipient" in args:
+            origin, recipient = args["origin"][0].decode(
+            ), args["recipient"][0].decode()
+            cur.execute('SELECT * FROM notifs where origin = ? and recipient = ?',
+                        (str(origin), str(recipient)))
             data = cur.fetchall()
         elif "created" in args:
             created = args["created"][0].decode()
@@ -76,13 +94,19 @@ class notifyBaseHandler(APIHandler):
             cur.execute('SELECT * FROM notifs where origin = ?',
                         (str(origin),))
             data = cur.fetchall()
+        elif "recipient" in args:
+            recipient = args["recipient"][0].decode()
+            cur.execute('SELECT * FROM notifs where recipient = ?',
+                        (str(recipient),))
+            data = cur.fetchall()
         else:
             cur.execute('SELECT * FROM notifs')
             data = cur.fetchall()
         responses = []
         for row in data:
             response = {"notificationId": row[0], "origin": row[1], "title": row[2], "body": row[3],
-                        "linkUrl": row[4], "ephemeral": row[5], "notifTimeout": row[6], "notifType": row[7], "created": row[8]}
+                        "subject": row[4], "recipient": row[5] ,"linkUrl": row[6], "ephemeral": row[7], 
+                        "notifTimeout": row[8], "notifType": row[9], "created": row[10]}
             responses.append({"INotificationResponse": response})
         self.finish(json.dumps({"Response": responses}))
 
@@ -98,16 +122,18 @@ class notifyBaseHandler(APIHandler):
         origin = data["origin"]
         title = data["title"]
         body = data["body"]
+        subject = data["subject"]
+        recipient = data["recipient"] 
         linkUrl = data["linkUrl"]
         ephemeral = data["ephemeral"]
         notifTimeout = data["notifTimeout"]
         notifType = data["notifType"]
         created = time.time_ns()
 
-        insertData = (origin, title, body, linkUrl, ephemeral,
+        insertData = (origin, title, body, subject, recipient, linkUrl, ephemeral,
                       notifTimeout, notifType, created)
         cur.execute(
-            "INSERT INTO notifs ( origin , title ,body , linkUrl ,ephemeral , notifTimeout , notifType ,created ) VALUES (? , ? ,? , ? ,? , ? , ? ,?)", insertData)
+            "INSERT INTO notifs (origin, title, body, subject, recipient, linkUrl, ephemeral, notifTimeout, notifType, created) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", insertData)
         rowId = cur.lastrowid
         con.commit()
         con.close()
@@ -136,9 +162,11 @@ class notifyIDHandler(APIHandler):
         data = cur.fetchall()
         response = {}
         for row in data:
-            response = {"INotificationResponse": {"notificationId": row[0], "origin": row[1], "title": row[2], "body": row[3],
-                        "linkUrl": row[4], "ephemeral": row[5], "notifTimeout": row[6], "notifType": row[7], "created": row[8]}}
+            response = {"notificationId": row[0], "origin": row[1], "title": row[2], "body": row[3],
+                        "subject": row[4], "recipient": row[5] ,"linkUrl": row[6], "ephemeral": row[7], 
+                        "notifTimeout": row[8], "notifType": row[9], "created": row[10]}
             # responses.append({"INotificationResponse": response})
+        print(response)
         self.finish(json.dumps({"Response": response}))
 
 
