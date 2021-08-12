@@ -32,26 +32,26 @@ export interface INotificationResponse {
   notificationId: string;
   origin: string;
   title: string;
-  subject: string;
-  recipient: string;
   body: string;
-  linkUrl: string;
-  ephemeral: boolean;
-  notifTimeout: number;
-  notifType: string;
-  created: string;
+  subject?: string;
+  recipient?: string;
+  linkUrl?: string;
+  ephemeral?: boolean;
+  notifTimeout?: number;
+  notifType?: string;
+  created?: string;
 }
 
 export interface INotificationEvent {
   origin: string;
   title: string;
-  subject: string;
-  recipient: string;
   body: string;
-  linkUrl: string;
-  ephemeral: boolean;
-  notifTimeout: number;
-  notifType: string;
+  subject?: string;
+  recipient?: string;
+  linkUrl?: string;
+  ephemeral?: boolean;
+  notifTimeout?: number;
+  notifType?: string;
 }
 
 export interface INotificationStoreObject {
