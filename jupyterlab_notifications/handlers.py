@@ -107,7 +107,7 @@ class notifyBaseHandler(APIHandler):
             response = {"notificationId": row[0], "origin": row[1], "title": row[2], "body": row[3],
                         "subject": row[4], "recipient": row[5] ,"linkUrl": row[6], "ephemeral": row[7], 
                         "notifTimeout": row[8], "notifType": row[9], "created": row[10]}
-            responses.append({"INotificationResponse": response})
+            responses.append(response)
         self.finish(json.dumps({"Response": responses}))
 
     @tornado.web.authenticated
