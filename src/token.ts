@@ -47,8 +47,7 @@ class Notifier implements INotifier {
   ): Promise<INotificationResponse | undefined> => {
     try {
       const data = await requestAPI<any>("notifications/" + id);
-      const ls = data["Response"];
-      const notification = ls["INotificationResponse"];
+      const notification = data["Response"];
       return notification;
     } catch (reason) {
       console.error(`Error on GET /api/notifications.\n${reason}`);
@@ -56,7 +55,7 @@ class Notifier implements INotifier {
   };
 
   getNotificationWithParameters = async (
-    parameters: INotificationRequestParameters
+    parameters: INotificationRequestParameters = {}
   ): Promise<INotificationResponse[] | undefined> => {
     try {
       let parameterString = "";
@@ -64,17 +63,17 @@ class Notifier implements INotifier {
         parameterString += "?created=" + parameters.created;
       }
       if (parameters.recipient !== "") {
-        parameterString += "?recipient=" + parameters.recipient;
+        parameterString += "&recipient=" + parameters.recipient;
       }
       if (parameters.subject !== "") {
-        parameterString += "?subject=" + parameters.subject;
+        parameterString += "&subject=" + parameters.subject;
       }
       const data = await requestAPI<any>("notifications" + parameterString);
       const notifications = data["Response"];
       return notifications;
     } catch (reason) {
       console.error(
-        `Error on get /api/notitifications/parameters ${notification}.\n${reason}`
+        `Error on get /api/notitifications/parameters ${parameters}.\n${reason}`
       );
     }
   };

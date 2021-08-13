@@ -60,7 +60,7 @@ export function NotificationCenter(props: any) {
     // ydoc.getArray('notif').insert(0, [6,7,8]);
     // console.log(ydoc.getArray('notif').toArray(), "print2");
   };
-  
+
   return (
     <div>
       {store.originStore.map((obj: any): any => (
@@ -85,11 +85,7 @@ export function NotificationCenter(props: any) {
                     //onChange={toggleTask}
                   />
                 }
-                label={
-                  <div>
-                    {obj.origin} 
-                  </div>
-                }
+                label={<div>{obj.origin}</div>}
               />
             </AccordionSummary>
             <AccordionDetails>
@@ -116,7 +112,7 @@ export function NotificationCenter(props: any) {
   );
 }
 
-export function notifyInCenter(updatedStore: INotificationStoreObject[]) {
+export function notifyInCenter(updatedStore: INotificationStoreObject[]): void {
   setStore({
     originStore: updatedStore,
   });
