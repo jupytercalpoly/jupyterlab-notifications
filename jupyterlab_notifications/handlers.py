@@ -63,7 +63,7 @@ class notifyBaseHandler(APIHandler):
         if "created" in args and "origin" in args and "recipient" in args:
             created, origin, recipient = args["created"][0].decode(
             ), args["origin"][0].decode(), args["recipient"][0].decode() 
-            cur.execute('SELECT * FROM notifs where created >= ? and origin = ? and recipient = ?',
+            cur.execute('SELECT * FROM notifs where created >= ? and origin = ? and (recipient = ? or recipient = "*")',
                         (str(created), str(origin), str(recipient)))
             data = cur.fetchall()
         if "created" in args and "origin" in args:
@@ -75,13 +75,13 @@ class notifyBaseHandler(APIHandler):
         if "created" in args and "recipient" in args:
             created, recipient = args["created"][0].decode(
             ), args["recipient"][0].decode()
-            cur.execute('SELECT * FROM notifs where created >= ? and recipient = ?',
+            cur.execute('SELECT * FROM notifs where created >= ? and (recipient = ? or recipient = "*")',
                         (str(created), str(recipient)))
             data = cur.fetchall()
         if "origin" in args and "recipient" in args:
             origin, recipient = args["origin"][0].decode(
             ), args["recipient"][0].decode()
-            cur.execute('SELECT * FROM notifs where origin = ? and recipient = ?',
+            cur.execute('SELECT * FROM notifs where origin = ? and (recipient = ? or recipient = "*")',
                         (str(origin), str(recipient)))
             data = cur.fetchall()
         elif "created" in args:
@@ -96,7 +96,7 @@ class notifyBaseHandler(APIHandler):
             data = cur.fetchall()
         elif "recipient" in args:
             recipient = args["recipient"][0].decode()
-            cur.execute('SELECT * FROM notifs where recipient = ?',
+            cur.execute('SELECT * FROM notifs where (recipient = ? or recipient = "*")',
                         (str(recipient),))
             data = cur.fetchall()
         else:
@@ -166,7 +166,7 @@ class notifyIDHandler(APIHandler):
                         "subject": row[4], "recipient": row[5] ,"linkUrl": row[6], "ephemeral": row[7], 
                         "notifTimeout": row[8], "notifType": row[9], "created": row[10]}
             # responses.append({"INotificationResponse": response})
-        print(response)
+        #print(response)
         self.finish(json.dumps({"Response": response}))
 
 
