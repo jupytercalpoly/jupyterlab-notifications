@@ -3,6 +3,7 @@ import { INotificationStoreObject } from ".";
 
 export let store = {
   originStore: [] as INotificationStoreObject[],
+  blockedOrigins: [] as string[]
 };
 let listeners: React.Dispatch<any>[] = [];
 

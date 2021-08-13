@@ -26,19 +26,19 @@ export default function ImgMediaCard(props: any) {
   };
 
   let triggerDelete = (id: string, origin: string) => {
-    const store = [...getStore().originStore];
+    let store = getStore();
+    const originStore = [...store.originStore];
     console.log("origin", origin);
     console.log("id", id);
-    const o = store.findIndex((obj) => obj.origin === origin);
-    let i = store[o].notifications.findIndex(
-      (task: any) => task.notificationId === id
+    const o = originStore.findIndex((obj) => obj.origin === origin);
+    let i = originStore[o].notifications.findIndex(
+      task => task.notificationId === id
     );
-    store[o].notifications.splice(i,1);
-    
-    
-    setStore({
-      originStore: store,
-    });
+    originStore[o].notifications.splice(i, 1);
+
+    store.originStore = originStore;
+
+    setStore(store);
     // localStorage.setItem("originStore", JSON.stringify(store));
     console.log("This was triggered");
   };

@@ -144,6 +144,11 @@ const plugin: JupyterFrontEndPlugin<void> = {
       console.log("UUID = ", localStorage.getItem("notifications-UUID"));
     }
 
+    if (!localStorage.getItem("blocked-origins")) {
+      localStorage.setItem("blocked-origins", JSON.stringify([]));
+    } else {
+      console.log("blocked-origins = ", localStorage.getItem("blocked-origins"));
+    }
 
     //UPDATE THIS WHEN QUERY FUNCTION WORKS
     let parameters = {

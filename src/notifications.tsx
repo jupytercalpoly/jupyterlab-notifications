@@ -1,5 +1,5 @@
 import useStore from "./useStore";
-import { setStore } from "./useStore";
+import { getStore, setStore } from "./useStore";
 import React from "react";
 import ImgMediaCard from "./card";
 import { ReactWidget } from "@jupyterlab/apputils";
@@ -63,7 +63,7 @@ export function NotificationCenter(props: any) {
 
   return (
     <div>
-      {store.originStore.map((obj: any): any => (
+      {store.originStore.filter(obj => !store.blockedOrigins.includes(obj.origin)).map(obj => (
         <div className={classes.root}>
           {/* bool defaultExpanded below controls default state of accordion */}
           <Accordion defaultExpanded={true} elevation={0}>
@@ -91,7 +91,7 @@ export function NotificationCenter(props: any) {
             <AccordionDetails>
               <Typography color="textSecondary" component={"span"}>
                 <Box pl={4}>
-                  {obj.notifications.map((notif: any) => (
+                  {obj.notifications.map(notif => (
                     <ImgMediaCard
                       title={notif.title}
                       body={notif.body}
@@ -112,9 +112,25 @@ export function NotificationCenter(props: any) {
   );
 }
 
-export function notifyInCenter(updatedStore: INotificationStoreObject[]): void {
+export function notifyInCenter(updatedNotificationStore: INotificationStoreObject[]): void {
+  let store = getStore();
   setStore({
-    originStore: updatedStore,
+    blockedOrigins: store.blockedOrigins,
+    originStore: updatedNotificationStore,
+  });
+}
+
+export function blockOrigin(origin: string): void {
+
+  let localBlockedOrigin = JSON.parse(localStorage.getItem("blocked-origins")!);
+  localBlockedOrigin.push(origin);
+  localStorage.setItem("blocked-origins", JSON.stringify(localBlockedOrigin));
+
+  let store = getStore();
+  store.blockedOrigins.push(origin);
+  setStore({
+    blockedOrigins: store.blockedOrigins,
+    originStore: store.originStore,
   });
 }
 
