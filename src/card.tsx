@@ -25,18 +25,18 @@ export default function ImgMediaCard(props: any) {
     if (newWindow) newWindow.opener = null;
   };
 
-  let triggerDelete = (id: string, origin: string) => {
+  let triggerDelete = (id: string, subject: string) => {
     let store = getStore();
-    const originStore = [...store.originStore];
+    const subjectStore = [...store.subjectStore];
     console.log("origin", origin);
     console.log("id", id);
-    const o = originStore.findIndex((obj) => obj.origin === origin);
-    let i = originStore[o].notifications.findIndex(
-      task => task.notificationId === id
+    const o = subjectStore.findIndex((obj) => obj.subject === subject);
+    let i = subjectStore[o].notifications.findIndex(
+      (task) => task.notificationId === id
     );
-    originStore[o].notifications.splice(i, 1);
+    subjectStore[o].notifications.splice(i, 1);
 
-    store.originStore = originStore;
+    store.subjectStore = subjectStore;
 
     setStore(store);
     // localStorage.setItem("originStore", JSON.stringify(store));
@@ -55,6 +55,7 @@ export default function ImgMediaCard(props: any) {
             component="p"
             onClick={() => openUrl()}
           >
+            {props.origin}
             {props.body}
           </Typography>
           <IconButton aria-label="delete">
@@ -62,7 +63,7 @@ export default function ImgMediaCard(props: any) {
               onClick={(e) => {
                 e.stopPropagation();
                 e.preventDefault();
-                triggerDelete(props.id, props.origin);
+                triggerDelete(props.id, props.subject);
               }}
               style={{ top: 3, right: 3 }}
             />

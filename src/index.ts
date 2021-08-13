@@ -34,7 +34,7 @@ export interface INotificationResponse {
   origin: string;
   title: string;
   body: string;
-  subject?: string;
+  subject: string;
   recipient?: string;
   linkUrl?: string;
   ephemeral?: boolean;
@@ -47,7 +47,7 @@ export interface INotificationEvent {
   origin: string;
   title: string;
   body: string;
-  subject?: string;
+  subject: string;
   recipient?: string;
   linkUrl?: string;
   ephemeral?: boolean;
@@ -62,7 +62,7 @@ export interface INotificationRequestParameters {
 }
 
 export interface INotificationStoreObject {
-  origin: string;
+  subject: string;
   notifications: INotificationResponse[];
 }
 
@@ -147,7 +147,10 @@ const plugin: JupyterFrontEndPlugin<void> = {
     if (!localStorage.getItem("blocked-origins")) {
       localStorage.setItem("blocked-origins", JSON.stringify([]));
     } else {
-      console.log("blocked-origins = ", localStorage.getItem("blocked-origins"));
+      console.log(
+        "blocked-origins = ",
+        localStorage.getItem("blocked-origins")
+      );
     }
 
     //UPDATE THIS WHEN QUERY FUNCTION WORKS
@@ -170,24 +173,33 @@ const plugin: JupyterFrontEndPlugin<void> = {
     );
     console.log("notificationList = ", notificationsList);
     if (notificationsList) {
-      const store = [...getStore().originStore];
+      let store = getStore();
+      const subjectStore = [...store.subjectStore];
+      const originList = [...store.originList];
       for (let index = 0; index < notificationsList.length; index++) {
-        const o = store.findIndex(
-          (obj) => obj.origin === notificationsList[index].origin
+        const s = subjectStore.findIndex(
+          (obj) => obj.subject === notificationsList[index].subject
         );
         console.log("Notification= ", notificationsList[index]);
         console.log("Notification origin= ", notificationsList[index].origin);
-        if (o == -1) {
-          store.push({
-            origin: notificationsList[index].origin,
+        if (s == -1) {
+          subjectStore.push({
+            subject: notificationsList[index].subject,
             notifications: [notificationsList[index]],
           });
         } else {
-          store[o].notifications.push(notificationsList[index]);
+          subjectStore[s].notifications.push(notificationsList[index]);
+        }
+
+        const o = originList.findIndex(
+          (origin) => origin === notificationsList[index].origin
+        );
+        if (o == -1) {
+          originList.push(notificationsList[index].origin);
         }
       }
       console.log("new store = ", store);
-      notifyInCenter(store);
+      notifyInCenter(subjectStore, originList);
     }
 
     // notifyInCenter(JSON.parse(localStorage.getItem("originStore")!));
@@ -206,19 +218,27 @@ const plugin: JupyterFrontEndPlugin<void> = {
           // let originStore: INotificationStoreObject[] = JSON.parse(
           //   localStorage.getItem("originStore")!
           // );
-          let originStore = [...getStore().originStore];
-          const i = originStore.findIndex(
-            (obj) => obj.origin === notification["origin"]
+          let store = getStore();
+          const subjectStore = [...store.subjectStore];
+          const originList = [...store.originList];
+          const i = subjectStore.findIndex(
+            (obj) => obj.subject === notification["subject"]
           );
           if (i === -1) {
-            originStore.unshift({
-              origin: notification["origin"],
+            subjectStore.unshift({
+              subject: notification["subject"],
               notifications: [notification],
             });
           } else {
-            let t = originStore.splice(i, 1);
+            let t = subjectStore.splice(i, 1);
             t[0].notifications.unshift(notification);
-            originStore.unshift(t[0]);
+            subjectStore.unshift(t[0]);
+          }
+          const o = originList.findIndex(
+            (origin) => origin === notification.origin
+          );
+          if (o == -1) {
+            originList.push(notification.origin);
           }
           // if (notification["origin"] in originStore) {
           //   originStore[notification["origin"]].push(notification);
@@ -226,8 +246,8 @@ const plugin: JupyterFrontEndPlugin<void> = {
           //   originStore[notification["origin"]] = [notification];
           // }
           // localStorage.setItem("originStore", JSON.stringify(originStore));
-          console.log("originStore after get= ", originStore);
-          notifyInCenter(originStore);
+          // console.log("originStore after get= ", originStore);
+          notifyInCenter(subjectStore, originList);
           localStorage.setItem(
             "notifications-lastDate",
             notification["created"]

@@ -63,76 +63,85 @@ export function NotificationCenter(props: any) {
 
   return (
     <div>
-      {store.originStore.filter(obj => !store.blockedOrigins.includes(obj.origin)).map(obj => (
-        <div className={classes.root}>
-          {/* bool defaultExpanded below controls default state of accordion */}
-          <Accordion defaultExpanded={true} elevation={0}>
-            <AccordionSummary
-              classes={{ content: classes.content, expanded: classes.expanded }}
-              expandIcon={<ExpandMoreIcon />}
-              aria-label="Expand"
-              aria-controls="additional-actions1-content"
-              id="additional-actions1-header"
-            >
-              <FormControlLabel
-                aria-label="Acknowledge"
-                onClick={(event) => event.stopPropagation()}
-                onFocus={(event) => event.stopPropagation()}
-                control={
-                  <Checkbox
-                    checked={false}
-                    //id={task.id.toString()}
-                    //onChange={toggleTask}
-                  />
-                }
-                label={<div>{obj.origin}</div>}
-              />
-            </AccordionSummary>
-            <AccordionDetails>
-              <Typography color="textSecondary" component={"span"}>
-                <Box pl={4}>
-                  {obj.notifications.map(notif => (
-                    <ImgMediaCard
-                      title={notif.title}
-                      body={notif.body}
-                      id={notif.notificationId}
-                      origin={notif.origin}
-                    >
-                      {/* control={ */}
-                    </ImgMediaCard>
-                  ))}
-                </Box>
-              </Typography>
-            </AccordionDetails>
-          </Accordion>
-        </div>
-      ))}
+      {store.subjectStore
+        // .filter((obj) => !store.blockedOrigins.includes(obj.origin))
+        .map((obj) => (
+          <div className={classes.root}>
+            {/* bool defaultExpanded below controls default state of accordion */}
+            <Accordion defaultExpanded={true} elevation={0}>
+              <AccordionSummary
+                classes={{
+                  content: classes.content,
+                  expanded: classes.expanded,
+                }}
+                expandIcon={<ExpandMoreIcon />}
+                aria-label="Expand"
+                aria-controls="additional-actions1-content"
+                id="additional-actions1-header"
+              >
+                <FormControlLabel
+                  aria-label="Acknowledge"
+                  onClick={(event) => event.stopPropagation()}
+                  onFocus={(event) => event.stopPropagation()}
+                  control={
+                    <Checkbox
+                      checked={false}
+                      //id={task.id.toString()}
+                      //onChange={toggleTask}
+                    />
+                  }
+                  label={<div>{obj.subject}</div>}
+                />
+              </AccordionSummary>
+              <AccordionDetails>
+                <Typography color="textSecondary" component={"span"}>
+                  <Box pl={4}>
+                    {obj.notifications.map((notif) => (
+                      <ImgMediaCard
+                        title={notif.title}
+                        body={notif.body}
+                        id={notif.notificationId}
+                        origin={notif.origin}
+                        subject={notif.subject}
+                      >
+                        {/* control={ */}
+                      </ImgMediaCard>
+                    ))}
+                  </Box>
+                </Typography>
+              </AccordionDetails>
+            </Accordion>
+          </div>
+        ))}
       <button onClick={() => handleClick()}>Activat Lasers</button>
     </div>
   );
 }
 
-export function notifyInCenter(updatedNotificationStore: INotificationStoreObject[]): void {
+export function notifyInCenter(
+  updatedSubjectStore: INotificationStoreObject[],
+  updatedOriginList: string[]
+): void {
   let store = getStore();
   setStore({
     blockedOrigins: store.blockedOrigins,
-    originStore: updatedNotificationStore,
+    subjectStore: updatedSubjectStore,
+    originList: updatedOriginList,
   });
 }
 
-export function blockOrigin(origin: string): void {
+// export function blockOrigin(origin: string): void {
+//   let localBlockedOrigin = JSON.parse(localStorage.getItem("blocked-origins")!);
+//   localBlockedOrigin.push(origin);
+//   localStorage.setItem("blocked-origins", JSON.stringify(localBlockedOrigin));
 
-  let localBlockedOrigin = JSON.parse(localStorage.getItem("blocked-origins")!);
-  localBlockedOrigin.push(origin);
-  localStorage.setItem("blocked-origins", JSON.stringify(localBlockedOrigin));
-
-  let store = getStore();
-  store.blockedOrigins.push(origin);
-  setStore({
-    blockedOrigins: store.blockedOrigins,
-    originStore: store.originStore,
-  });
-}
+//   let store = getStore();
+//   store.blockedOrigins.push(origin);
+//   setStore({
+//     blockedOrigins: store.blockedOrigins,
+//     originStore: store.originStore,
+//   });
+// }
 
 export class notificationWidget extends ReactWidget {
   constructor() {

@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import { INotificationStoreObject } from ".";
 
 export let store = {
-  originStore: [] as INotificationStoreObject[],
-  blockedOrigins: [] as string[]
+  subjectStore: [] as INotificationStoreObject[],
+  originList: [] as string[],
+  blockedOrigins: [] as string[],
 };
 let listeners: React.Dispatch<any>[] = [];
 
