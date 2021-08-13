@@ -15,7 +15,7 @@ import { ToolbarButton } from "@jupyterlab/apputils";
 import { DocumentRegistry } from "@jupyterlab/docregistry";
 import { INotebookModel, NotebookPanel } from "@jupyterlab/notebook";
 import { IDisposable } from "@lumino/disposable";
-import { getStore, setStore } from "./useStore";
+import { getStore } from "./useStore";
 //import { requestAPI } from './handler';
 import {
   // systemNotification,
@@ -25,7 +25,6 @@ import {
 
 import { activateNotifier } from "./token";
 import { v4 as uuidv4 } from "uuid";
-import { StoreRounded } from "@material-ui/icons";
 // import React from 'react';
 
 // import { List } from '@material-ui/core';
@@ -57,9 +56,9 @@ export interface INotificationEvent {
 }
 
 export interface INotificationRequestParameters {
-  subject: string;
-  recipient: string;
-  created: string;
+  subject?: string;
+  recipient?: string;
+  created?: string;
 }
 
 export interface INotificationStoreObject {
@@ -81,6 +80,8 @@ class ButtonExtension
           origin: "button extension",
           title: Math.random().toString(),
           body: "this is notiffrom new",
+          subject: "button press",
+          recipient: "harshit",
           linkUrl: "googl.com",
           ephemeral: true,
           notifTimeout: 18,
@@ -136,46 +137,55 @@ const plugin: JupyterFrontEndPlugin<void> = {
 
     if (!localStorage.getItem("notifications-UUID")) {
       localStorage.setItem("notifications-UUID", uuidv4());
-      localStorage.setItem("originStore", JSON.stringify([]));
-      console.log("UUID = ", localStorage.getItem("UUID"));
-      console.log("originStore = ", localStorage.getItem("originStore"));
       let username = prompt("Enter your username", "");
       localStorage.setItem("notifications-username", username!);
       localStorage.setItem("notifications-lastDate", "0");
     } else {
       console.log("UUID = ", localStorage.getItem("notifications-UUID"));
-      console.log("originStore = ", localStorage.getItem("originStore"));
-
-      const parameters = {
-        subject: "",
-        recipient: localStorage.getItem("notifications-username")!,
-        created: localStorage.getItem("notifications-lastDate")!,
-      };
-      let notifier = activateNotifier();
-      const notificationsList = await notifier.getNotificationWithParameters(
-        parameters
-      );
-      if (notificationsList) {
-        const store = [...getStore().originStore];
-        for (let index = 0; index < notificationsList.length; index++) {
-          const o = store.findIndex(
-            (obj) => obj.origin === notificationsList[index].origin
-          );
-          if (o == -1) {
-            store.push({
-              origin: notificationsList[index].origin,
-              notifications: [notificationsList[index]],
-            });
-          } else {
-            store[o].notifications.push(notificationsList[index]);
-          }
-        }
-        setStore({
-          originStore: store,
-        });
-      }
     }
-    notifyInCenter(JSON.parse(localStorage.getItem("originStore")!));
+
+
+    //UPDATE THIS WHEN QUERY FUNCTION WORKS
+    let parameters = {
+      subject: "",
+      recipient: localStorage.getItem("notifications-username")!,
+      created: localStorage.getItem("notifications-lastDate")!,
+    };
+    if (localStorage.getItem("notifications-lastDate")! === "0") {
+      parameters = {
+        subject: "",
+        recipient: "",
+        created: "",
+      };
+    }
+    console.log("parameters = ", parameters);
+    let notifier = activateNotifier();
+    const notificationsList = await notifier.getNotificationWithParameters(
+      parameters
+    );
+    console.log("notificationList = ", notificationsList);
+    if (notificationsList) {
+      const store = [...getStore().originStore];
+      for (let index = 0; index < notificationsList.length; index++) {
+        const o = store.findIndex(
+          (obj) => obj.origin === notificationsList[index].origin
+        );
+        console.log("Notification= ", notificationsList[index]);
+        console.log("Notification origin= ", notificationsList[index].origin);
+        if (o == -1) {
+          store.push({
+            origin: notificationsList[index].origin,
+            notifications: [notificationsList[index]],
+          });
+        } else {
+          store[o].notifications.push(notificationsList[index]);
+        }
+      }
+      console.log("new store = ", store);
+      notifyInCenter(store);
+    }
+
+    // notifyInCenter(JSON.parse(localStorage.getItem("originStore")!));
     let ws = new WebSocket("ws://localhost:8888/api/ws");
     ws.onopen = function () {
       ws.send("Hello, world");
@@ -186,10 +196,12 @@ const plugin: JupyterFrontEndPlugin<void> = {
         console.log("this was also invoked");
         let notifier = activateNotifier();
         const notification = await notifier.getNotification(rowId.data);
+        console.log("notification from get = ", notification);
         if (notification) {
-          let originStore: INotificationStoreObject[] = JSON.parse(
-            localStorage.getItem("originStore")!
-          );
+          // let originStore: INotificationStoreObject[] = JSON.parse(
+          //   localStorage.getItem("originStore")!
+          // );
+          let originStore = [...getStore().originStore];
           const i = originStore.findIndex(
             (obj) => obj.origin === notification["origin"]
           );
@@ -208,8 +220,8 @@ const plugin: JupyterFrontEndPlugin<void> = {
           // } else {
           //   originStore[notification["origin"]] = [notification];
           // }
-          localStorage.setItem("originStore", JSON.stringify(originStore));
-          console.log("originStore = ", localStorage.getItem("originStore"));
+          // localStorage.setItem("originStore", JSON.stringify(originStore));
+          console.log("originStore after get= ", originStore);
           notifyInCenter(originStore);
           localStorage.setItem(
             "notifications-lastDate",
@@ -241,6 +253,8 @@ const plugin: JupyterFrontEndPlugin<void> = {
             origin: "cell execution",
             title: Math.random().toString(),
             body: notebookName,
+            subject: notebookName,
+            recipient: "harshit",
             linkUrl: "googl.com",
             ephemeral: true,
             notifTimeout: 18,

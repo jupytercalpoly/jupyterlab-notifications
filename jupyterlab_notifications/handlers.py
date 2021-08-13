@@ -60,22 +60,23 @@ class notifyBaseHandler(APIHandler):
         con = sqlite3.connect('notif.db')
         cur = con.cursor()
         data = ""
+        print(args, "arguments")
         if "created" in args and "origin" in args and "recipient" in args:
             created, origin, recipient = args["created"][0].decode(
             ), args["origin"][0].decode(), args["recipient"][0].decode() 
-            cur.execute('SELECT * FROM notifs where created >= ? and origin = ? and (recipient = ? or recipient = "*")',
+            cur.execute('SELECT * FROM notifs where created > ? and origin = ? and (recipient = ? or recipient = "*")',
                         (str(created), str(origin), str(recipient)))
             data = cur.fetchall()
         if "created" in args and "origin" in args:
             created, origin = args["created"][0].decode(
             ), args["origin"][0].decode()
-            cur.execute('SELECT * FROM notifs where created >= ? and origin = ?',
+            cur.execute('SELECT * FROM notifs where created > ? and origin = ?',
                         (str(created), str(origin)))
             data = cur.fetchall()
         if "created" in args and "recipient" in args:
             created, recipient = args["created"][0].decode(
             ), args["recipient"][0].decode()
-            cur.execute('SELECT * FROM notifs where created >= ? and (recipient = ? or recipient = "*")',
+            cur.execute('SELECT * FROM notifs where created > ? and (recipient = ? or recipient = "*")',
                         (str(created), str(recipient)))
             data = cur.fetchall()
         if "origin" in args and "recipient" in args:
@@ -86,7 +87,7 @@ class notifyBaseHandler(APIHandler):
             data = cur.fetchall()
         elif "created" in args:
             created = args["created"][0].decode()
-            cur.execute('SELECT * FROM notifs where created >= ?',
+            cur.execute('SELECT * FROM notifs where created > ?',
                         (str(created),))
             data = cur.fetchall()
         elif "origin" in args:
@@ -101,7 +102,7 @@ class notifyBaseHandler(APIHandler):
             data = cur.fetchall()
         else:
             cur.execute('SELECT * FROM notifs')
-            data = cur.fetchall()
+            data = cur.fetchall()[-20:]
         responses = []
         for row in data:
             response = {"notificationId": row[0], "origin": row[1], "title": row[2], "body": row[3],
@@ -152,7 +153,7 @@ class notifyBaseHandler(APIHandler):
 class notifyIDHandler(APIHandler):
     @tornado.web.authenticated
     async def get(self, notificationId):
-        # print(notificationId, "THIS WHAT I GOT")
+        print(notificationId, "THIS WHAT I GOT")
         con = sqlite3.connect('notif.db')
         cur = con.cursor()
 

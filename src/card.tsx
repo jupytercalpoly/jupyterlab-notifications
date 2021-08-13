@@ -39,7 +39,7 @@ export default function ImgMediaCard(props: any) {
     setStore({
       originStore: store,
     });
-    localStorage.setItem("originStore", JSON.stringify(store));
+    // localStorage.setItem("originStore", JSON.stringify(store));
     console.log("This was triggered");
   };
   return (
