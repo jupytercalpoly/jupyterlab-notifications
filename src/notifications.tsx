@@ -13,7 +13,7 @@ import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-
+import SwitchLabels from "./switch";
 const useStyles = makeStyles(() => ({
   root: {
     width: "100%",
@@ -58,10 +58,10 @@ export function NotificationCenter(props: any) {
     setSettings(!settings);
   };
 
-  let onOriginClick = (e: any) => {
-    e.preventDefault();
-    console.log("origin clicked");
-  };
+  // let onOriginClick = (e: any) => {
+  //   e.preventDefault();
+  //   console.log("origin clicked");
+  // };
 
   let handleClick = () => {
     console.log(store);
@@ -82,10 +82,8 @@ export function NotificationCenter(props: any) {
       <div>
         {settings ? (
           <div>
-            {store.originList.map(origin => (
-              <button type="button" onClick={onOriginClick}>
-                {origin}
-              </button> 
+            {store.originList.map((origin) => (
+              <SwitchLabels origin={origin} />
             ))}
           </div>
         ) : (

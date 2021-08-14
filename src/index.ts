@@ -15,7 +15,7 @@ import { ToolbarButton } from "@jupyterlab/apputils";
 import { DocumentRegistry } from "@jupyterlab/docregistry";
 import { INotebookModel, NotebookPanel } from "@jupyterlab/notebook";
 import { IDisposable } from "@lumino/disposable";
-import { getStore } from "./useStore";
+import { getStore, setStore } from "./useStore";
 //import { requestAPI } from './handler';
 import {
   // systemNotification,
@@ -151,6 +151,12 @@ const plugin: JupyterFrontEndPlugin<void> = {
         "blocked-origins = ",
         localStorage.getItem("blocked-origins")
       );
+      let store = getStore();
+      const blockedOrigins = JSON.parse(localStorage.getItem("blocked-origins")!);
+      store.blockedOrigins = blockedOrigins;
+      setStore(store);
+      
+
     }
 
     //UPDATE THIS WHEN QUERY FUNCTION WORKS

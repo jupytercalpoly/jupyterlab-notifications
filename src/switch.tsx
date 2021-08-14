@@ -1,38 +1,49 @@
-import React from 'react';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch from '@material-ui/core/Switch';
+import React from "react";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Switch from "@material-ui/core/Switch";
+import { getStore, setStore } from "./useStore";
 
-export default function SwitchLabels() {
+export default function SwitchLabels(props: any) {
   const [state, setState] = React.useState({
-    checkedA: true,
-    checkedB: true,
+    checkedStatus: false,
   });
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    origin: string
+  ) => {
+    let store = getStore();
+    const blockedOrigins = [...store.blockedOrigins];
     setState({ ...state, [event.target.name]: event.target.checked });
+    console.log("state = ", state);
+    const isChecked = !state.checkedStatus;
+    const b = blockedOrigins.findIndex((originEle) => originEle === origin);
+    if (isChecked) {
+      if (b === -1) {
+        blockedOrigins.push(origin);
+      }
+    } else {
+      if (b !== -1) {
+        blockedOrigins.splice(b);
+      }
+    }
+    store.blockedOrigins = blockedOrigins;
+    setStore(store);
+    localStorage.setItem("blocked-origins", JSON.stringify(blockedOrigins));
   };
 
   return (
-    <FormGroup row>
-      <FormControlLabel
-        control={<Switch checked={state.checkedA} onChange={handleChange} name="checkedA" />}
-        label="Secondary"
-      />
-      <FormControlLabel
-        control={
-          <Switch
-            checked={state.checkedB}
-            onChange={handleChange}
-            name="checkedB"
-            color="primary"
-          />
-        }
-        label="Primary"
-      />
-      <FormControlLabel control={<Switch />} label="Uncontrolled" />
-      <FormControlLabel disabled control={<Switch />} label="Disabled" />
-      <FormControlLabel disabled control={<Switch checked />} label="Disabled" />
-    </FormGroup>
+    <FormControlLabel
+      control={
+        <Switch
+          checked={state.checkedStatus}
+          onChange={(e) => {
+            handleChange(e, props.origin);
+          }}
+          name="checkedStatus"
+        />
+      }
+      label={props.origin}
+    />
   );
 }
