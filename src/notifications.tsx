@@ -1,6 +1,6 @@
 import useStore from "./useStore";
 import { getStore, setStore } from "./useStore";
-import React from "react";
+import React, { useState } from "react";
 import ImgMediaCard from "./card";
 import { ReactWidget } from "@jupyterlab/apputils";
 import { INotificationStoreObject } from "./index";
@@ -49,8 +49,19 @@ export function systemNotification(notification: any) {
 
 export function NotificationCenter(props: any) {
   const [store, setStore] = useStore();
+  const [settings, setSettings] = useState(false);
 
   const classes = useStyles();
+
+  let onSettingsClick = (e: any) => {
+    e.preventDefault();
+    setSettings(!settings);
+  };
+
+  let onOriginClick = (e: any) => {
+    e.preventDefault();
+    console.log("origin clicked");
+  };
 
   let handleClick = () => {
     console.log(store);
@@ -63,56 +74,76 @@ export function NotificationCenter(props: any) {
 
   return (
     <div>
-      {store.subjectStore
-        // .filter((obj) => !store.blockedOrigins.includes(obj.origin))
-        .map((obj) => (
-          <div className={classes.root}>
-            {/* bool defaultExpanded below controls default state of accordion */}
-            <Accordion defaultExpanded={true} elevation={0}>
-              <AccordionSummary
-                classes={{
-                  content: classes.content,
-                  expanded: classes.expanded,
-                }}
-                expandIcon={<ExpandMoreIcon />}
-                aria-label="Expand"
-                aria-controls="additional-actions1-content"
-                id="additional-actions1-header"
-              >
-                <FormControlLabel
-                  aria-label="Acknowledge"
-                  onClick={(event) => event.stopPropagation()}
-                  onFocus={(event) => event.stopPropagation()}
-                  control={
-                    <Checkbox
-                      checked={false}
-                      //id={task.id.toString()}
-                      //onChange={toggleTask}
-                    />
-                  }
-                  label={<div>{obj.subject}</div>}
-                />
-              </AccordionSummary>
-              <AccordionDetails>
-                <Typography color="textSecondary" component={"span"}>
-                  <Box pl={4}>
-                    {obj.notifications.map((notif) => (
-                      <ImgMediaCard
-                        title={notif.title}
-                        body={notif.body}
-                        id={notif.notificationId}
-                        origin={notif.origin}
-                        subject={notif.subject}
-                      >
-                        {/* control={ */}
-                      </ImgMediaCard>
-                    ))}
-                  </Box>
-                </Typography>
-              </AccordionDetails>
-            </Accordion>
+      <div>
+        <button type="button" onClick={onSettingsClick}>
+          Settings
+        </button>
+      </div>
+      <div>
+        {settings ? (
+          <div>
+            {store.originList.map(origin => (
+              <button type="button" onClick={onOriginClick}>
+                {origin}
+              </button> 
+            ))}
           </div>
-        ))}
+        ) : (
+          <div>
+            {store.subjectStore
+              // .filter((obj) => !store.blockedOrigins.includes(obj.origin))
+              .map((obj) => (
+                <div className={classes.root}>
+                  {/* bool defaultExpanded below controls default state of accordion */}
+                  <Accordion defaultExpanded={true} elevation={0}>
+                    <AccordionSummary
+                      classes={{
+                        content: classes.content,
+                        expanded: classes.expanded,
+                      }}
+                      expandIcon={<ExpandMoreIcon />}
+                      aria-label="Expand"
+                      aria-controls="additional-actions1-content"
+                      id="additional-actions1-header"
+                    >
+                      <FormControlLabel
+                        aria-label="Acknowledge"
+                        onClick={(event) => event.stopPropagation()}
+                        onFocus={(event) => event.stopPropagation()}
+                        control={
+                          <Checkbox
+                            checked={false}
+                            //id={task.id.toString()}
+                            //onChange={toggleTask}
+                          />
+                        }
+                        label={<div>{obj.subject}</div>}
+                      />
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <Typography color="textSecondary" component={"span"}>
+                        <Box pl={4}>
+                          {obj.notifications.map((notif) => (
+                            <ImgMediaCard
+                              title={notif.title}
+                              body={notif.body}
+                              id={notif.notificationId}
+                              origin={notif.origin}
+                              subject={notif.subject}
+                            >
+                              {/* control={ */}
+                            </ImgMediaCard>
+                          ))}
+                        </Box>
+                      </Typography>
+                    </AccordionDetails>
+                  </Accordion>
+                </div>
+              ))}
+          </div>
+        )}
+      </div>
+
       <button onClick={() => handleClick()}>Activat Lasers</button>
     </div>
   );
