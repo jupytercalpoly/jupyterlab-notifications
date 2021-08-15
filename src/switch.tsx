@@ -5,7 +5,7 @@ import { getStore, setStore } from "./useStore";
 
 export default function SwitchLabels(props: any) {
   const [state, setState] = React.useState({
-    checkedStatus: false,
+    checkedStatus: props.isChecked,
   });
 
   const handleChange = (

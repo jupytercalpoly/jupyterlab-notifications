@@ -14,7 +14,7 @@ import AccordionDetails from "@material-ui/core/AccordionDetails";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import SwitchLabels from "./switch";
-import FormGroup from '@material-ui/core/FormGroup';
+import FormGroup from "@material-ui/core/FormGroup";
 const useStyles = makeStyles(() => ({
   root: {
     width: "100%",
@@ -84,7 +84,10 @@ export function NotificationCenter(props: any) {
         {settings ? (
           <FormGroup>
             {store.originList.map((origin) => (
-              <SwitchLabels origin={origin} />
+              <SwitchLabels
+                origin={origin}
+                isChecked={store.blockedOrigins.includes(origin)}
+              />
             ))}
           </FormGroup>
         ) : (
