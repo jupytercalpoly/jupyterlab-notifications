@@ -287,7 +287,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
           );
         }
       } catch (reason) {
-        console.error(`Error on GET /api/notifications.\n${reason}`);
+        console.error(`Error on ws connection /api/ws.\n${reason}`);
       }
     };
 

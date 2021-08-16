@@ -153,6 +153,8 @@ class notifyBaseHandler(APIHandler):
 class notifyIDHandler(APIHandler):
     @tornado.web.authenticated
     async def get(self, notificationId):
+        if (not notificationId.isnumeric()):
+            raise tornado.web.HTTPError(400)
         print(notificationId, "THIS WHAT I GOT")
         con = sqlite3.connect('notif.db')
         cur = con.cursor()
