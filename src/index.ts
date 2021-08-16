@@ -152,11 +152,26 @@ const plugin: JupyterFrontEndPlugin<void> = {
         localStorage.getItem("blocked-origins")
       );
       let store = getStore();
-      const blockedOrigins = JSON.parse(localStorage.getItem("blocked-origins")!);
+      const blockedOrigins = JSON.parse(
+        localStorage.getItem("blocked-origins")!
+      );
       store.blockedOrigins = blockedOrigins;
       setStore(store);
-      
+    }
 
+    if (!localStorage.getItem("notifications-originList")) {
+      localStorage.setItem("notifications-originList", JSON.stringify([]));
+    } else {
+      console.log(
+        "notifications-originList = ",
+        localStorage.getItem("notifications-originList")
+      );
+      let store = getStore();
+      const originList = JSON.parse(
+        localStorage.getItem("notifications-originList")!
+      );
+      store.blockedOrigins = originList;
+      setStore(store);
     }
 
     //UPDATE THIS WHEN QUERY FUNCTION WORKS
@@ -206,6 +221,10 @@ const plugin: JupyterFrontEndPlugin<void> = {
       }
       console.log("new store = ", store);
       notifyInCenter(subjectStore, originList);
+      localStorage.setItem(
+        "notifications-originList",
+        JSON.stringify(originList)
+      );
     }
 
     // notifyInCenter(JSON.parse(localStorage.getItem("originStore")!));
@@ -257,6 +276,10 @@ const plugin: JupyterFrontEndPlugin<void> = {
           localStorage.setItem(
             "notifications-lastDate",
             notification["created"]
+          );
+          localStorage.setItem(
+            "notifications-originList",
+            JSON.stringify(originList)
           );
         }
       } catch (reason) {
