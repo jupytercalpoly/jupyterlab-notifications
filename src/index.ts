@@ -18,10 +18,10 @@ import { IDisposable } from "@lumino/disposable";
 import { getStore, setStore } from "./useStore";
 //import { requestAPI } from './handler';
 import {
-  // systemNotification,
   notificationWidget,
   notifyInCenter,
 } from "./notifications";
+// import { systemNotification } from './systemNotification'
 
 import { activateNotifier } from "./token";
 import { v4 as uuidv4 } from "uuid";
