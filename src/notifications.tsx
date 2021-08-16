@@ -13,7 +13,8 @@ import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-
+import SwitchLabels from "./switch";
+import FormGroup from "@material-ui/core/FormGroup";
 const useStyles = makeStyles(() => ({
   root: {
     width: "100%",
@@ -58,10 +59,10 @@ export function NotificationCenter(props: any) {
     setSettings(!settings);
   };
 
-  let onOriginClick = (e: any) => {
-    e.preventDefault();
-    console.log("origin clicked");
-  };
+  // let onOriginClick = (e: any) => {
+  //   e.preventDefault();
+  //   console.log("origin clicked");
+  // };
 
   let handleClick = () => {
     console.log(store);
@@ -81,13 +82,14 @@ export function NotificationCenter(props: any) {
       </div>
       <div>
         {settings ? (
-          <div>
-            {store.originList.map(origin => (
-              <button type="button" onClick={onOriginClick}>
-                {origin}
-              </button> 
+          <FormGroup>
+            {store.originList.map((origin) => (
+              <SwitchLabels
+                origin={origin}
+                isChecked={store.blockedOrigins.includes(origin)}
+              />
             ))}
-          </div>
+          </FormGroup>
         ) : (
           <div>
             {store.subjectStore
