@@ -92,56 +92,54 @@ export function NotificationCenter(props: any) {
           </FormGroup>
         ) : (
           <div>
-            {store.subjectStore
-              // .filter((obj) => !store.blockedOrigins.includes(obj.origin))
-              .map((obj) => (
-                <div className={classes.root}>
-                  {/* bool defaultExpanded below controls default state of accordion */}
-                  <Accordion defaultExpanded={true} elevation={0}>
-                    <AccordionSummary
-                      classes={{
-                        content: classes.content,
-                        expanded: classes.expanded,
-                      }}
-                      expandIcon={<ExpandMoreIcon />}
-                      aria-label="Expand"
-                      aria-controls="additional-actions1-content"
-                      id="additional-actions1-header"
-                    >
-                      <FormControlLabel
-                        aria-label="Acknowledge"
-                        onClick={(event) => event.stopPropagation()}
-                        onFocus={(event) => event.stopPropagation()}
-                        control={
-                          <Checkbox
-                            checked={false}
-                            //id={task.id.toString()}
-                            //onChange={toggleTask}
-                          />
-                        }
-                        label={<div>{obj.subject}</div>}
-                      />
-                    </AccordionSummary>
-                    <AccordionDetails>
-                      <Typography color="textSecondary" component={"span"}>
-                        <Box pl={4}>
-                          {obj.notifications.map((notif) => (
-                            <ImgMediaCard
-                              title={notif.title}
-                              body={notif.body}
-                              id={notif.notificationId}
-                              origin={notif.origin}
-                              subject={notif.subject}
-                            >
-                              {/* control={ */}
-                            </ImgMediaCard>
-                          ))}
-                        </Box>
-                      </Typography>
-                    </AccordionDetails>
-                  </Accordion>
-                </div>
-              ))}
+            {store.subjectStore.map((obj) => (
+              <div className={classes.root}>
+                {/* bool defaultExpanded below controls default state of accordion */}
+                <Accordion defaultExpanded={true} elevation={0}>
+                  <AccordionSummary
+                    classes={{
+                      content: classes.content,
+                      expanded: classes.expanded,
+                    }}
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-label="Expand"
+                    aria-controls="additional-actions1-content"
+                    id="additional-actions1-header"
+                  >
+                    <FormControlLabel
+                      aria-label="Acknowledge"
+                      onClick={(event) => event.stopPropagation()}
+                      onFocus={(event) => event.stopPropagation()}
+                      control={
+                        <Checkbox
+                          checked={false}
+                          //id={task.id.toString()}
+                          //onChange={toggleTask}
+                        />
+                      }
+                      label={<div>{obj.subject}</div>}
+                    />
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    <Typography color="textSecondary" component={"span"}>
+                      <Box pl={4}>
+                        {obj.notifications.map((notif) => (
+                          <ImgMediaCard
+                            title={notif.title}
+                            body={notif.body}
+                            id={notif.notificationId}
+                            origin={notif.origin}
+                            subject={notif.subject}
+                          >
+                            {/* control={ */}
+                          </ImgMediaCard>
+                        ))}
+                      </Box>
+                    </Typography>
+                  </AccordionDetails>
+                </Accordion>
+              </div>
+            ))}
           </div>
         )}
       </div>
