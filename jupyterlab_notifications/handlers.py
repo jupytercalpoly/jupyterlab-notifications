@@ -109,7 +109,7 @@ class notifyBaseHandler(APIHandler):
                         "subject": row[4], "recipient": row[5] ,"linkUrl": row[6], "ephemeral": row[7], 
                         "notifTimeout": row[8], "notifType": row[9], "created": row[10]}
             responses.append(response)
-        self.finish(json.dumps({"Response": responses}))
+        self.finish(json.dumps({"Response": responses[::-1]}))
 
     @tornado.web.authenticated
     async def post(self, path: str = ""):
@@ -153,6 +153,8 @@ class notifyBaseHandler(APIHandler):
 class notifyIDHandler(APIHandler):
     @tornado.web.authenticated
     async def get(self, notificationId):
+        if (not notificationId.isnumeric()):
+            raise tornado.web.HTTPError(400)
         print(notificationId, "THIS WHAT I GOT")
         con = sqlite3.connect('notif.db')
         cur = con.cursor()

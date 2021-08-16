@@ -170,7 +170,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
       const originList = JSON.parse(
         localStorage.getItem("notifications-originList")!
       );
-      store.blockedOrigins = originList;
+      store.originList = originList;
       setStore(store);
     }
 
@@ -196,7 +196,9 @@ const plugin: JupyterFrontEndPlugin<void> = {
     if (notificationsList) {
       let store = getStore();
       const subjectStore = [...store.subjectStore];
-      const originList = [...store.originList];
+      const originList = JSON.parse(
+        localStorage.getItem("notifications-originList")!
+      );
       for (let index = 0; index < notificationsList.length; index++) {
         const s = subjectStore.findIndex(
           (obj) => obj.subject === notificationsList[index].subject
@@ -213,7 +215,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
         }
 
         const o = originList.findIndex(
-          (origin) => origin === notificationsList[index].origin
+          (origin : string) => origin === notificationsList[index].origin
         );
         if (o == -1) {
           originList.push(notificationsList[index].origin);
@@ -245,7 +247,9 @@ const plugin: JupyterFrontEndPlugin<void> = {
           // );
           let store = getStore();
           const subjectStore = [...store.subjectStore];
-          const originList = [...store.originList];
+          const originList = JSON.parse(
+            localStorage.getItem("notifications-originList")!
+          );
           const i = subjectStore.findIndex(
             (obj) => obj.subject === notification["subject"]
           );
@@ -260,7 +264,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
             subjectStore.unshift(t[0]);
           }
           const o = originList.findIndex(
-            (origin) => origin === notification.origin
+            (origin : any) => origin === notification.origin
           );
           if (o == -1) {
             originList.push(notification.origin);
@@ -283,7 +287,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
           );
         }
       } catch (reason) {
-        console.error(`Error on GET /api/notifications.\n${reason}`);
+        console.error(`Error on ws connection /api/ws.\n${reason}`);
       }
     };
 
