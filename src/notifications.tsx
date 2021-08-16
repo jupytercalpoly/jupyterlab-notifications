@@ -6,7 +6,6 @@ import { ReactWidget } from "@jupyterlab/apputils";
 import { INotificationStoreObject } from "./index";
 import { makeStyles } from "@material-ui/core/styles";
 import Accordion from "@material-ui/core/Accordion";
-import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Box from "@material-ui/core/Box";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
@@ -15,6 +14,10 @@ import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import SwitchLabels from "./switch";
 import FormGroup from "@material-ui/core/FormGroup";
+import IconButton from "@material-ui/core/IconButton";
+import DeleteIcon from "@material-ui/icons/Delete";
+import ReportOffIcon from "@material-ui/icons/ReportOff";
+
 const useStyles = makeStyles(() => ({
   root: {
     width: "100%",
@@ -50,6 +53,40 @@ export function NotificationCenter(props: any) {
     // console.log(yarray.toArray(), "yjs print");
     // ydoc.getArray('notif').insert(0, [6,7,8]);
     // console.log(ydoc.getArray('notif').toArray(), "print2");
+  };
+
+  let deleteSubject = (subject: string) => {
+    let store = getStore();
+    setStore({
+      blockedOrigins: store.blockedOrigins,
+      subjectStore: store.subjectStore.filter(
+        (subjectObj) => subjectObj.subject !== subject
+      ),
+      originList: store.originList,
+    });
+  };
+
+  let ignoreSubject = (subject: string) => {
+    let store = getStore();
+    if (!store.blockedOrigins.includes(subject)) {
+      store.blockedOrigins.push(subject);
+      setStore({
+        blockedOrigins: store.blockedOrigins,
+        subjectStore: store.subjectStore,
+        originList: store.originList,
+      });
+    }
+
+    let blockedOrigins = JSON.parse(
+      localStorage.getItem("blocked-origins")!
+    );
+    if (!blockedOrigins.includes(subject)) {
+      blockedOrigins.push(subject);
+      localStorage.setItem(
+        "blocked-origins",
+        JSON.stringify(blockedOrigins)
+      );
+    }
   };
 
   return (
@@ -90,12 +127,30 @@ export function NotificationCenter(props: any) {
                       onClick={(event) => event.stopPropagation()}
                       onFocus={(event) => event.stopPropagation()}
                       control={
-                        <Checkbox
-                          checked={false}
-                          //id={task.id.toString()}
-                          //onChange={toggleTask}
-                        />
+                        <div>
+                          <IconButton aria-label="delete">
+                            <DeleteIcon
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                e.preventDefault();
+                                deleteSubject(obj.subject);
+                              }}
+                              style={{ top: 3, right: 3 }}
+                            />
+                          </IconButton>
+                          <IconButton aria-label="delete">
+                            <ReportOffIcon
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                e.preventDefault();
+                                ignoreSubject(obj.subject);
+                              }}
+                              style={{ top: 3, right: 3 }}
+                            />
+                          </IconButton>
+                        </div>
                       }
+                      labelPlacement="start"
                       label={<div>{obj.subject}</div>}
                     />
                   </AccordionSummary>
