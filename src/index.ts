@@ -246,41 +246,46 @@ const plugin: JupyterFrontEndPlugin<void> = {
           let store = getStore();
           const subjectStore = [...store.subjectStore];
           const originList = [...store.originList];
-          const i = subjectStore.findIndex(
-            (obj) => obj.subject === notification["subject"]
-          );
-          if (i === -1) {
-            subjectStore.unshift({
-              subject: notification["subject"],
-              notifications: [notification],
-            });
+
+          if (!store.blockedOrigins.includes(notification.origin)) {
+            const i = subjectStore.findIndex(
+              (obj) => obj.subject === notification["subject"]
+            );
+            if (i === -1) {
+              subjectStore.unshift({
+                subject: notification["subject"],
+                notifications: [notification],
+              });
+            } else {
+              let t = subjectStore.splice(i, 1);
+              t[0].notifications.unshift(notification);
+              subjectStore.unshift(t[0]);
+            }
+            const o = originList.findIndex(
+              (origin) => origin === notification.origin
+            );
+            if (o == -1) {
+              originList.push(notification.origin);
+            }
+            // if (notification["origin"] in originStore) {
+            //   originStore[notification["origin"]].push(notification);
+            // } else {
+            //   originStore[notification["origin"]] = [notification];
+            // }
+            // localStorage.setItem("originStore", JSON.stringify(originStore));
+            // console.log("originStore after get= ", originStore);
+            notifyInCenter(subjectStore, originList);
+            localStorage.setItem(
+              "notifications-lastDate",
+              notification["created"]
+            );
+            localStorage.setItem(
+              "notifications-originList",
+              JSON.stringify(originList)
+            );
           } else {
-            let t = subjectStore.splice(i, 1);
-            t[0].notifications.unshift(notification);
-            subjectStore.unshift(t[0]);
+            console.log("Origin blocked: " + notification.origin);
           }
-          const o = originList.findIndex(
-            (origin) => origin === notification.origin
-          );
-          if (o == -1) {
-            originList.push(notification.origin);
-          }
-          // if (notification["origin"] in originStore) {
-          //   originStore[notification["origin"]].push(notification);
-          // } else {
-          //   originStore[notification["origin"]] = [notification];
-          // }
-          // localStorage.setItem("originStore", JSON.stringify(originStore));
-          // console.log("originStore after get= ", originStore);
-          notifyInCenter(subjectStore, originList);
-          localStorage.setItem(
-            "notifications-lastDate",
-            notification["created"]
-          );
-          localStorage.setItem(
-            "notifications-originList",
-            JSON.stringify(originList)
-          );
         }
       } catch (reason) {
         console.error(`Error on GET /api/notifications.\n${reason}`);
