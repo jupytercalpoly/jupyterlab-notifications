@@ -111,7 +111,7 @@ export function NotificationCenter(props: any) {
                 {!obj.notifications.length ? null : (
                   <div className={classes.root}>
                     {/* bool defaultExpanded below controls default state of accordion */}
-                    <Accordion defaultExpanded={false} elevation={0}>
+                    <Accordion defaultExpanded={false}>
                       <AccordionSummary
                         classes={{
                           content: classes.content,
@@ -138,19 +138,23 @@ export function NotificationCenter(props: any) {
                                   style={{ top: 3, right: 3 }}
                                 />
                               </IconButton>
-                              <IconButton aria-label="delete"></IconButton>
                             </div>
                           }
                           labelPlacement="start"
                           label={
                             <div>
-                              {obj.subject}
+                              <Typography variant="h2" gutterBottom>
+                                {obj.subject}
+                              </Typography>
                               <ImgMediaCard
                                 title={obj.notifications[0].title}
                                 body={obj.notifications[0].body}
                                 id={obj.notifications[0].notificationId}
                                 origin={obj.notifications[0].origin}
                                 subject={obj.notifications[0].subject}
+                                elevation={0}
+                                deleteButton={false}
+                                ignoreButton={false}
                               >
                                 {/* control={ */}
                               </ImgMediaCard>
@@ -173,6 +177,9 @@ export function NotificationCenter(props: any) {
                                 id={notif.notificationId}
                                 origin={notif.origin}
                                 subject={notif.subject}
+                                deleteButton={true}
+                                ignoreButton={true}
+                                elevation={0}
                               >
                                 {/* control={ */}
                               </ImgMediaCard>
