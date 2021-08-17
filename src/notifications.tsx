@@ -98,9 +98,7 @@ export function NotificationCenter(props: any) {
         {settings ? (
           <FormGroup>
             {store.blockedOrigins.map((origin) => (
-              <Chips
-                origin={origin}
-              />
+              <Chips origin={origin} />
             ))}
           </FormGroup>
         ) : (
@@ -110,7 +108,7 @@ export function NotificationCenter(props: any) {
                 {!obj.notifications.length ? null : (
                   <div className={classes.root}>
                     {/* bool defaultExpanded below controls default state of accordion */}
-                    <Accordion defaultExpanded={true} elevation={0}>
+                    <Accordion defaultExpanded={false} elevation={0}>
                       <AccordionSummary
                         classes={{
                           content: classes.content,
@@ -144,8 +142,15 @@ export function NotificationCenter(props: any) {
                           label={
                             <div>
                               {obj.subject}
-                              {obj.notifications[0].title}
-                              {obj.notifications[0].body}
+                              <ImgMediaCard
+                                title={obj.notifications[0].title}
+                                body={obj.notifications[0].body}
+                                id={obj.notifications[0].notificationId}
+                                origin={obj.notifications[0].origin}
+                                subject={obj.notifications[0].subject}
+                              >
+                                {/* control={ */}
+                              </ImgMediaCard>
                               {obj.notifications.length > 1
                                 ? `${
                                     obj.notifications.length - 1
