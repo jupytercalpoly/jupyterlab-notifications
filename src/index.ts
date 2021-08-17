@@ -216,7 +216,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
     }
 
     // notifyInCenter(JSON.parse(localStorage.getItem("originStore")!));
-    let ws = new WebSocket("ws://localhost:8888/api/ws");
+    let ws = new WebSocket("ws://"+window.location.hostname +":"+ window.location.port +"/api/ws");
     ws.onopen = function () {
       ws.send("Hello, world");
     };
