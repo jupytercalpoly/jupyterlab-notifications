@@ -302,7 +302,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
             origin: "cell execution",
             title: Math.random().toString(),
             body: notebookName,
-            subject: notebookName,
+            subject: notebookName + ".ipynb",
             recipient: "harshit",
             linkUrl: "googl.com",
             ephemeral: true,
