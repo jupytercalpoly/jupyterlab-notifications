@@ -17,10 +17,7 @@ import { INotebookModel, NotebookPanel } from "@jupyterlab/notebook";
 import { IDisposable } from "@lumino/disposable";
 import { getStore, setStore } from "./useStore";
 //import { requestAPI } from './handler';
-import {
-  notificationWidget,
-  notifyInCenter,
-} from "./notifications";
+import { notificationWidget, notifyInCenter } from "./notifications";
 // import { systemNotification } from './systemNotification'
 
 import { activateNotifier } from "./token";
@@ -159,21 +156,6 @@ const plugin: JupyterFrontEndPlugin<void> = {
       setStore(store);
     }
 
-    if (!localStorage.getItem("notifications-originList")) {
-      localStorage.setItem("notifications-originList", JSON.stringify([]));
-    } else {
-      console.log(
-        "notifications-originList = ",
-        localStorage.getItem("notifications-originList")
-      );
-      let store = getStore();
-      const originList = JSON.parse(
-        localStorage.getItem("notifications-originList")!
-      );
-      store.originList = originList;
-      setStore(store);
-    }
-
     //UPDATE THIS WHEN QUERY FUNCTION WORKS
     let parameters = {
       subject: "",
@@ -200,9 +182,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
         (notifRespObj) => !store.blockedOrigins.includes(notifRespObj.origin)
       );
       const subjectStore = [...store.subjectStore];
-      const originList = JSON.parse(
-        localStorage.getItem("notifications-originList")!
-      );
+
       for (let index = 0; index < notificationsList.length; index++) {
         const s = subjectStore.findIndex(
           (obj) => obj.subject === notificationsList![index].subject
@@ -217,19 +197,12 @@ const plugin: JupyterFrontEndPlugin<void> = {
         } else {
           subjectStore[s].notifications.push(notificationsList[index]);
         }
-
-        const o = originList.findIndex(
-          (origin: string) => origin === notificationsList![index].origin
-        );
-        if (o == -1) {
-          originList.push(notificationsList[index].origin);
-        }
       }
       console.log("new store = ", store);
-      notifyInCenter(subjectStore, originList);
+      notifyInCenter(subjectStore);
       localStorage.setItem(
-        "notifications-originList",
-        JSON.stringify(originList)
+        "notifications-lastDate",
+        notificationsList[notificationsList.length - 1]["created"]
       );
     }
 
@@ -251,9 +224,6 @@ const plugin: JupyterFrontEndPlugin<void> = {
           // );
           let store = getStore();
           const subjectStore = [...store.subjectStore];
-          const originList = JSON.parse(
-            localStorage.getItem("notifications-originList")!
-          );
 
           if (!store.blockedOrigins.includes(notification.origin)) {
             const i = subjectStore.findIndex(
@@ -269,12 +239,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
               t[0].notifications.unshift(notification);
               subjectStore.unshift(t[0]);
             }
-            const o = originList.findIndex(
-              (origin: any) => origin === notification.origin
-            );
-            if (o == -1) {
-              originList.push(notification.origin);
-            }
+
             // if (notification["origin"] in originStore) {
             //   originStore[notification["origin"]].push(notification);
             // } else {
@@ -282,14 +247,10 @@ const plugin: JupyterFrontEndPlugin<void> = {
             // }
             // localStorage.setItem("originStore", JSON.stringify(originStore));
             // console.log("originStore after get= ", originStore);
-            notifyInCenter(subjectStore, originList);
+            notifyInCenter(subjectStore);
             localStorage.setItem(
               "notifications-lastDate",
               notification["created"]
-            );
-            localStorage.setItem(
-              "notifications-originList",
-              JSON.stringify(originList)
             );
           }
         }
