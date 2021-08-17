@@ -16,7 +16,7 @@ import FormGroup from "@material-ui/core/FormGroup";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Chips from "./chip";
-
+import SettingsIcon from "@material-ui/icons/Settings";
 const useStyles = makeStyles(() => ({
   root: {
     width: "100%",
@@ -90,9 +90,12 @@ export function NotificationCenter(props: any) {
   return (
     <div>
       <div>
-        <button type="button" onClick={onSettingsClick}>
-          Your Preferences
-        </button>
+        <IconButton aria-label="settingsCog" style={{ top: 3, right: 3 }}>
+          <SettingsIcon
+            onClick={onSettingsClick}
+            style={{ top: 3, right: 3 }}
+          />
+        </IconButton>
       </div>
       <div>
         {settings ? (
