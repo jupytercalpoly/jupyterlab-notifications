@@ -14,6 +14,7 @@ import { ICommandPalette, MainAreaWidget } from "@jupyterlab/apputils";
 import { ToolbarButton } from "@jupyterlab/apputils";
 import { DocumentRegistry } from "@jupyterlab/docregistry";
 import { INotebookModel, NotebookPanel } from "@jupyterlab/notebook";
+import { INotification } from "jupyterlab_toastify";
 import { IDisposable } from "@lumino/disposable";
 import { getStore, setStore } from "./useStore";
 //import { requestAPI } from './handler';
@@ -254,6 +255,12 @@ const plugin: JupyterFrontEndPlugin<void> = {
               "notifications-lastDate",
               notification["created"]
             );
+            INotification.update({
+              toastId: notification.notificationId,
+              message: notification.body,
+              type: 'success',
+              autoClose: 3000,
+            });
           }
         }
       } catch (reason) {
