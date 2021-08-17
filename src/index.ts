@@ -200,10 +200,12 @@ const plugin: JupyterFrontEndPlugin<void> = {
       }
       console.log("new store = ", store);
       notifyInCenter(subjectStore);
-      localStorage.setItem(
-        "notifications-lastDate",
-        notificationsList[notificationsList.length - 1]["created"]
-      );
+      if (notificationsList.length > 0) {
+        localStorage.setItem(
+          "notifications-lastDate",
+          notificationsList[notificationsList.length - 1].created
+        );
+      }
     }
 
     // notifyInCenter(JSON.parse(localStorage.getItem("originStore")!));
