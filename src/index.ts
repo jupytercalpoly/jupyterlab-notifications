@@ -17,10 +17,7 @@ import { INotebookModel, NotebookPanel } from "@jupyterlab/notebook";
 import { IDisposable } from "@lumino/disposable";
 import { getStore, setStore } from "./useStore";
 //import { requestAPI } from './handler';
-import {
-  notificationWidget,
-  notifyInCenter,
-} from "./notifications";
+import { notificationWidget, notifyInCenter } from "./notifications";
 // import { systemNotification } from './systemNotification'
 
 import { activateNotifier } from "./token";
@@ -159,7 +156,6 @@ const plugin: JupyterFrontEndPlugin<void> = {
       setStore(store);
     }
 
-    
     //UPDATE THIS WHEN QUERY FUNCTION WORKS
     let parameters = {
       subject: "",
@@ -186,7 +182,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
         (notifRespObj) => !store.blockedOrigins.includes(notifRespObj.origin)
       );
       const subjectStore = [...store.subjectStore];
-      
+
       for (let index = 0; index < notificationsList.length; index++) {
         const s = subjectStore.findIndex(
           (obj) => obj.subject === notificationsList![index].subject
@@ -201,18 +197,15 @@ const plugin: JupyterFrontEndPlugin<void> = {
         } else {
           subjectStore[s].notifications.push(notificationsList[index]);
         }
-
-        
       }
       console.log("new store = ", store);
       notifyInCenter(subjectStore);
-      if (notificationsList.length > 0){
+      if (notificationsList.length > 0) {
         localStorage.setItem(
           "notifications-lastDate",
           notificationsList[notificationsList.length - 1].created
         );
       }
-      
     }
 
     // notifyInCenter(JSON.parse(localStorage.getItem("originStore")!));
@@ -233,7 +226,6 @@ const plugin: JupyterFrontEndPlugin<void> = {
           // );
           let store = getStore();
           const subjectStore = [...store.subjectStore];
-          
 
           if (!store.blockedOrigins.includes(notification.origin)) {
             const i = subjectStore.findIndex(
@@ -249,7 +241,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
               t[0].notifications.unshift(notification);
               subjectStore.unshift(t[0]);
             }
-            
+
             // if (notification["origin"] in originStore) {
             //   originStore[notification["origin"]].push(notification);
             // } else {
@@ -262,7 +254,6 @@ const plugin: JupyterFrontEndPlugin<void> = {
               "notifications-lastDate",
               notification["created"]
             );
-            
           }
         }
       } catch (reason) {
