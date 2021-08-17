@@ -61,7 +61,6 @@ export function NotificationCenter(props: any) {
       subjectStore: store.subjectStore.filter(
         (subjectObj) => subjectObj.subject !== subject
       ),
-      originList: store.originList,
     });
   };
 
@@ -175,14 +174,12 @@ export function NotificationCenter(props: any) {
 }
 
 export function notifyInCenter(
-  updatedSubjectStore: INotificationStoreObject[],
-  updatedOriginList: string[]
+  updatedSubjectStore: INotificationStoreObject[]
 ): void {
   let store = getStore();
   setStore({
     blockedOrigins: store.blockedOrigins,
     subjectStore: updatedSubjectStore,
-    originList: updatedOriginList,
   });
 }
 
