@@ -40,18 +40,9 @@ export function NotificationCenter(props: any) {
     setSettings(!settings);
   };
 
-  // let onOriginClick = (e: any) => {
-  //   e.preventDefault();
-  //   console.log("origin clicked");
-  // };
-
   let handleClick = () => {
     console.log(store);
     setStore({ ...store });
-    // const yarray = ydoc.getArray('notif')
-    // console.log(yarray.toArray(), "yjs print");
-    // ydoc.getArray('notif').insert(0, [6,7,8]);
-    // console.log(ydoc.getArray('notif').toArray(), "print2");
   };
 
   let deleteSubject = (subject: string) => {
@@ -63,29 +54,6 @@ export function NotificationCenter(props: any) {
       ),
     });
   };
-
-  // let ignoreSubject = (subject: string) => {
-  //   let store = getStore();
-  //   if (!store.blockedOrigins.includes(subject)) {
-  //     store.blockedOrigins.push(subject);
-  //     setStore({
-  //       blockedOrigins: store.blockedOrigins,
-  //       subjectStore: store.subjectStore,
-  //       originList: store.originList,
-  //     });
-  //   }
-
-  //   let blockedOrigins = JSON.parse(
-  //     localStorage.getItem("blocked-origins")!
-  //   );
-  //   if (!blockedOrigins.includes(subject)) {
-  //     blockedOrigins.push(subject);
-  //     localStorage.setItem(
-  //       "blocked-origins",
-  //       JSON.stringify(blockedOrigins)
-  //     );
-  //   }
-  // };
 
   return (
     <div>
@@ -110,7 +78,6 @@ export function NotificationCenter(props: any) {
               <div>
                 {!obj.notifications.length ? null : (
                   <div className={classes.root}>
-                    {/* bool defaultExpanded below controls default state of accordion */}
                     <Accordion defaultExpanded={false}>
                       <AccordionSummary
                         classes={{
@@ -156,7 +123,6 @@ export function NotificationCenter(props: any) {
                                 deleteButton={false}
                                 ignoreButton={false}
                               >
-                                {/* control={ */}
                               </ImgMediaCard>
                               {obj.notifications.length > 1
                                 ? `${
@@ -181,7 +147,6 @@ export function NotificationCenter(props: any) {
                                 ignoreButton={true}
                                 elevation={0}
                               >
-                                {/* control={ */}
                               </ImgMediaCard>
                             ))}
                           </Box>
@@ -210,19 +175,6 @@ export function notifyInCenter(
     subjectStore: updatedSubjectStore,
   });
 }
-
-// export function blockOrigin(origin: string): void {
-//   let localBlockedOrigin = JSON.parse(localStorage.getItem("blocked-origins")!);
-//   localBlockedOrigin.push(origin);
-//   localStorage.setItem("blocked-origins", JSON.stringify(localBlockedOrigin));
-
-//   let store = getStore();
-//   store.blockedOrigins.push(origin);
-//   setStore({
-//     blockedOrigins: store.blockedOrigins,
-//     originStore: store.originStore,
-//   });
-// }
 
 export class notificationWidget extends ReactWidget {
   constructor() {
