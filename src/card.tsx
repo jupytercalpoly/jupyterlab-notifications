@@ -7,6 +7,7 @@ import Typography from "@material-ui/core/Typography";
 import { getStore, setStore } from "./useStore";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
+import ReportOffIcon from "@material-ui/icons/ReportOff";
 
 const useStyles = makeStyles({
   root: {
@@ -42,6 +43,20 @@ export default function ImgMediaCard(props: any) {
     // localStorage.setItem("originStore", JSON.stringify(store));
     console.log("This was triggered");
   };
+  let ignoreOrigin = (origin: string) => {
+    let store = getStore();
+    if (!store.blockedOrigins.includes(origin)) {
+      store.blockedOrigins.push(origin);
+      setStore({
+        blockedOrigins: store.blockedOrigins,
+        subjectStore: store.subjectStore,
+        originList: store.originList,
+      });
+    }
+
+    localStorage.setItem("blocked-origins", JSON.stringify(store.blockedOrigins));
+  };
+
   return (
     <Card className={classes.root}>
       <CardActionArea>
@@ -64,6 +79,16 @@ export default function ImgMediaCard(props: any) {
                 e.stopPropagation();
                 e.preventDefault();
                 triggerDelete(props.id, props.subject);
+              }}
+              style={{ top: 3, right: 3 }}
+            />
+          </IconButton>
+          <IconButton aria-label="ignoreOrigin">
+            <ReportOffIcon
+              onClick={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                ignoreOrigin(props.origin);
               }}
               style={{ top: 3, right: 3 }}
             />
