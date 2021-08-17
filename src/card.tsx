@@ -8,6 +8,7 @@ import { getStore, setStore } from "./useStore";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import ReportOffIcon from "@material-ui/icons/ReportOff";
+import { INotification } from "jupyterlab_toastify";
 
 const useStyles = makeStyles({
   root: {
@@ -51,12 +52,25 @@ export default function ImgMediaCard(props: any) {
         blockedOrigins: store.blockedOrigins,
         subjectStore: store.subjectStore,
       });
-    }
 
-    localStorage.setItem(
-      "blocked-origins",
-      JSON.stringify(store.blockedOrigins)
-    );
+      localStorage.setItem(
+        "blocked-origins",
+        JSON.stringify(store.blockedOrigins)
+      );
+      void INotification.warning(
+        "You will no longer be notified for updates about " +
+          origin +
+          ". You can always change this in the notification settings.",
+        {
+          buttons: [
+            {
+              label: "Settings",
+              callback: () => alert("Action1 was clicked"),
+            },
+          ],
+        }
+      );
+    }
   };
 
   return (
