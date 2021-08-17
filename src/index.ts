@@ -3,13 +3,13 @@ import {
   JupyterFrontEndPlugin,
 } from "@jupyterlab/application";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Widget } from "@lumino/widgets";
+import { Panel, Widget } from "@lumino/widgets";
 import "react-toastify/dist/ReactToastify.css";
 import "../style/main.css";
 
 // import { YDocument } from "@jupyterlab/shared-models";
 import { NotebookActions } from "@jupyterlab/notebook";
-import { ICommandPalette, MainAreaWidget } from "@jupyterlab/apputils";
+import { ICommandPalette } from "@jupyterlab/apputils";
 import { ToolbarButton } from "@jupyterlab/apputils";
 import { DocumentRegistry } from "@jupyterlab/docregistry";
 import { INotebookModel, NotebookPanel } from "@jupyterlab/notebook";
@@ -216,7 +216,13 @@ const plugin: JupyterFrontEndPlugin<void> = {
     }
 
     // notifyInCenter(JSON.parse(localStorage.getItem("originStore")!));
-    let ws = new WebSocket("ws://"+window.location.hostname +":"+ window.location.port +"/api/ws");
+    let ws = new WebSocket(
+      "ws://" +
+        window.location.hostname +
+        ":" +
+        window.location.port +
+        "/api/ws"
+    );
     ws.onopen = function () {
       ws.send("Hello, world");
     };
@@ -275,10 +281,12 @@ const plugin: JupyterFrontEndPlugin<void> = {
     };
 
     const content: Widget = new notificationWidget();
-    const widget = new MainAreaWidget({ content });
+    const widget = new Panel();
+    widget.addWidget(content);
     widget.id = "apod-jupyterlab";
     widget.title.closable = true;
     widget.title.icon = chatIcon;
+    widget.node.style.overflow = "auto";
     app.shell.add(widget, "right", { rank: 500 });
     const your_button = new ButtonExtension();
     app.docRegistry.addWidgetExtension("Notebook", your_button);
