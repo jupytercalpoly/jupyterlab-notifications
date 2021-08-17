@@ -53,15 +53,18 @@ export default function ImgMediaCard(props: any) {
       });
     }
 
-    localStorage.setItem("blocked-origins", JSON.stringify(store.blockedOrigins));
+    localStorage.setItem(
+      "blocked-origins",
+      JSON.stringify(store.blockedOrigins)
+    );
   };
 
   return (
-    <Card className={classes.root}>
+    <Card className={classes.root} elevation={props.elevation}>
       <CardActionArea>
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
-            {props.title}
+            {props.origin}
           </Typography>
           <Typography
             variant="body2"
@@ -69,29 +72,33 @@ export default function ImgMediaCard(props: any) {
             component="p"
             onClick={() => openUrl()}
           >
-            {props.origin}
+            {props.title}
             {props.body}
           </Typography>
-          <IconButton aria-label="delete">
-            <DeleteIcon
-              onClick={(e) => {
-                e.stopPropagation();
-                e.preventDefault();
-                triggerDelete(props.id, props.subject);
-              }}
-              style={{ top: 3, right: 3 }}
-            />
-          </IconButton>
-          <IconButton aria-label="ignoreOrigin">
-            <ReportOffIcon
-              onClick={(e) => {
-                e.stopPropagation();
-                e.preventDefault();
-                ignoreOrigin(props.origin);
-              }}
-              style={{ top: 3, right: 3 }}
-            />
-          </IconButton>
+          {props.deleteButton ? (
+            <IconButton aria-label="delete">
+              <DeleteIcon
+                onClick={(e) => {
+                  e.stopPropagation();
+                  e.preventDefault();
+                  triggerDelete(props.id, props.subject);
+                }}
+                style={{ top: 3, right: 3 }}
+              />
+            </IconButton>
+          ) : null}
+          {props.ignoreButton ? (
+            <IconButton aria-label="ignoreOrigin">
+              <ReportOffIcon
+                onClick={(e) => {
+                  e.stopPropagation();
+                  e.preventDefault();
+                  ignoreOrigin(props.origin);
+                }}
+                style={{ top: 3, right: 3 }}
+              />
+            </IconButton>
+          ) : null}
         </CardContent>
       </CardActionArea>
     </Card>
