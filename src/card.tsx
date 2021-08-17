@@ -50,7 +50,6 @@ export default function ImgMediaCard(props: any) {
       setStore({
         blockedOrigins: store.blockedOrigins,
         subjectStore: store.subjectStore,
-        originList: store.originList,
       });
     }
 

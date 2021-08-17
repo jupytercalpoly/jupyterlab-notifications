@@ -12,10 +12,10 @@ import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import SwitchLabels from "./switch";
 import FormGroup from "@material-ui/core/FormGroup";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
+import Chips from "./chip";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -61,7 +61,6 @@ export function NotificationCenter(props: any) {
       subjectStore: store.subjectStore.filter(
         (subjectObj) => subjectObj.subject !== subject
       ),
-      originList: store.originList,
     });
   };
 
@@ -92,16 +91,15 @@ export function NotificationCenter(props: any) {
     <div>
       <div>
         <button type="button" onClick={onSettingsClick}>
-          Settings
+          Your Preferences
         </button>
       </div>
       <div>
         {settings ? (
           <FormGroup>
-            {store.originList.map((origin) => (
-              <SwitchLabels
+            {store.blockedOrigins.map((origin) => (
+              <Chips
                 origin={origin}
-                isChecked={store.blockedOrigins.includes(origin)}
               />
             ))}
           </FormGroup>
@@ -176,14 +174,12 @@ export function NotificationCenter(props: any) {
 }
 
 export function notifyInCenter(
-  updatedSubjectStore: INotificationStoreObject[],
-  updatedOriginList: string[]
+  updatedSubjectStore: INotificationStoreObject[]
 ): void {
   let store = getStore();
   setStore({
     blockedOrigins: store.blockedOrigins,
     subjectStore: updatedSubjectStore,
-    originList: updatedOriginList,
   });
 }
 
