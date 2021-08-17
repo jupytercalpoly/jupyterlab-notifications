@@ -67,12 +67,19 @@ export default function ImgMediaCard(props: any) {
             {props.origin}
           </Typography>
           <Typography
-            variant="body2"
+            variant="body1"
             color="textSecondary"
             component="p"
             onClick={() => openUrl()}
           >
             {props.title}
+          </Typography>
+          <Typography
+            variant="body2"
+            color="textSecondary"
+            component="p"
+            onClick={() => openUrl()}
+          >
             {props.body}
           </Typography>
           {props.deleteButton ? (
