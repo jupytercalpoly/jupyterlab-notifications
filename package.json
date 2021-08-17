@@ -59,6 +59,7 @@
     "@material-ui/icons": "^4.11.2",
     "bootstrap": "^4.6.0",
     "jquery": "^1.9.1",
+    "jupyterlab_toastify": "^4.2.0",
     "notistack": "^1.0.9",
     "react": "^17.0.2",
     "react-bootstrap": "^1.6.1",

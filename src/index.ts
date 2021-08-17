@@ -3,28 +3,35 @@ import {
   JupyterFrontEndPlugin,
 } from "@jupyterlab/application";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Widget } from "@lumino/widgets";
-import * as Icons from "@jupyterlab/ui-components";
+import { Panel, Widget } from "@lumino/widgets";
 import "react-toastify/dist/ReactToastify.css";
 import "../style/main.css";
 
 // import { YDocument } from "@jupyterlab/shared-models";
 import { NotebookActions } from "@jupyterlab/notebook";
-import { ICommandPalette, MainAreaWidget } from "@jupyterlab/apputils";
+import { ICommandPalette } from "@jupyterlab/apputils";
 import { ToolbarButton } from "@jupyterlab/apputils";
 import { DocumentRegistry } from "@jupyterlab/docregistry";
 import { INotebookModel, NotebookPanel } from "@jupyterlab/notebook";
+import { INotification } from "jupyterlab_toastify";
 import { IDisposable } from "@lumino/disposable";
 import { getStore, setStore } from "./useStore";
 //import { requestAPI } from './handler';
 import { notificationWidget, notifyInCenter } from "./notifications";
 // import { systemNotification } from './systemNotification'
-
+import notifIcon from "../style/icons/notifIcon.svg";
+import { LabIcon } from "@jupyterlab/ui-components";
 import { activateNotifier } from "./token";
 import { v4 as uuidv4 } from "uuid";
+
 // import React from 'react';
 
 // import { List } from '@material-ui/core';
+
+const chatIcon = new LabIcon({
+  name: "jitsi:notif",
+  svgstr: notifIcon,
+});
 
 export interface INotificationResponse {
   notificationId: string;
@@ -81,8 +88,8 @@ class ButtonExtension
           recipient: "harshit",
           linkUrl: "googl.com",
           ephemeral: true,
-          notifTimeout: 18,
-          notifType: "web",
+          notifTimeout: 3000,
+          notifType: "info",
         };
         let notifier = activateNotifier();
         notifier.post(dataToSend);
@@ -209,7 +216,13 @@ const plugin: JupyterFrontEndPlugin<void> = {
     }
 
     // notifyInCenter(JSON.parse(localStorage.getItem("originStore")!));
-    let ws = new WebSocket("ws://localhost:8888/api/ws");
+    let ws = new WebSocket(
+      "ws://" +
+        window.location.hostname +
+        ":" +
+        window.location.port +
+        "/api/ws"
+    );
     ws.onopen = function () {
       ws.send("Hello, world");
     };
@@ -254,6 +267,12 @@ const plugin: JupyterFrontEndPlugin<void> = {
               "notifications-lastDate",
               notification["created"]
             );
+            void INotification.update({
+              toastId: notification.notificationId,
+              message: notification.body,
+              type: "info",
+              autoClose: notification.notifTimeout,
+            });
           }
         }
       } catch (reason) {
@@ -262,10 +281,12 @@ const plugin: JupyterFrontEndPlugin<void> = {
     };
 
     const content: Widget = new notificationWidget();
-    const widget = new MainAreaWidget({ content });
+    const widget = new Panel();
+    widget.addWidget(content);
     widget.id = "apod-jupyterlab";
     widget.title.closable = true;
-    widget.title.icon = Icons.jupyterFaviconIcon;
+    widget.title.icon = chatIcon;
+    widget.node.style.overflow = "auto";
     app.shell.add(widget, "right", { rank: 500 });
     const your_button = new ButtonExtension();
     app.docRegistry.addWidgetExtension("Notebook", your_button);
@@ -285,8 +306,8 @@ const plugin: JupyterFrontEndPlugin<void> = {
             recipient: "harshit",
             linkUrl: "googl.com",
             ephemeral: true,
-            notifTimeout: 18,
-            notifType: "web",
+            notifTimeout: 4000,
+            notifType: "sucess",
           };
           let notifier = activateNotifier();
           notifier.post(dataToSend);
