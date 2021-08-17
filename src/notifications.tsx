@@ -16,7 +16,6 @@ import SwitchLabels from "./switch";
 import FormGroup from "@material-ui/core/FormGroup";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
-import ReportOffIcon from "@material-ui/icons/ReportOff";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -66,28 +65,28 @@ export function NotificationCenter(props: any) {
     });
   };
 
-  let ignoreSubject = (subject: string) => {
-    let store = getStore();
-    if (!store.blockedOrigins.includes(subject)) {
-      store.blockedOrigins.push(subject);
-      setStore({
-        blockedOrigins: store.blockedOrigins,
-        subjectStore: store.subjectStore,
-        originList: store.originList,
-      });
-    }
+  // let ignoreSubject = (subject: string) => {
+  //   let store = getStore();
+  //   if (!store.blockedOrigins.includes(subject)) {
+  //     store.blockedOrigins.push(subject);
+  //     setStore({
+  //       blockedOrigins: store.blockedOrigins,
+  //       subjectStore: store.subjectStore,
+  //       originList: store.originList,
+  //     });
+  //   }
 
-    let blockedOrigins = JSON.parse(
-      localStorage.getItem("blocked-origins")!
-    );
-    if (!blockedOrigins.includes(subject)) {
-      blockedOrigins.push(subject);
-      localStorage.setItem(
-        "blocked-origins",
-        JSON.stringify(blockedOrigins)
-      );
-    }
-  };
+  //   let blockedOrigins = JSON.parse(
+  //     localStorage.getItem("blocked-origins")!
+  //   );
+  //   if (!blockedOrigins.includes(subject)) {
+  //     blockedOrigins.push(subject);
+  //     localStorage.setItem(
+  //       "blocked-origins",
+  //       JSON.stringify(blockedOrigins)
+  //     );
+  //   }
+  // };
 
   return (
     <div>
@@ -139,14 +138,7 @@ export function NotificationCenter(props: any) {
                             />
                           </IconButton>
                           <IconButton aria-label="delete">
-                            <ReportOffIcon
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                e.preventDefault();
-                                ignoreSubject(obj.subject);
-                              }}
-                              style={{ top: 3, right: 3 }}
-                            />
+                            
                           </IconButton>
                         </div>
                       }
