@@ -108,7 +108,7 @@ class ButtonExtension
         // }
         document.addEventListener("DOMContentLoaded", () => {
           if (Notification.permission !== "granted") {
-            Notification.requestPermission();
+            void Notification.requestPermission();
           }
         });
       },
@@ -224,6 +224,22 @@ const plugin: JupyterFrontEndPlugin<void> = {
         "/api/ws"
     );
     ws.onopen = function () {
+      const dataToSend = {
+        origin: "User connections",
+        title: "User joined session",
+        body:
+          localStorage.getItem("notifications-username")! +
+          " just connected to the workspace!",
+        subject: "User joined session",
+        recipient: "harshit",
+        linkUrl: "",
+        ephemeral: true,
+        notifTimeout: 3000,
+        notifType: "info",
+      };
+      let notifier = activateNotifier();
+      notifier.post(dataToSend);
+      console.log("got here before ws");
       ws.send("Hello, world");
     };
     ws.onmessage = async function (rowId) {
@@ -269,7 +285,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
             );
             void INotification.update({
               toastId: notification.notificationId,
-              message: notification.subject + " : " + notification.title,
+              message: notification.subject + " : " + notification.body,
               type: "info",
               autoClose: notification.notifTimeout,
             });
@@ -300,8 +316,8 @@ const plugin: JupyterFrontEndPlugin<void> = {
           const notebookName = notebook.title.label.replace(/\.[^/.]+$/, "");
           const dataToSend = {
             origin: "Cell execution",
-            title: "Cell finished execution",
-            body: "",
+            title: notebookName + ".ipynb",
+            body: "Cell finished execution",
             subject: notebookName + ".ipynb",
             recipient: "harshit",
             linkUrl: "",
