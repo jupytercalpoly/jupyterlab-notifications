@@ -48,13 +48,14 @@ export default function ImgMediaCard(props: any) {
     <Card className={classes.root} elevation={props.elevation}>
       <CardActionArea>
         <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
+          <Typography gutterBottom variant="body2">
             {props.origin}
           </Typography>
           <Typography
-            variant="body1"
+            variant="body2"
             color="textSecondary"
             component="p"
+            style={{ fontWeight: 500 }}
             onClick={() => openUrl()}
           >
             {props.title}
@@ -63,6 +64,7 @@ export default function ImgMediaCard(props: any) {
             variant="body2"
             color="textSecondary"
             component="p"
+            style={{ fontWeight: 500 }}
             onClick={() => openUrl()}
           >
             {props.body}
@@ -75,7 +77,7 @@ export default function ImgMediaCard(props: any) {
                   e.preventDefault();
                   triggerDelete(props.id, props.subject);
                 }}
-                style={{ top: 3, right: 3 }}
+                // style={{ top: 3, right: 3 }}
               />
             </IconButton>
           ) : null}
@@ -87,7 +89,7 @@ export default function ImgMediaCard(props: any) {
                   e.preventDefault();
                   props.ignoreOrigin(props.origin);
                 }}
-                style={{ top: 3, right: 3 }}
+                // style={{ top: 3, right: 3 }}
               />
             </IconButton>
           ) : null}

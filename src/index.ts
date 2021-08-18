@@ -17,7 +17,7 @@ import { INotification } from "jupyterlab_toastify";
 import { IDisposable } from "@lumino/disposable";
 import { getStore, setStore } from "./useStore";
 //import { requestAPI } from './handler';
-import { notificationWidget, notifyInCenter } from "./notifications";
+import { notificationWidget, notifyInCenter } from "./NotificationCenter";
 // import { systemNotification } from './systemNotification'
 import notifIcon from "../style/icons/notifIcon.svg";
 import { LabIcon } from "@jupyterlab/ui-components";
@@ -86,7 +86,6 @@ class ButtonExtension
           body: "this is notiffrom new",
           subject: "button press",
           recipient: "harshit",
-          linkUrl: "googl.com",
           ephemeral: true,
           notifTimeout: 3000,
           notifType: "info",
@@ -300,7 +299,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
           const notebookName = notebook.title.label.replace(/\.[^/.]+$/, "");
           const dataToSend = {
             origin: "Cell execution",
-            title: "Cell finished execution!",
+            title: "Cell finished execution",
             body: "",
             subject: notebookName + ".ipynb",
             recipient: "harshit",
