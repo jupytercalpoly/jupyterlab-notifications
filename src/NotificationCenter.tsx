@@ -68,7 +68,7 @@ export function NotificationCenter(props: any) {
     <div>
       <div>
         <Typography variant="h6" gutterBottom style={{ fontWeight: 600 }}>
-          Notifications
+          NOTIFICATIONS
         </Typography>
         <IconButton aria-label="settingsCog">
           {/* //style={{ top: 3, right: 3 }}> */}
