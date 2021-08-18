@@ -17,6 +17,8 @@ import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Chips from "./chip";
 import SettingsIcon from "@material-ui/icons/Settings";
+import { INotification } from "jupyterlab_toastify";
+
 const useStyles = makeStyles(() => ({
   root: {
     width: "100%",
@@ -53,6 +55,35 @@ export function NotificationCenter(props: any) {
         (subjectObj) => subjectObj.subject !== subject
       ),
     });
+  };
+
+  let ignoreOrigin = (origin: string) => {
+    let store = getStore();
+    if (!store.blockedOrigins.includes(origin)) {
+      store.blockedOrigins.push(origin);
+      setStore({
+        blockedOrigins: store.blockedOrigins,
+        subjectStore: store.subjectStore,
+      });
+
+      localStorage.setItem(
+        "blocked-origins",
+        JSON.stringify(store.blockedOrigins)
+      );
+      void INotification.warning(
+        "You will no longer be notified for updates about " +
+          origin +
+          ". You can always change this in the notification settings.",
+        {
+          buttons: [
+            {
+              label: "Settings",
+              callback: () => setSettings(true),
+            },
+          ],
+        }
+      );
+    }
   };
 
   return (
@@ -122,8 +153,7 @@ export function NotificationCenter(props: any) {
                                 elevation={0}
                                 deleteButton={false}
                                 ignoreButton={false}
-                              >
-                              </ImgMediaCard>
+                              ></ImgMediaCard>
                               {obj.notifications.length > 1
                                 ? `${
                                     obj.notifications.length - 1
@@ -146,8 +176,8 @@ export function NotificationCenter(props: any) {
                                 deleteButton={true}
                                 ignoreButton={true}
                                 elevation={0}
-                              >
-                              </ImgMediaCard>
+                                ignoreOrigin={ignoreOrigin}
+                              ></ImgMediaCard>
                             ))}
                           </Box>
                         </Typography>

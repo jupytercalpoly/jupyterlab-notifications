@@ -8,7 +8,6 @@ import { getStore, setStore } from "./useStore";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import ReportOffIcon from "@material-ui/icons/ReportOff";
-import { INotification } from "jupyterlab_toastify";
 
 const useStyles = makeStyles({
   root: {
@@ -43,34 +42,6 @@ export default function ImgMediaCard(props: any) {
     setStore(store);
     // localStorage.setItem("originStore", JSON.stringify(store));
     console.log("This was triggered");
-  };
-  let ignoreOrigin = (origin: string) => {
-    let store = getStore();
-    if (!store.blockedOrigins.includes(origin)) {
-      store.blockedOrigins.push(origin);
-      setStore({
-        blockedOrigins: store.blockedOrigins,
-        subjectStore: store.subjectStore,
-      });
-
-      localStorage.setItem(
-        "blocked-origins",
-        JSON.stringify(store.blockedOrigins)
-      );
-      void INotification.warning(
-        "You will no longer be notified for updates about " +
-          origin +
-          ". You can always change this in the notification settings.",
-        {
-          buttons: [
-            {
-              label: "Settings",
-              callback: () => alert("Action1 was clicked"),
-            },
-          ],
-        }
-      );
-    }
   };
 
   return (
@@ -114,7 +85,7 @@ export default function ImgMediaCard(props: any) {
                 onClick={(e) => {
                   e.stopPropagation();
                   e.preventDefault();
-                  ignoreOrigin(props.origin);
+                  props.ignoreOrigin(props.origin);
                 }}
                 style={{ top: 3, right: 3 }}
               />
