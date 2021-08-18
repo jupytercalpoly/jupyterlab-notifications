@@ -35,10 +35,10 @@ const chatIcon = new LabIcon({
 
 export interface INotificationResponse {
   notificationId: string;
+  subject: string; // TODO: rename to filename
   origin: string;
   title: string;
   body: string;
-  subject: string;
   recipient?: string;
   linkUrl?: string;
   ephemeral?: boolean;
