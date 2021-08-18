@@ -269,7 +269,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
             );
             void INotification.update({
               toastId: notification.notificationId,
-              message: notification.body,
+              message: notification.subject + " : " + notification.body,
               type: "info",
               autoClose: notification.notifTimeout,
             });
@@ -301,7 +301,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
           const dataToSend = {
             origin: "cell execution",
             title: Math.random().toString(),
-            body: notebookName,
+            body: "Cell finished execution!",
             subject: notebookName + ".ipynb",
             recipient: "harshit",
             linkUrl: "googl.com",
