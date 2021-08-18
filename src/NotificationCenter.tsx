@@ -10,6 +10,7 @@ import Chips from "./chip";
 import SettingsIcon from "@material-ui/icons/Settings";
 import { INotification } from "jupyterlab_toastify";
 import SubjectAccordion from "./SubjectAccordion";
+import { Box } from "@material-ui/core";
 
 export function NotificationCenter(props: any) {
   const [store, setStore] = useStore();
@@ -80,21 +81,28 @@ export function NotificationCenter(props: any) {
       </div>
       <div>
         {settings ? (
-          <FormGroup>
-            {store.blockedOrigins.map((origin) => (
-              <Chips origin={origin} />
-            ))}
-          </FormGroup>
-        ) : (
           <div>
-            {store.subjectStore.map((notifStoreObj) => (
-              <SubjectAccordion
-                notifStoreObj={notifStoreObj}
-                deleteSubject={deleteSubject}
-                ignoreOrigin={ignoreOrigin}
-              />
-            ))}
+            <Typography variant="h6" gutterBottom style={{ fontWeight: 600 }}>
+              Blocked Notifications
+            </Typography>
+            <FormGroup>
+              {store.blockedOrigins.map((origin) => (
+                <Chips origin={origin} />
+              ))}
+            </FormGroup>
           </div>
+        ) : (
+          <Box display="flex">
+            <Box m="auto" width="90%">
+              {store.subjectStore.map((notifStoreObj) => (
+                <SubjectAccordion
+                  notifStoreObj={notifStoreObj}
+                  deleteSubject={deleteSubject}
+                  ignoreOrigin={ignoreOrigin}
+                />
+              ))}
+            </Box>
+          </Box>
         )}
       </div>
       <div>

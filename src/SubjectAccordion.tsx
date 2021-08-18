@@ -39,7 +39,7 @@ export default function SubjectAccordion(props: AppProps): JSX.Element {
     <div>
       {!props.notifStoreObj.notifications.length ? null : (
         <div className={classes.root}>
-          <Accordion defaultExpanded={false}>
+          <Accordion defaultExpanded={false} elevation={2}>
             <AccordionSummary
               classes={{
                 content: classes.content,
