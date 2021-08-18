@@ -66,34 +66,37 @@ export function NotificationCenter(props: any) {
   };
 
   return (
-    <div>
-      <div>
-        <Typography variant="h6" gutterBottom style={{ fontWeight: 600 }}>
-          NOTIFICATIONS
-        </Typography>
-        <IconButton aria-label="settingsCog">
-          {/* //style={{ top: 3, right: 3 }}> */}
-          <SettingsIcon
-            onClick={onSettingsClick}
-            //style={{ top: 3, right: 3 }}
-          />
-        </IconButton>
-      </div>
-      <div>
-        {settings ? (
-          <div>
-            <Typography variant="h6" gutterBottom style={{ fontWeight: 600 }}>
-              Blocked Notifications
-            </Typography>
-            <FormGroup>
-              {store.blockedOrigins.map((origin) => (
-                <Chips origin={origin} />
-              ))}
-            </FormGroup>
-          </div>
-        ) : (
-          <Box display="flex">
-            <Box m="auto" width="90%">
+    <Box display="flex">
+      <Box m="auto" width="90%">
+        <Box
+          display="flex"
+          flexDirection="row"
+          alignItems="center"
+          justifyContent="space-between"
+        >
+          <Typography variant="h6" style={{ fontWeight: 600 }}>
+            NOTIFICATIONS
+          </Typography>
+            <IconButton aria-label="settingsCog">
+              <SettingsIcon
+                onClick={onSettingsClick}
+              />
+            </IconButton>
+        </Box>
+        <div>
+          {settings ? (
+            <div>
+              <Typography variant="h6" gutterBottom style={{ fontWeight: 600 }}>
+                Blocked Notifications
+              </Typography>
+              <FormGroup>
+                {store.blockedOrigins.map((origin) => (
+                  <Chips origin={origin} />
+                ))}
+              </FormGroup>
+            </div>
+          ) : (
+            <div>
               {store.subjectStore.map((notifStoreObj) => (
                 <SubjectAccordion
                   notifStoreObj={notifStoreObj}
@@ -101,14 +104,14 @@ export function NotificationCenter(props: any) {
                   ignoreOrigin={ignoreOrigin}
                 />
               ))}
-            </Box>
-          </Box>
-        )}
-      </div>
-      <div>
-        <button onClick={() => handleClick()}>Activat Lasers</button>
-      </div>
-    </div>
+            </div>
+          )}
+        </div>
+        <div>
+          <button onClick={() => handleClick()}>Activat Lasers</button>
+        </div>
+      </Box>
+    </Box>
   );
 }
 
