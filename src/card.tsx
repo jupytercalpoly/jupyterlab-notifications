@@ -8,7 +8,6 @@ import { getStore, setStore } from "./useStore";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import ReportOffIcon from "@material-ui/icons/ReportOff";
-import { INotification } from "jupyterlab_toastify";
 
 const useStyles = makeStyles({
   root: {
@@ -44,46 +43,19 @@ export default function ImgMediaCard(props: any) {
     // localStorage.setItem("originStore", JSON.stringify(store));
     console.log("This was triggered");
   };
-  let ignoreOrigin = (origin: string) => {
-    let store = getStore();
-    if (!store.blockedOrigins.includes(origin)) {
-      store.blockedOrigins.push(origin);
-      setStore({
-        blockedOrigins: store.blockedOrigins,
-        subjectStore: store.subjectStore,
-      });
-
-      localStorage.setItem(
-        "blocked-origins",
-        JSON.stringify(store.blockedOrigins)
-      );
-      void INotification.warning(
-        "You will no longer be notified for updates about " +
-          origin +
-          ". You can always change this in the notification settings.",
-        {
-          buttons: [
-            {
-              label: "Settings",
-              callback: () => alert("Action1 was clicked"),
-            },
-          ],
-        }
-      );
-    }
-  };
 
   return (
     <Card className={classes.root} elevation={props.elevation}>
       <CardActionArea>
         <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
+          <Typography gutterBottom variant="body2">
             {props.origin}
           </Typography>
           <Typography
-            variant="body1"
+            variant="body2"
             color="textSecondary"
             component="p"
+            style={{ fontWeight: 500 }}
             onClick={() => openUrl()}
           >
             {props.title}
@@ -92,6 +64,7 @@ export default function ImgMediaCard(props: any) {
             variant="body2"
             color="textSecondary"
             component="p"
+            style={{ fontWeight: 500 }}
             onClick={() => openUrl()}
           >
             {props.body}
@@ -104,7 +77,7 @@ export default function ImgMediaCard(props: any) {
                   e.preventDefault();
                   triggerDelete(props.id, props.subject);
                 }}
-                style={{ top: 3, right: 3 }}
+                // style={{ top: 3, right: 3 }}
               />
             </IconButton>
           ) : null}
@@ -114,9 +87,9 @@ export default function ImgMediaCard(props: any) {
                 onClick={(e) => {
                   e.stopPropagation();
                   e.preventDefault();
-                  ignoreOrigin(props.origin);
+                  props.ignoreOrigin(props.origin);
                 }}
-                style={{ top: 3, right: 3 }}
+                // style={{ top: 3, right: 3 }}
               />
             </IconButton>
           ) : null}

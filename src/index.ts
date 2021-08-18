@@ -17,7 +17,7 @@ import { INotification } from "jupyterlab_toastify";
 import { IDisposable } from "@lumino/disposable";
 import { getStore, setStore } from "./useStore";
 //import { requestAPI } from './handler';
-import { notificationWidget, notifyInCenter } from "./notifications";
+import { notificationWidget, notifyInCenter } from "./NotificationCenter";
 // import { systemNotification } from './systemNotification'
 import notifIcon from "../style/icons/notifIcon.svg";
 import { LabIcon } from "@jupyterlab/ui-components";
@@ -35,10 +35,10 @@ const chatIcon = new LabIcon({
 
 export interface INotificationResponse {
   notificationId: string;
+  subject: string; // TODO: rename to filename
   origin: string;
   title: string;
   body: string;
-  subject: string;
   recipient?: string;
   linkUrl?: string;
   ephemeral?: boolean;
@@ -86,7 +86,7 @@ class ButtonExtension
           body: "this is notiffrom new",
           subject: "button press",
           recipient: "harshit",
-          linkUrl: "googl.com",
+          linkUrl: "",
           ephemeral: true,
           notifTimeout: 3000,
           notifType: "info",
@@ -269,7 +269,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
             );
             void INotification.update({
               toastId: notification.notificationId,
-              message: notification.subject + " : " + notification.body,
+              message: notification.subject + " : " + notification.title,
               type: "info",
               autoClose: notification.notifTimeout,
             });
@@ -299,12 +299,12 @@ const plugin: JupyterFrontEndPlugin<void> = {
         if (metadata.has("execution")) {
           const notebookName = notebook.title.label.replace(/\.[^/.]+$/, "");
           const dataToSend = {
-            origin: "cell execution",
-            title: Math.random().toString(),
-            body: "Cell finished execution!",
+            origin: "Cell execution",
+            title: "Cell finished execution",
+            body: "",
             subject: notebookName + ".ipynb",
             recipient: "harshit",
-            linkUrl: "googl.com",
+            linkUrl: "",
             ephemeral: true,
             notifTimeout: 4000,
             notifType: "sucess",
