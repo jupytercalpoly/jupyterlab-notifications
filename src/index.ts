@@ -299,9 +299,9 @@ const plugin: JupyterFrontEndPlugin<void> = {
         if (metadata.has("execution")) {
           const notebookName = notebook.title.label.replace(/\.[^/.]+$/, "");
           const dataToSend = {
-            origin: "cell execution",
-            title: Math.random().toString(),
-            body: "Cell finished execution!",
+            origin: "Cell execution",
+            title: "Cell finished execution!",
+            body: "",
             subject: notebookName + ".ipynb",
             recipient: "harshit",
             linkUrl: "googl.com",

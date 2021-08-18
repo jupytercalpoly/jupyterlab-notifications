@@ -89,10 +89,11 @@ export function NotificationCenter(props: any) {
   return (
     <div>
       <div>
-        <IconButton aria-label="settingsCog" style={{ top: 3, right: 3 }}>
+        <IconButton aria-label="settingsCog"> 
+        {/* //style={{ top: 3, right: 3 }}> */}
           <SettingsIcon
             onClick={onSettingsClick}
-            style={{ top: 3, right: 3 }}
+            //style={{ top: 3, right: 3 }}
           />
         </IconButton>
       </div>
@@ -133,7 +134,7 @@ export function NotificationCenter(props: any) {
                                     e.preventDefault();
                                     deleteSubject(obj.subject);
                                   }}
-                                  style={{ top: 3, right: 3 }}
+                                  // style={{ top: 3, right: 3 }}
                                 />
                               </IconButton>
                             </div>
