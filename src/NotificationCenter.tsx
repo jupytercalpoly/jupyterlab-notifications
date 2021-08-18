@@ -21,11 +21,6 @@ export function NotificationCenter(props: any) {
     setSettings(!settings);
   };
 
-  let handleClick = () => {
-    console.log(store);
-    setStore({ ...store });
-  };
-
   let deleteSubject = (subject: string) => {
     let store = getStore();
     setStore({
@@ -106,9 +101,6 @@ export function NotificationCenter(props: any) {
               ))}
             </div>
           )}
-        </div>
-        <div>
-          <button onClick={() => handleClick()}>Activat Lasers</button>
         </div>
       </Box>
     </Box>
