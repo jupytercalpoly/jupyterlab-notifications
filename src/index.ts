@@ -86,6 +86,7 @@ class ButtonExtension
           body: "this is notiffrom new",
           subject: "button press",
           recipient: "harshit",
+          linkUrl: "",
           ephemeral: true,
           notifTimeout: 3000,
           notifType: "info",
@@ -268,7 +269,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
             );
             void INotification.update({
               toastId: notification.notificationId,
-              message: notification.subject + ": " + notification.title,
+              message: notification.subject + " : " + notification.title,
               type: "info",
               autoClose: notification.notifTimeout,
             });
@@ -303,6 +304,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
             body: "",
             subject: notebookName + ".ipynb",
             recipient: "harshit",
+            linkUrl: "",
             ephemeral: true,
             notifTimeout: 4000,
             notifType: "sucess",
