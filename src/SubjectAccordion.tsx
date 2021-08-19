@@ -23,17 +23,21 @@ type AppProps = {
 };
 
 export default function SubjectAccordion(props: AppProps): JSX.Element {
-  //const [subjectExpanded, setSubjectExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(false);
   let [mouseOver, setMouseOver] = useState(false);
 
   const classes = useStyles();
 
-  //TODO: change to date.toLocaleDateString(locale, { weekday: 'long' });   
-  function formatAMPM(d : string) {
+  //TODO: change to date.toLocaleDateString(locale, { weekday: 'long' });
+  function formatAMPM(d: string) {
     let date = new Date(parseInt(d) / 1000000);
-    let day = date.toLocaleDateString("en-US", { weekday: 'long' }).slice(0, 3); 
-    const time = new Date(date).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
-    return day + " " + time; ;
+    let day = date.toLocaleDateString("en-US", { weekday: "long" }).slice(0, 3);
+    const time = new Date(date).toLocaleTimeString("en-US", {
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+    });
+    return day + " " + time;
   }
 
   return (
@@ -48,7 +52,12 @@ export default function SubjectAccordion(props: AppProps): JSX.Element {
             setMouseOver(false);
           }}
         >
-          <Accordion defaultExpanded={false} elevation={2}>
+          <Accordion
+            defaultExpanded={false}
+            expanded={expanded}
+            onClick={() => setExpanded(!expanded)}
+            elevation={2}
+          >
             <AccordionSummary>
               <div style={{ width: "100%" }}>
                 <Box

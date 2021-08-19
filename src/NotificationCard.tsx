@@ -17,14 +17,14 @@ const useStyles = makeStyles({
 
 export default function NotificationCard(props: any) {
   const classes = useStyles();
-  let openUrl = () => {
-    const newWindow = window.open(
-      "https://jupyter.org/",
-      "_blank",
-      "noopener,noreferrer"
-    );
-    if (newWindow) newWindow.opener = null;
-  };
+  // let openUrl = () => {
+  //   const newWindow = window.open(
+  //     "https://jupyter.org/",
+  //     "_blank",
+  //     "noopener,noreferrer"
+  //   );
+  //   if (newWindow) newWindow.opener = null;
+  // };
 
   let triggerDelete = (id: string, subject: string) => {
     let store = getStore();
@@ -60,7 +60,7 @@ export default function NotificationCard(props: any) {
             color="textSecondary"
             component="p"
             style={{ fontWeight: 500 }}
-            onClick={() => openUrl()}
+            //onClick={() => openUrl()}
           >
             {props.title}
           </Typography>
@@ -69,7 +69,7 @@ export default function NotificationCard(props: any) {
             color="textSecondary"
             component="p"
             style={{ fontWeight: 500 }}
-            onClick={() => openUrl()}
+            //onClick={() => openUrl()}
           >
             {props.body}
           </Typography>
