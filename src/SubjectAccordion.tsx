@@ -5,10 +5,10 @@ import Accordion from "@material-ui/core/Accordion";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import Typography from "@material-ui/core/Typography";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { INotificationStoreObject } from ".";
+import { Box } from "@material-ui/core";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -32,20 +32,15 @@ export default function SubjectAccordion(props: AppProps): JSX.Element {
       {!props.notifStoreObj.notifications.length ? null : (
         <div className={classes.root}>
           <Accordion defaultExpanded={false} elevation={2}>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-label="Expand"
-              aria-controls="panel1a-content"
-              id="panel1a-header"
-            >
+            <AccordionSummary>
               <div>
-                <Typography
-                  variant="subtitle2"
-                  gutterBottom
-                  style={{ fontWeight: 600 }}
-                >
-                  {props.notifStoreObj.subject}
-                </Typography>
+                  <Typography
+                    variant="subtitle2"
+                    gutterBottom
+                    style={{ fontWeight: 600 }}
+                  >
+                    {props.notifStoreObj.subject}
+                  </Typography>
                 <IconButton aria-label="delete">
                   <DeleteIcon
                     onClick={(e) => {
@@ -67,15 +62,15 @@ export default function SubjectAccordion(props: AppProps): JSX.Element {
                   ignoreButton={false}
                 ></ImgMediaCard>
                 {props.notifStoreObj.notifications.length > 1 ? (
-                  <Typography
-                    variant="caption"
-                    display="block"
-                    gutterBottom
-                    style={{ fontWeight: 500 }}
-                  >
-                    {props.notifStoreObj.notifications.length - 1} more
-                    notifications
-                  </Typography>
+                    <Typography
+                      variant="caption"
+                      display="block"
+                      gutterBottom
+                      style={{ fontWeight: 500 }}
+                    >
+                      {props.notifStoreObj.notifications.length - 1} more
+                      notifications
+                    </Typography>
                 ) : null}
               </div>
             </AccordionSummary>

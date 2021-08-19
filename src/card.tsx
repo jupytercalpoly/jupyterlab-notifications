@@ -11,7 +11,7 @@ import ReportOffIcon from "@material-ui/icons/ReportOff";
 
 const useStyles = makeStyles({
   root: {
-    maxWidth: 345,
+    padding: 0,
   },
 });
 
@@ -45,9 +45,13 @@ export default function ImgMediaCard(props: any) {
   };
 
   return (
-    <Card className={classes.root} elevation={props.elevation}>
+    <Card elevation={props.elevation}>
       <CardActionArea>
-        <CardContent>
+        <CardContent
+          classes={{
+            root: classes.root,
+          }}
+        >
           <Typography gutterBottom variant="body2">
             {props.origin}
           </Typography>
