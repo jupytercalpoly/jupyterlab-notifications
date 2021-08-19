@@ -6,8 +6,8 @@ import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import { getStore, setStore } from "./useStore";
 import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from "@material-ui/icons/Delete";
 import ReportOffIcon from "@material-ui/icons/ReportOff";
+import ClearIcon from "@material-ui/icons/Clear";
 
 const useStyles = makeStyles({
   root: {
@@ -74,14 +74,14 @@ export default function ImgMediaCard(props: any) {
             {props.body}
           </Typography>
           {props.deleteButton ? (
-            <IconButton aria-label="delete">
-              <DeleteIcon
+            <IconButton aria-label="delete" size="small">
+              <ClearIcon
+                fontSize="small"
                 onClick={(e) => {
                   e.stopPropagation();
                   e.preventDefault();
                   triggerDelete(props.id, props.subject);
                 }}
-                // style={{ top: 3, right: 3 }}
               />
             </IconButton>
           ) : null}
@@ -93,7 +93,6 @@ export default function ImgMediaCard(props: any) {
                   e.preventDefault();
                   props.ignoreOrigin(props.origin);
                 }}
-                // style={{ top: 3, right: 3 }}
               />
             </IconButton>
           ) : null}

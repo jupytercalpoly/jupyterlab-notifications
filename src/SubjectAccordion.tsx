@@ -6,7 +6,7 @@ import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from "@material-ui/icons/Delete";
+import ClearIcon from "@material-ui/icons/Clear";
 import { INotificationStoreObject } from ".";
 import { Box } from "@material-ui/core";
 
@@ -34,15 +34,16 @@ export default function SubjectAccordion(props: AppProps): JSX.Element {
           <Accordion defaultExpanded={false} elevation={2}>
             <AccordionSummary>
               <div>
-                  <Typography
-                    variant="subtitle2"
-                    gutterBottom
-                    style={{ fontWeight: 600 }}
-                  >
-                    {props.notifStoreObj.subject}
-                  </Typography>
-                <IconButton aria-label="delete">
-                  <DeleteIcon
+                <Typography
+                  variant="subtitle1"
+                  gutterBottom
+                  style={{ fontWeight: 700 }}
+                >
+                  {props.notifStoreObj.subject}
+                </Typography>
+                <IconButton aria-label="delete" size="small">
+                  <ClearIcon
+                    fontSize="small"
                     onClick={(e) => {
                       e.stopPropagation();
                       e.preventDefault();
@@ -62,15 +63,17 @@ export default function SubjectAccordion(props: AppProps): JSX.Element {
                   ignoreButton={false}
                 ></ImgMediaCard>
                 {props.notifStoreObj.notifications.length > 1 ? (
+                  <Box pt={1}>
                     <Typography
                       variant="caption"
                       display="block"
                       gutterBottom
-                      style={{ fontWeight: 500 }}
+                      style={{ fontWeight: 400 }}
                     >
                       {props.notifStoreObj.notifications.length - 1} more
                       notifications
                     </Typography>
+                  </Box>
                 ) : null}
               </div>
             </AccordionSummary>
