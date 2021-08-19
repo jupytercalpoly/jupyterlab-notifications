@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import NotificationCard from "./NotificationCard";
 import { makeStyles } from "@material-ui/core/styles";
 import Accordion from "@material-ui/core/Accordion";
@@ -24,34 +24,67 @@ type AppProps = {
 
 export default function SubjectAccordion(props: AppProps): JSX.Element {
   //const [subjectExpanded, setSubjectExpanded] = useState(false);
+  let [mouseOver, setMouseOver] = useState(false);
 
   const classes = useStyles();
+
+  //TODO: change to date.toLocaleDateString(locale, { weekday: 'long' });   
+  function formatAMPM(d : string) {
+    let date = new Date(parseInt(d) / 1000000);
+    let day = date.toLocaleDateString("en-US", { weekday: 'long' }).slice(0, 3); 
+    const time = new Date(date).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
+    return day + " " + time; ;
+  }
 
   return (
     <div>
       {!props.notifStoreObj.notifications.length ? null : (
-        <div className={classes.root}>
+        <div
+          className={classes.root}
+          onMouseEnter={(e) => {
+            setMouseOver(true);
+          }}
+          onMouseLeave={(e) => {
+            setMouseOver(false);
+          }}
+        >
           <Accordion defaultExpanded={false} elevation={2}>
             <AccordionSummary>
-              <div>
-                <Typography
-                  variant="subtitle1"
-                  gutterBottom
-                  style={{ fontWeight: 700 }}
+              <div style={{ width: "100%" }}>
+                <Box
+                  display="flex"
+                  flexDirection="row"
+                  alignItems="center"
+                  justifyContent="space-between"
                 >
-                  {props.notifStoreObj.subject}
-                </Typography>
-                <IconButton aria-label="delete" size="small">
-                  <ClearIcon
-                    fontSize="small"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      e.preventDefault();
-                      props.deleteSubject(props.notifStoreObj.subject);
-                    }}
-                    // style={{ top: 3, right: 3 }}
-                  />
-                </IconButton>
+                  <Typography
+                    variant="subtitle1"
+                    gutterBottom
+                    style={{ fontWeight: 700 }}
+                  >
+                    {props.notifStoreObj.subject}
+                  </Typography>
+                  {mouseOver ? (
+                    <IconButton aria-label="delete" size="small">
+                      <ClearIcon
+                        fontSize="small"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          e.preventDefault();
+                          props.deleteSubject(props.notifStoreObj.subject);
+                        }}
+                      />
+                    </IconButton>
+                  ) : (
+                    <Typography
+                      variant="caption"
+                      display="block"
+                      style={{ fontWeight: 300 }}
+                    >
+                      {formatAMPM(props.notifStoreObj.notifications[0].created)}
+                    </Typography>
+                  )}
+                </Box>
                 <NotificationCard
                   title={props.notifStoreObj.notifications[0].title}
                   body={props.notifStoreObj.notifications[0].body}
