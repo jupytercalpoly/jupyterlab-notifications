@@ -43,8 +43,14 @@ export default function SubjectAccordion(props: AppProps): JSX.Element {
         >
           <Accordion
             defaultExpanded={false}
-            expanded={expanded}
-            onClick={() => setExpanded(!expanded)}
+            expanded={
+              props.notifStoreObj.notifications.length > 1 ? expanded : false
+            }
+            onClick={() =>
+              setExpanded(
+                props.notifStoreObj.notifications.length > 1 ? !expanded : false
+              )
+            }
             elevation={2}
           >
             <AccordionSummary>
@@ -111,7 +117,7 @@ export default function SubjectAccordion(props: AppProps): JSX.Element {
                 ) : null}
               </div>
             </AccordionSummary>
-            <AccordionDetails>
+            <AccordionDetails style={{ flexDirection: "column" }}> 
               <Typography color="textSecondary" component={"span"}>
                 {props.notifStoreObj.notifications.map((notif) => (
                   <NotificationCard
@@ -124,6 +130,7 @@ export default function SubjectAccordion(props: AppProps): JSX.Element {
                     ignoreButton={true}
                     elevation={0}
                     ignoreOrigin={props.ignoreOrigin}
+                    subitem={true}
                   ></NotificationCard>
                 ))}
               </Typography>
