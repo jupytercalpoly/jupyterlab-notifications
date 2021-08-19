@@ -10,6 +10,7 @@ import ClearIcon from "@material-ui/icons/Clear";
 import { INotificationStoreObject } from ".";
 import { Box } from "@material-ui/core";
 import { FormatAMPM } from "./FormatAMPM";
+import NotificationCardSubitem from "./NotificationCardSubitem";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -118,20 +119,20 @@ export default function SubjectAccordion(props: AppProps): JSX.Element {
               </div>
             </AccordionSummary>
             <AccordionDetails style={{ flexDirection: "column" }}> 
-              <Typography color="textSecondary" component={"span"}>
+              <Typography color="textSecondary">
                 {props.notifStoreObj.notifications.map((notif) => (
-                  <NotificationCard
+                  <NotificationCardSubitem
                     title={notif.title}
                     body={notif.body}
                     id={notif.notificationId}
                     origin={notif.origin}
                     subject={notif.subject}
+                    created={notif.created}
                     deleteButton={true}
                     ignoreButton={true}
                     elevation={0}
                     ignoreOrigin={props.ignoreOrigin}
-                    subitem={true}
-                  ></NotificationCard>
+                  />
                 ))}
               </Typography>
             </AccordionDetails>
