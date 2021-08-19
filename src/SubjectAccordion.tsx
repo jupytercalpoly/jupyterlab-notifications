@@ -15,12 +15,6 @@ const useStyles = makeStyles(() => ({
   root: {
     width: "100%",
   },
-  expanded: {},
-  content: {
-    "&$expanded": {
-      margin: "10px",
-    },
-  },
 }));
 
 type AppProps = {
