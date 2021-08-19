@@ -6,8 +6,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Panel, Widget } from "@lumino/widgets";
 import "react-toastify/dist/ReactToastify.css";
 import "../style/main.css";
-
-// import { YDocument } from "@jupyterlab/shared-models";
 import { NotebookActions } from "@jupyterlab/notebook";
 import { ICommandPalette } from "@jupyterlab/apputils";
 import { ToolbarButton } from "@jupyterlab/apputils";
@@ -16,17 +14,11 @@ import { INotebookModel, NotebookPanel } from "@jupyterlab/notebook";
 import { INotification } from "jupyterlab_toastify";
 import { IDisposable } from "@lumino/disposable";
 import { getStore, setStore } from "./useStore";
-//import { requestAPI } from './handler';
 import { notificationWidget, notifyInCenter } from "./NotificationCenter";
-// import { systemNotification } from './systemNotification'
 import notifIcon from "../style/icons/notifIcon.svg";
 import { LabIcon } from "@jupyterlab/ui-components";
 import { activateNotifier } from "./token";
 import { v4 as uuidv4 } from "uuid";
-
-// import React from 'react';
-
-// import { List } from '@material-ui/core';
 
 const chatIcon = new LabIcon({
   name: "jitsi:notif",

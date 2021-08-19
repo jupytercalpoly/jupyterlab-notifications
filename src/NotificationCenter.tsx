@@ -10,6 +10,7 @@ import Chips from "./chip";
 import SettingsIcon from "@material-ui/icons/Settings";
 import { INotification } from "jupyterlab_toastify";
 import SubjectAccordion from "./SubjectAccordion";
+import { Box } from "@material-ui/core";
 
 export function NotificationCenter(props: any) {
   const [store, setStore] = useStore();
@@ -18,11 +19,6 @@ export function NotificationCenter(props: any) {
   let onSettingsClick = (e: any) => {
     e.preventDefault();
     setSettings(!settings);
-  };
-
-  let handleClick = () => {
-    console.log(store);
-    setStore({ ...store });
   };
 
   let deleteSubject = (subject: string) => {
@@ -65,42 +61,47 @@ export function NotificationCenter(props: any) {
   };
 
   return (
-    <div>
-      <div>
-        <Typography variant="h6" gutterBottom style={{ fontWeight: 600 }}>
-          NOTIFICATIONS
-        </Typography>
-        <IconButton aria-label="settingsCog">
-          {/* //style={{ top: 3, right: 3 }}> */}
-          <SettingsIcon
-            onClick={onSettingsClick}
-            //style={{ top: 3, right: 3 }}
-          />
-        </IconButton>
-      </div>
-      <div>
-        {settings ? (
-          <FormGroup>
-            {store.blockedOrigins.map((origin) => (
-              <Chips origin={origin} />
-            ))}
-          </FormGroup>
-        ) : (
-          <div>
-            {store.subjectStore.map((notifStoreObj) => (
-              <SubjectAccordion
-                notifStoreObj={notifStoreObj}
-                deleteSubject={deleteSubject}
-                ignoreOrigin={ignoreOrigin}
-              />
-            ))}
-          </div>
-        )}
-      </div>
-      <div>
-        <button onClick={() => handleClick()}>Activat Lasers</button>
-      </div>
-    </div>
+    <Box display="flex">
+      <Box m="auto" width="90%">
+        <Box
+          display="flex"
+          flexDirection="row"
+          alignItems="center"
+          justifyContent="space-between"
+        >
+          <Typography variant="h6" style={{ fontWeight: 600 }}>
+            NOTIFICATIONS
+          </Typography>
+          <IconButton aria-label="settingsCog">
+            <SettingsIcon onClick={onSettingsClick} />
+          </IconButton>
+        </Box>
+        <div>
+          {settings ? (
+            <div>
+              <Typography variant="h6" gutterBottom style={{ fontWeight: 600 }}>
+                Blocked Notifications
+              </Typography>
+              <FormGroup>
+                {store.blockedOrigins.map((origin) => (
+                  <Chips origin={origin} />
+                ))}
+              </FormGroup>
+            </div>
+          ) : (
+            <div>
+              {store.subjectStore.map((notifStoreObj) => (
+                <SubjectAccordion
+                  notifStoreObj={notifStoreObj}
+                  deleteSubject={deleteSubject}
+                  ignoreOrigin={ignoreOrigin}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      </Box>
+    </Box>
   );
 }
 

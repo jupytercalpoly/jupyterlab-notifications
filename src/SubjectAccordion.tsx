@@ -1,26 +1,20 @@
-import React from "react";
-import ImgMediaCard from "./card";
+import React, { useState } from "react";
+import NotificationCard from "./NotificationCard";
 import { makeStyles } from "@material-ui/core/styles";
 import Accordion from "@material-ui/core/Accordion";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Box from "@material-ui/core/Box";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import Typography from "@material-ui/core/Typography";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from "@material-ui/icons/Delete";
+import ClearIcon from "@material-ui/icons/Clear";
 import { INotificationStoreObject } from ".";
+import { Box } from "@material-ui/core";
+import { FormatAMPM } from "./FormatAMPM";
+import NotificationCardSubitem from "./NotificationCardSubitem";
 
 const useStyles = makeStyles(() => ({
   root: {
     width: "100%",
-  },
-  expanded: {},
-  content: {
-    "&$expanded": {
-      marginBottom: 0,
-    },
   },
 }));
 
@@ -31,100 +25,120 @@ type AppProps = {
 };
 
 export default function SubjectAccordion(props: AppProps): JSX.Element {
-  //const [subjectExpanded, setSubjectExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(false);
+  let [mouseOver, setMouseOver] = useState(false);
 
   const classes = useStyles();
 
   return (
-    <div>
+    <Box pb={2}>
       {!props.notifStoreObj.notifications.length ? null : (
-        <div className={classes.root}>
-          <Accordion defaultExpanded={false}>
-            <AccordionSummary
-              classes={{
-                content: classes.content,
-                expanded: classes.expanded,
-              }}
-              expandIcon={<ExpandMoreIcon />}
-              aria-label="Expand"
-              aria-controls="additional-actions1-content"
-              id="additional-actions1-header"
-            >
-              <FormControlLabel
-                aria-label="Acknowledge"
-                onClick={(event) => event.stopPropagation()}
-                onFocus={(event) => event.stopPropagation()}
-                control={
-                  <div>
-                    <IconButton aria-label="delete">
-                      <DeleteIcon
+        <div
+          className={classes.root}
+          onMouseEnter={(e) => {
+            setMouseOver(true);
+          }}
+          onMouseLeave={(e) => {
+            setMouseOver(false);
+          }}
+        >
+          <Accordion
+            defaultExpanded={false}
+            expanded={
+              props.notifStoreObj.notifications.length > 1 ? expanded : false
+            }
+            onClick={() =>
+              setExpanded(
+                props.notifStoreObj.notifications.length > 1 ? !expanded : false
+              )
+            }
+            elevation={2}
+          >
+            <AccordionSummary>
+              <div style={{ width: "100%" }}>
+                <Box
+                  display="flex"
+                  flexDirection="row"
+                  alignItems="center"
+                  justifyContent="space-between"
+                >
+                  <Typography
+                    variant="subtitle1"
+                    gutterBottom
+                    style={{ fontWeight: 700 }}
+                  >
+                    {props.notifStoreObj.subject}
+                  </Typography>
+                  {expanded ? null : mouseOver ? (
+                    <IconButton aria-label="delete" size="small">
+                      <ClearIcon
+                        fontSize="small"
                         onClick={(e) => {
                           e.stopPropagation();
                           e.preventDefault();
                           props.deleteSubject(props.notifStoreObj.subject);
                         }}
-                        // style={{ top: 3, right: 3 }}
                       />
                     </IconButton>
-                  </div>
-                }
-                labelPlacement="start"
-                label={
-                  <div>
+                  ) : (
                     <Typography
-                      variant="subtitle2"
-                      gutterBottom
-                      style={{ fontWeight: 600 }}
+                      variant="caption"
+                      display="block"
+                      style={{ fontWeight: 300 }}
                     >
-                      {props.notifStoreObj.subject}
+                      {FormatAMPM(props.notifStoreObj.notifications[0].created)}
                     </Typography>
-                    <ImgMediaCard
-                      title={props.notifStoreObj.notifications[0].title}
-                      body={props.notifStoreObj.notifications[0].body}
-                      id={props.notifStoreObj.notifications[0].notificationId}
-                      origin={props.notifStoreObj.notifications[0].origin}
-                      subject={props.notifStoreObj.notifications[0].subject}
-                      elevation={0}
-                      deleteButton={false}
-                      ignoreButton={false}
-                    ></ImgMediaCard>
-                    {props.notifStoreObj.notifications.length > 1 ? (
-                      <Typography
-                        variant="caption"
-                        display="block"
-                        gutterBottom
-                        style={{ fontWeight: 500 }}
-                      >
-                        {props.notifStoreObj.notifications.length - 1} more
-                        notifications
-                      </Typography>
-                    ) : null}
-                  </div>
-                }
-              />
-            </AccordionSummary>
-            <AccordionDetails>
-              <Typography color="textSecondary" component={"span"}>
-                <Box pl={4}>
-                  {props.notifStoreObj.notifications.map((notif) => (
-                    <ImgMediaCard
-                      title={notif.title}
-                      body={notif.body}
-                      id={notif.notificationId}
-                      origin={notif.origin}
-                      subject={notif.subject}
-                      deleteButton={true}
-                      ignoreButton={true}
-                      elevation={0}
-                      ignoreOrigin={props.ignoreOrigin}
-                    ></ImgMediaCard>
-                  ))}
+                  )}
                 </Box>
+                {expanded ? null : (
+                  <NotificationCard
+                    title={props.notifStoreObj.notifications[0].title}
+                    body={props.notifStoreObj.notifications[0].body}
+                    id={props.notifStoreObj.notifications[0].notificationId}
+                    origin={props.notifStoreObj.notifications[0].origin}
+                    subject={props.notifStoreObj.notifications[0].subject}
+                    elevation={0}
+                    deleteButton={false}
+                    ignoreButton={false}
+                  ></NotificationCard>
+                )}
+                {expanded ? null : props.notifStoreObj.notifications.length >
+                  1 ? (
+                  <Box pt={1}>
+                    <Typography
+                      variant="caption"
+                      display="block"
+                      gutterBottom
+                      style={{ fontWeight: 400 }}
+                    >
+                      {props.notifStoreObj.notifications.length - 1} more
+                      notifications
+                    </Typography>
+                  </Box>
+                ) : null}
+              </div>
+            </AccordionSummary>
+            <AccordionDetails style={{ flexDirection: "column" }}> 
+              <Typography color="textSecondary">
+                {props.notifStoreObj.notifications.map((notif) => (
+                  <NotificationCardSubitem
+                    title={notif.title}
+                    body={notif.body}
+                    id={notif.notificationId}
+                    origin={notif.origin}
+                    subject={notif.subject}
+                    created={notif.created}
+                    deleteButton={true}
+                    ignoreButton={true}
+                    elevation={0}
+                    ignoreOrigin={props.ignoreOrigin}
+                  />
+                ))}
               </Typography>
             </AccordionDetails>
           </Accordion>
         </div>
       )}
-    </div>
+    </Box>
   );
 }

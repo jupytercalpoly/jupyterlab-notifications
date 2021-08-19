@@ -6,25 +6,25 @@ import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import { getStore, setStore } from "./useStore";
 import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from "@material-ui/icons/Delete";
 import ReportOffIcon from "@material-ui/icons/ReportOff";
+import ClearIcon from "@material-ui/icons/Clear";
 
 const useStyles = makeStyles({
   root: {
-    maxWidth: 345,
+    padding: 0,
   },
 });
 
-export default function ImgMediaCard(props: any) {
+export default function NotificationCard(props: any) {
   const classes = useStyles();
-  let openUrl = () => {
-    const newWindow = window.open(
-      "https://jupyter.org/",
-      "_blank",
-      "noopener,noreferrer"
-    );
-    if (newWindow) newWindow.opener = null;
-  };
+  // let openUrl = () => {
+  //   const newWindow = window.open(
+  //     "https://jupyter.org/",
+  //     "_blank",
+  //     "noopener,noreferrer"
+  //   );
+  //   if (newWindow) newWindow.opener = null;
+  // };
 
   let triggerDelete = (id: string, subject: string) => {
     let store = getStore();
@@ -45,9 +45,13 @@ export default function ImgMediaCard(props: any) {
   };
 
   return (
-    <Card className={classes.root} elevation={props.elevation}>
+    <Card elevation={props.elevation}>
       <CardActionArea>
-        <CardContent>
+        <CardContent
+          classes={{
+            root: classes.root,
+          }}
+        >
           <Typography gutterBottom variant="body2">
             {props.origin}
           </Typography>
@@ -56,7 +60,7 @@ export default function ImgMediaCard(props: any) {
             color="textSecondary"
             component="p"
             style={{ fontWeight: 500 }}
-            onClick={() => openUrl()}
+            //onClick={() => openUrl()}
           >
             {props.title}
           </Typography>
@@ -65,19 +69,19 @@ export default function ImgMediaCard(props: any) {
             color="textSecondary"
             component="p"
             style={{ fontWeight: 500 }}
-            onClick={() => openUrl()}
+            //onClick={() => openUrl()}
           >
             {props.body}
           </Typography>
           {props.deleteButton ? (
-            <IconButton aria-label="delete">
-              <DeleteIcon
+            <IconButton aria-label="delete" size="small">
+              <ClearIcon
+                fontSize="small"
                 onClick={(e) => {
                   e.stopPropagation();
                   e.preventDefault();
                   triggerDelete(props.id, props.subject);
                 }}
-                // style={{ top: 3, right: 3 }}
               />
             </IconButton>
           ) : null}
@@ -89,7 +93,6 @@ export default function ImgMediaCard(props: any) {
                   e.preventDefault();
                   props.ignoreOrigin(props.origin);
                 }}
-                // style={{ top: 3, right: 3 }}
               />
             </IconButton>
           ) : null}
