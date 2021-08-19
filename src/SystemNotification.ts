@@ -1,5 +1,4 @@
-
-export function systemNotification(notification: any) {
+export function SystemNotification(notification: any) {
   if (Notification.permission !== "granted") {
     Notification.requestPermission();
   } else {

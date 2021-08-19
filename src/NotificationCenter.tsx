@@ -72,11 +72,9 @@ export function NotificationCenter(props: any) {
           <Typography variant="h6" style={{ fontWeight: 600 }}>
             NOTIFICATIONS
           </Typography>
-            <IconButton aria-label="settingsCog">
-              <SettingsIcon
-                onClick={onSettingsClick}
-              />
-            </IconButton>
+          <IconButton aria-label="settingsCog">
+            <SettingsIcon onClick={onSettingsClick} />
+          </IconButton>
         </Box>
         <div>
           {settings ? (

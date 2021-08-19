@@ -2,8 +2,6 @@ import React from "react";
 import ImgMediaCard from "./card";
 import { makeStyles } from "@material-ui/core/styles";
 import Accordion from "@material-ui/core/Accordion";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Box from "@material-ui/core/Box";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import Typography from "@material-ui/core/Typography";
@@ -15,12 +13,6 @@ import { INotificationStoreObject } from ".";
 const useStyles = makeStyles(() => ({
   root: {
     width: "100%",
-  },
-  expanded: {},
-  content: {
-    "&$expanded": {
-      marginBottom: 0,
-    },
   },
 }));
 
@@ -41,85 +33,67 @@ export default function SubjectAccordion(props: AppProps): JSX.Element {
         <div className={classes.root}>
           <Accordion defaultExpanded={false} elevation={2}>
             <AccordionSummary
-              classes={{
-                content: classes.content,
-                expanded: classes.expanded,
-              }}
               expandIcon={<ExpandMoreIcon />}
               aria-label="Expand"
-              aria-controls="additional-actions1-content"
-              id="additional-actions1-header"
+              aria-controls="panel1a-content"
+              id="panel1a-header"
             >
-              <FormControlLabel
-                aria-label="Acknowledge"
-                onClick={(event) => event.stopPropagation()}
-                onFocus={(event) => event.stopPropagation()}
-                control={
-                  <div>
-                    <IconButton aria-label="delete">
-                      <DeleteIcon
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          e.preventDefault();
-                          props.deleteSubject(props.notifStoreObj.subject);
-                        }}
-                        // style={{ top: 3, right: 3 }}
-                      />
-                    </IconButton>
-                  </div>
-                }
-                labelPlacement="start"
-                label={
-                  <div>
-                    <Typography
-                      variant="subtitle2"
-                      gutterBottom
-                      style={{ fontWeight: 600 }}
-                    >
-                      {props.notifStoreObj.subject}
-                    </Typography>
-                    <ImgMediaCard
-                      title={props.notifStoreObj.notifications[0].title}
-                      body={props.notifStoreObj.notifications[0].body}
-                      id={props.notifStoreObj.notifications[0].notificationId}
-                      origin={props.notifStoreObj.notifications[0].origin}
-                      subject={props.notifStoreObj.notifications[0].subject}
-                      elevation={0}
-                      deleteButton={false}
-                      ignoreButton={false}
-                    ></ImgMediaCard>
-                    {props.notifStoreObj.notifications.length > 1 ? (
-                      <Typography
-                        variant="caption"
-                        display="block"
-                        gutterBottom
-                        style={{ fontWeight: 500 }}
-                      >
-                        {props.notifStoreObj.notifications.length - 1} more
-                        notifications
-                      </Typography>
-                    ) : null}
-                  </div>
-                }
-              />
+              <div>
+                <Typography
+                  variant="subtitle2"
+                  gutterBottom
+                  style={{ fontWeight: 600 }}
+                >
+                  {props.notifStoreObj.subject}
+                </Typography>
+                <IconButton aria-label="delete">
+                  <DeleteIcon
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      e.preventDefault();
+                      props.deleteSubject(props.notifStoreObj.subject);
+                    }}
+                    // style={{ top: 3, right: 3 }}
+                  />
+                </IconButton>
+                <ImgMediaCard
+                  title={props.notifStoreObj.notifications[0].title}
+                  body={props.notifStoreObj.notifications[0].body}
+                  id={props.notifStoreObj.notifications[0].notificationId}
+                  origin={props.notifStoreObj.notifications[0].origin}
+                  subject={props.notifStoreObj.notifications[0].subject}
+                  elevation={0}
+                  deleteButton={false}
+                  ignoreButton={false}
+                ></ImgMediaCard>
+                {props.notifStoreObj.notifications.length > 1 ? (
+                  <Typography
+                    variant="caption"
+                    display="block"
+                    gutterBottom
+                    style={{ fontWeight: 500 }}
+                  >
+                    {props.notifStoreObj.notifications.length - 1} more
+                    notifications
+                  </Typography>
+                ) : null}
+              </div>
             </AccordionSummary>
             <AccordionDetails>
               <Typography color="textSecondary" component={"span"}>
-                <Box pl={4}>
-                  {props.notifStoreObj.notifications.map((notif) => (
-                    <ImgMediaCard
-                      title={notif.title}
-                      body={notif.body}
-                      id={notif.notificationId}
-                      origin={notif.origin}
-                      subject={notif.subject}
-                      deleteButton={true}
-                      ignoreButton={true}
-                      elevation={0}
-                      ignoreOrigin={props.ignoreOrigin}
-                    ></ImgMediaCard>
-                  ))}
-                </Box>
+                {props.notifStoreObj.notifications.map((notif) => (
+                  <ImgMediaCard
+                    title={notif.title}
+                    body={notif.body}
+                    id={notif.notificationId}
+                    origin={notif.origin}
+                    subject={notif.subject}
+                    deleteButton={true}
+                    ignoreButton={true}
+                    elevation={0}
+                    ignoreOrigin={props.ignoreOrigin}
+                  ></ImgMediaCard>
+                ))}
               </Typography>
             </AccordionDetails>
           </Accordion>
