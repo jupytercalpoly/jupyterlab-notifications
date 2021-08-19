@@ -9,10 +9,17 @@ import IconButton from "@material-ui/core/IconButton";
 import ClearIcon from "@material-ui/icons/Clear";
 import { INotificationStoreObject } from ".";
 import { Box } from "@material-ui/core";
+import { FormatAMPM } from "./FormatAMPM";
 
 const useStyles = makeStyles(() => ({
   root: {
     width: "100%",
+  },
+  expanded: {},
+  content: {
+    "&$expanded": {
+      margin: "10px",
+    },
   },
 }));
 
@@ -27,18 +34,6 @@ export default function SubjectAccordion(props: AppProps): JSX.Element {
   let [mouseOver, setMouseOver] = useState(false);
 
   const classes = useStyles();
-
-  //TODO: change to date.toLocaleDateString(locale, { weekday: 'long' });
-  function formatAMPM(d: string) {
-    let date = new Date(parseInt(d) / 1000000);
-    let day = date.toLocaleDateString("en-US", { weekday: "long" }).slice(0, 3);
-    const time = new Date(date).toLocaleTimeString("en-US", {
-      hour: "numeric",
-      minute: "numeric",
-      hour12: true,
-    });
-    return day + " " + time;
-  }
 
   return (
     <div>
@@ -73,7 +68,7 @@ export default function SubjectAccordion(props: AppProps): JSX.Element {
                   >
                     {props.notifStoreObj.subject}
                   </Typography>
-                  {mouseOver ? (
+                  {expanded ? null : mouseOver ? (
                     <IconButton aria-label="delete" size="small">
                       <ClearIcon
                         fontSize="small"
@@ -90,21 +85,24 @@ export default function SubjectAccordion(props: AppProps): JSX.Element {
                       display="block"
                       style={{ fontWeight: 300 }}
                     >
-                      {formatAMPM(props.notifStoreObj.notifications[0].created)}
+                      {FormatAMPM(props.notifStoreObj.notifications[0].created)}
                     </Typography>
                   )}
                 </Box>
-                <NotificationCard
-                  title={props.notifStoreObj.notifications[0].title}
-                  body={props.notifStoreObj.notifications[0].body}
-                  id={props.notifStoreObj.notifications[0].notificationId}
-                  origin={props.notifStoreObj.notifications[0].origin}
-                  subject={props.notifStoreObj.notifications[0].subject}
-                  elevation={0}
-                  deleteButton={false}
-                  ignoreButton={false}
-                ></NotificationCard>
-                {props.notifStoreObj.notifications.length > 1 ? (
+                {expanded ? null : (
+                  <NotificationCard
+                    title={props.notifStoreObj.notifications[0].title}
+                    body={props.notifStoreObj.notifications[0].body}
+                    id={props.notifStoreObj.notifications[0].notificationId}
+                    origin={props.notifStoreObj.notifications[0].origin}
+                    subject={props.notifStoreObj.notifications[0].subject}
+                    elevation={0}
+                    deleteButton={false}
+                    ignoreButton={false}
+                  ></NotificationCard>
+                )}
+                {expanded ? null : props.notifStoreObj.notifications.length >
+                  1 ? (
                   <Box pt={1}>
                     <Typography
                       variant="caption"
