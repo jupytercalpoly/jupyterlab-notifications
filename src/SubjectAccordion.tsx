@@ -1,5 +1,5 @@
 import React from "react";
-import ImgMediaCard from "./card";
+import NotificationCard from "./NotificationCard";
 import { makeStyles } from "@material-ui/core/styles";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
@@ -52,7 +52,7 @@ export default function SubjectAccordion(props: AppProps): JSX.Element {
                     // style={{ top: 3, right: 3 }}
                   />
                 </IconButton>
-                <ImgMediaCard
+                <NotificationCard
                   title={props.notifStoreObj.notifications[0].title}
                   body={props.notifStoreObj.notifications[0].body}
                   id={props.notifStoreObj.notifications[0].notificationId}
@@ -61,7 +61,7 @@ export default function SubjectAccordion(props: AppProps): JSX.Element {
                   elevation={0}
                   deleteButton={false}
                   ignoreButton={false}
-                ></ImgMediaCard>
+                ></NotificationCard>
                 {props.notifStoreObj.notifications.length > 1 ? (
                   <Box pt={1}>
                     <Typography
@@ -80,7 +80,7 @@ export default function SubjectAccordion(props: AppProps): JSX.Element {
             <AccordionDetails>
               <Typography color="textSecondary" component={"span"}>
                 {props.notifStoreObj.notifications.map((notif) => (
-                  <ImgMediaCard
+                  <NotificationCard
                     title={notif.title}
                     body={notif.body}
                     id={notif.notificationId}
@@ -90,7 +90,7 @@ export default function SubjectAccordion(props: AppProps): JSX.Element {
                     ignoreButton={true}
                     elevation={0}
                     ignoreOrigin={props.ignoreOrigin}
-                  ></ImgMediaCard>
+                  ></NotificationCard>
                 ))}
               </Typography>
             </AccordionDetails>
