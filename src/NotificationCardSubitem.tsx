@@ -6,10 +6,12 @@ import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import { getStore, setStore } from "./useStore";
 import IconButton from "@material-ui/core/IconButton";
-import ReportOffIcon from "@material-ui/icons/ReportOff";
 import ClearIcon from "@material-ui/icons/Clear";
 import { Box } from "@material-ui/core";
 import { FormatAMPM } from "./FormatAMPM";
+import SettingsIcon from "@material-ui/icons/Settings";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
 
 const useStyles = makeStyles({
   root: {
@@ -19,6 +21,15 @@ const useStyles = makeStyles({
 
 export default function NotificationCardSubitem(props: any) {
   let [mouseOver, setMouseOver] = useState(false);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   const classes = useStyles();
   // let openUrl = () => {
@@ -97,16 +108,43 @@ export default function NotificationCardSubitem(props: any) {
                 </Typography>
               </div>
               {mouseOver ? (
-                <div>
-                  <IconButton aria-label="ignoreOrigin">
-                    <ReportOffIcon
+                <Box
+                  display="flex"
+                  flexDirection="row"
+                  alignItems="center"
+                >
+                  <div>
+                    <IconButton
+                      aria-controls="simple-menu"
+                      aria-haspopup="true"
                       onClick={(e) => {
                         e.stopPropagation();
                         e.preventDefault();
-                        props.ignoreOrigin(props.origin);
+                        handleClick(e);
                       }}
-                    />
-                  </IconButton>
+                    >
+                      <SettingsIcon />
+                    </IconButton>
+                    <Menu
+                      id="simple-menu"
+                      anchorEl={anchorEl}
+                      keepMounted
+                      open={Boolean(anchorEl)}
+                      onClose={handleClose}
+                    >
+                      <MenuItem
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          e.preventDefault();
+                          handleClose();
+                          props.ignoreOrigin(props.origin);
+                        }}
+                      >
+                        Block notifications from {props.origin}
+                      </MenuItem>
+                    </Menu>
+                  </div>
+
                   <IconButton aria-label="delete" size="small">
                     <ClearIcon
                       fontSize="small"
@@ -117,7 +155,7 @@ export default function NotificationCardSubitem(props: any) {
                       }}
                     />
                   </IconButton>
-                </div>
+                </Box>
               ) : (
                 <Typography
                   variant="caption"

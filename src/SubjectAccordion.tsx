@@ -31,7 +31,7 @@ export default function SubjectAccordion(props: AppProps): JSX.Element {
   const classes = useStyles();
 
   return (
-    <div>
+    <Box pb={2}>
       {!props.notifStoreObj.notifications.length ? null : (
         <div
           className={classes.root}
@@ -139,6 +139,6 @@ export default function SubjectAccordion(props: AppProps): JSX.Element {
           </Accordion>
         </div>
       )}
-    </div>
+    </Box>
   );
 }
