@@ -8,11 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "../style/main.css";
 import { NotebookActions } from "@jupyterlab/notebook";
 import { ICommandPalette } from "@jupyterlab/apputils";
-import { ToolbarButton } from "@jupyterlab/apputils";
-import { DocumentRegistry } from "@jupyterlab/docregistry";
-import { INotebookModel, NotebookPanel } from "@jupyterlab/notebook";
 import { INotification } from "jupyterlab_toastify";
-import { IDisposable } from "@lumino/disposable";
 import { getStore, setStore } from "./useStore";
 import { notificationWidget, notifyInCenter } from "./NotificationCenter";
 import notifIcon from "../style/icons/notifIcon.svg";
@@ -62,56 +58,7 @@ export interface INotificationStoreObject {
   notifications: INotificationResponse[];
 }
 
-class ButtonExtension
-  implements DocumentRegistry.IWidgetExtension<NotebookPanel, INotebookModel>
-{
-  createNew(
-    panel: NotebookPanel,
-    context: DocumentRegistry.IContext<INotebookModel>
-  ): IDisposable {
-    const mybutton = new ToolbarButton({
-      label: "Push Notif",
-      onClick: async () => {
-        const dataToSend = {
-          origin: "button extension",
-          title: Math.random().toString(),
-          body: "this is notiffrom new",
-          subject: "button press",
-          recipient: "harshit",
-          linkUrl: "",
-          ephemeral: true,
-          notifTimeout: 3000,
-          notifType: "info",
-        };
-        let notifier = activateNotifier();
-        notifier.post(dataToSend);
-        // try {
-        //   const reply = await requestAPI<any>("notifications", {
-        //     body: JSON.stringify(dataToSend),
-        //     method: "POST",
-        //   });
-        //   ignoreNotifs.set(reply["RowId"], null);
-        //   console.log(reply);
-        //   console.log("this was invoked");
-        // } catch (reason) {
-        //   console.error(
-        //     `Error on POST /api/notifications ${dataToSend}.\n${reason}`
-        //   );
-        // }
-        document.addEventListener("DOMContentLoaded", () => {
-          if (Notification.permission !== "granted") {
-            void Notification.requestPermission();
-          }
-        });
-      },
-    });
 
-    // Add the toolbar button to the notebook toolbar
-    panel.toolbar.insertItem(10, "mybutton", mybutton);
-
-    return mybutton;
-  }
-}
 
 /**
  * Initialization data for the jupyterlab-todo extension.
@@ -296,8 +243,6 @@ const plugin: JupyterFrontEndPlugin<void> = {
     widget.title.icon = chatIcon;
     widget.node.style.overflow = "auto";
     app.shell.add(widget, "right", { rank: 500 });
-    const your_button = new ButtonExtension();
-    app.docRegistry.addWidgetExtension("Notebook", your_button);
     NotebookActions.executed.connect(async (_, args) => {
       const { cell, notebook } = args;
       const codeCell = cell.model.type === "code";
