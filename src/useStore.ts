@@ -7,7 +7,6 @@ export let store = {
 };
 let listeners: React.Dispatch<any>[] = [];
 
-// setStore(store => ({...store, isFoo: false}))
 export function setStore(
   val: typeof store | ((s: typeof store) => typeof store)
 ): void {
@@ -23,9 +22,6 @@ export function getStore(): typeof store {
   return { ...store };
 }
 
-// setStore(store => {
-//     return {...store }
-// })
 
 export default function useStore(): [typeof store, typeof setStore] {
   const listener = useState<any>()[1];

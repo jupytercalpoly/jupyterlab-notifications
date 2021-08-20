@@ -32,9 +32,7 @@ class Notifier implements INotifier {
         body: JSON.stringify(dataToSend),
         method: "POST",
       });
-      //ignoreNotifs.set(reply["RowId"], null);
       console.log(reply);
-      console.log("this was invoked");
     } catch (reason) {
       console.error(
         `Error on POST /api/notitifications ${notification}.\n${reason}`
