@@ -32,6 +32,7 @@ class Notifier implements INotifier {
         body: JSON.stringify(dataToSend),
         method: "POST",
       });
+      console.log(reply);
     } catch (reason) {
       console.error(
         `Error on POST /api/notitifications ${notification}.\n${reason}`
