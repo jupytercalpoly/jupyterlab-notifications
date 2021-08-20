@@ -17,20 +17,10 @@ const useStyles = makeStyles({
 
 export default function NotificationCard(props: any) {
   const classes = useStyles();
-  // let openUrl = () => {
-  //   const newWindow = window.open(
-  //     "https://jupyter.org/",
-  //     "_blank",
-  //     "noopener,noreferrer"
-  //   );
-  //   if (newWindow) newWindow.opener = null;
-  // };
 
   let triggerDelete = (id: string, subject: string) => {
     let store = getStore();
     const subjectStore = [...store.subjectStore];
-    console.log("origin", origin);
-    console.log("id", id);
     const o = subjectStore.findIndex((obj) => obj.subject === subject);
     let i = subjectStore[o].notifications.findIndex(
       (task) => task.notificationId === id
@@ -40,8 +30,6 @@ export default function NotificationCard(props: any) {
     store.subjectStore = subjectStore;
 
     setStore(store);
-    // localStorage.setItem("originStore", JSON.stringify(store));
-    console.log("This was triggered");
   };
 
   return (
@@ -60,7 +48,6 @@ export default function NotificationCard(props: any) {
             color="textSecondary"
             component="p"
             style={{ fontWeight: 500 }}
-            //onClick={() => openUrl()}
           >
             {props.title}
           </Typography>
@@ -69,7 +56,6 @@ export default function NotificationCard(props: any) {
             color="textSecondary"
             component="p"
             style={{ fontWeight: 500 }}
-            //onClick={() => openUrl()}
           >
             {props.body}
           </Typography>

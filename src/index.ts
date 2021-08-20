@@ -58,8 +58,6 @@ export interface INotificationStoreObject {
   notifications: INotificationResponse[];
 }
 
-
-
 /**
  * Initialization data for the jupyterlab-todo extension.
  */
@@ -69,31 +67,15 @@ const plugin: JupyterFrontEndPlugin<void> = {
   requires: [ICommandPalette],
 
   activate: async (app: JupyterFrontEnd, palette: ICommandPalette) => {
-    // console.log('Attempting GET');
-    // // GET request
-    // try {
-    //   const data = await requestAPI<any>('hello');
-    //   console.log(data);
-    // } catch (reason) {
-    //   console.error(`Error on GET /jlab-ext-example/hello.\n${reason}`);
-    // }
-
     if (!localStorage.getItem("notifications-UUID")) {
       localStorage.setItem("notifications-UUID", uuidv4());
       let username = prompt("Enter your username", "");
       localStorage.setItem("notifications-username", username!);
       localStorage.setItem("notifications-lastDate", "0");
-    } else {
-      console.log("UUID = ", localStorage.getItem("notifications-UUID"));
     }
-
     if (!localStorage.getItem("blocked-origins")) {
       localStorage.setItem("blocked-origins", JSON.stringify([]));
     } else {
-      console.log(
-        "blocked-origins = ",
-        localStorage.getItem("blocked-origins")
-      );
       let store = getStore();
       const blockedOrigins = JSON.parse(
         localStorage.getItem("blocked-origins")!
@@ -115,13 +97,10 @@ const plugin: JupyterFrontEndPlugin<void> = {
         created: "",
       };
     }
-    console.log("parameters = ", parameters);
     let notifier = activateNotifier();
     let notificationsList = await notifier.getNotificationWithParameters(
       parameters
     );
-    console.log("notificationList = ", notificationsList);
-
     if (notificationsList) {
       let store = getStore();
       notificationsList = notificationsList.filter(
@@ -133,8 +112,6 @@ const plugin: JupyterFrontEndPlugin<void> = {
         const s = subjectStore.findIndex(
           (obj) => obj.subject === notificationsList![index].subject
         );
-        console.log("Notification= ", notificationsList[index]);
-        console.log("Notification origin= ", notificationsList[index].origin);
         if (s == -1) {
           subjectStore.push({
             subject: notificationsList[index].subject,
@@ -144,7 +121,6 @@ const plugin: JupyterFrontEndPlugin<void> = {
           subjectStore[s].notifications.push(notificationsList[index]);
         }
       }
-      console.log("new store = ", store);
       notifyInCenter(subjectStore);
       if (notificationsList.length > 0) {
         localStorage.setItem(
@@ -153,8 +129,6 @@ const plugin: JupyterFrontEndPlugin<void> = {
         );
       }
     }
-
-    // notifyInCenter(JSON.parse(localStorage.getItem("originStore")!));
     let ws = new WebSocket(
       "ws://" +
         window.location.hostname +
@@ -178,20 +152,13 @@ const plugin: JupyterFrontEndPlugin<void> = {
       };
       let notifier = activateNotifier();
       notifier.post(dataToSend);
-      console.log("got here before ws");
       ws.send("Hello, world");
     };
     ws.onmessage = async function (rowId) {
       try {
-        console.log(rowId.data);
-        console.log("this was also invoked");
         let notifier = activateNotifier();
         const notification = await notifier.getNotification(rowId.data);
-        console.log("notification from get = ", notification);
         if (notification) {
-          // let originStore: INotificationStoreObject[] = JSON.parse(
-          //   localStorage.getItem("originStore")!
-          // );
           let store = getStore();
           const subjectStore = [...store.subjectStore];
 
@@ -210,13 +177,6 @@ const plugin: JupyterFrontEndPlugin<void> = {
               subjectStore.unshift(t[0]);
             }
 
-            // if (notification["origin"] in originStore) {
-            //   originStore[notification["origin"]].push(notification);
-            // } else {
-            //   originStore[notification["origin"]] = [notification];
-            // }
-            // localStorage.setItem("originStore", JSON.stringify(originStore));
-            // console.log("originStore after get= ", originStore);
             notifyInCenter(subjectStore);
             localStorage.setItem(
               "notifications-lastDate",
@@ -264,19 +224,6 @@ const plugin: JupyterFrontEndPlugin<void> = {
           };
           let notifier = activateNotifier();
           notifier.post(dataToSend);
-          // try {
-          //   const reply = await requestAPI<any>("notifications", {
-          //     body: JSON.stringify(dataToSend),
-          //     method: "POST",
-          //   });
-          //   ignoreNotifs.set(reply["RowId"], null);
-          //   console.log(reply);
-          //   console.log("this was invoked");
-          // } catch (reason) {
-          //   console.error(
-          //     `Error on POST /api/notifications ${dataToSend}.\n${reason}`
-          //   );
-          // }
         }
       } else {
         alert(
