@@ -4,6 +4,8 @@
 
 Toast notifications for JupyterLab
 
+![Untitled ipynb (2) - JupyterLab](https://user-images.githubusercontent.com/26686070/138773413-1af7c820-05fe-4aa1-a241-c0dc786434fb.gif)
+
 
 ### Press Release
 
@@ -50,7 +52,8 @@ To remove the extension, execute:
 ```bash
 pip uninstall jupyterlab_notifications
 ```
-
+## Cell execution notifications
+Notebook Cell Timing needs to be enabled for Jupyterlab Notifications to work. Please go to Settings -> Advanced Settings Editor -> Notebook and update setting to {"recordTiming": true}
 
 ## Contributing
 
