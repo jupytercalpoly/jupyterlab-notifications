@@ -4,7 +4,7 @@
 
 Toast notifications for JupyterLab
 
-(https://gifs.com/gif/jupyter-notifications-16Y35R)
+![Uploading Untitled.ipynb (2) - JupyterLab.gif…]()
 
 ### Press Release
 
