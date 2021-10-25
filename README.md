@@ -50,7 +50,8 @@ To remove the extension, execute:
 ```bash
 pip uninstall jupyterlab_notifications
 ```
-
+## Cell execution notifications
+Notebook Cell Timing needs to be enabled for Jupyterlab Notifications to work. Please go to Settings -> Advanced Settings Editor -> Notebook and update setting to {"recordTiming": true}
 
 ## Contributing
 
