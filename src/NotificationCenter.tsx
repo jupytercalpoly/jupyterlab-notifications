@@ -90,13 +90,34 @@ export function NotificationCenter(props: any) {
             </div>
           ) : (
             <div>
-              {store.subjectStore.map((notifStoreObj) => (
-                <SubjectAccordion
-                  notifStoreObj={notifStoreObj}
-                  deleteSubject={deleteSubject}
-                  ignoreOrigin={ignoreOrigin}
-                />
-              ))}
+              <div>
+                <Typography variant="h6" style={{ fontWeight: 600 }}>
+                  New
+                </Typography>
+              </div>
+              <div>
+                {store.subjectStore.map((notifStoreObj) => (
+                  <SubjectAccordion
+                    notifStoreObj={notifStoreObj}
+                    deleteSubject={deleteSubject}
+                    ignoreOrigin={ignoreOrigin}
+                  />
+                ))}
+              </div>
+              <div>
+                <Typography variant="h6" style={{ fontWeight: 600 }}>
+                  Earlier
+                </Typography>
+              </div>
+              <div>
+                {store.subjectStore.map((notifStoreObj) => (
+                  <SubjectAccordion
+                    notifStoreObj={notifStoreObj}
+                    deleteSubject={deleteSubject}
+                    ignoreOrigin={ignoreOrigin}
+                  />
+                ))}
+              </div>
             </div>
           )}
         </div>
