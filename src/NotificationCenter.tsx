@@ -11,6 +11,7 @@ import SettingsIcon from "@material-ui/icons/Settings";
 import { INotification } from "jupyterlab_toastify";
 import SubjectAccordion from "./SubjectAccordion";
 import { Box } from "@material-ui/core";
+import { WithinHour } from "./WithinHour";
 
 export function NotificationCenter(props: any) {
   const [store, setStore] = useStore();
@@ -98,7 +99,12 @@ export function NotificationCenter(props: any) {
               <div>
                 {store.subjectStore.map((notifStoreObj) => (
                   <SubjectAccordion
-                    notifStoreObj={notifStoreObj}
+                    notifStoreObj={{
+                      subject: notifStoreObj.subject,
+                      notifications: notifStoreObj.notifications.filter(
+                        (notif) => WithinHour(notif.created)
+                      ),
+                    }}
                     deleteSubject={deleteSubject}
                     ignoreOrigin={ignoreOrigin}
                   />
@@ -112,7 +118,12 @@ export function NotificationCenter(props: any) {
               <div>
                 {store.subjectStore.map((notifStoreObj) => (
                   <SubjectAccordion
-                    notifStoreObj={notifStoreObj}
+                    notifStoreObj={{
+                      subject: notifStoreObj.subject,
+                      notifications: notifStoreObj.notifications.filter(
+                        (notif) => !WithinHour(notif.created)
+                      ),
+                    }}
                     deleteSubject={deleteSubject}
                     ignoreOrigin={ignoreOrigin}
                   />
