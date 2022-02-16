@@ -9,9 +9,7 @@ import IconButton from "@material-ui/core/IconButton";
 import ClearIcon from "@material-ui/icons/Clear";
 import { Box } from "@material-ui/core";
 import { FormatAMPM } from "./FormatAMPM";
-import SettingsIcon from "@material-ui/icons/Settings";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
+import NotificationsOffIcon from "@material-ui/icons/NotificationsOff";
 
 const useStyles = makeStyles({
   root: {
@@ -21,15 +19,6 @@ const useStyles = makeStyles({
 
 export default function NotificationCardSubitem(props: any) {
   let [mouseOver, setMouseOver] = useState(false);
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
 
   const classes = useStyles();
 
@@ -96,35 +85,16 @@ export default function NotificationCardSubitem(props: any) {
               {mouseOver ? (
                 <Box display="flex" flexDirection="row" alignItems="center">
                   <div>
-                    <IconButton
-                      aria-controls="simple-menu"
-                      aria-haspopup="true"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        e.preventDefault();
-                        handleClick(e);
-                      }}
-                    >
-                      <SettingsIcon />
-                    </IconButton>
-                    <Menu
-                      id="simple-menu"
-                      anchorEl={anchorEl}
-                      keepMounted
-                      open={Boolean(anchorEl)}
-                      onClose={handleClose}
-                    >
-                      <MenuItem
-                        onClick={(e) => {
+                    <IconButton aria-label="block" size="small">
+                      <NotificationsOffIcon 
+                        fontSize="small"
+                        onClick={(e: { stopPropagation: () => void; preventDefault: () => void; }) => {
                           e.stopPropagation();
                           e.preventDefault();
-                          handleClose();
                           props.ignoreOrigin(props.origin);
                         }}
-                      >
-                        Block notifications from {props.origin}
-                      </MenuItem>
-                    </Menu>
+                      />
+                    </IconButton>
                   </div>
 
                   <IconButton aria-label="delete" size="small">
