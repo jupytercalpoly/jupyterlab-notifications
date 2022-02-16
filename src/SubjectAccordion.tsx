@@ -4,13 +4,14 @@ import { makeStyles } from "@material-ui/core/styles";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
-import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import ClearIcon from "@material-ui/icons/Clear";
 import { INotificationStoreObject } from ".";
-import { Box } from "@material-ui/core";
 import { FormatAMPM } from "./FormatAMPM";
 import NotificationCardSubitem from "./NotificationCardSubitem";
+
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -104,17 +105,11 @@ export default function SubjectAccordion(props: AppProps): JSX.Element {
                 )}
                 {expanded ? null : props.notifStoreObj.notifications.length >
                   1 ? (
-                  <Box pt={1}>
-                    <Typography
-                      variant="caption"
-                      display="block"
-                      gutterBottom
-                      style={{ fontWeight: 400 }}
-                    >
-                      {props.notifStoreObj.notifications.length - 1} more
-                      notifications
-                    </Typography>
-                  </Box>
+                  <Typography component="div">
+                    <Box pt={1} sx={{fontSize: '0.8rem', fontWeight: 'medium', lineSpacing: '1.3rem'}}>
+                        {props.notifStoreObj.notifications.length - 1} more notifications
+                    </Box>
+                  </Typography>
                 ) : null}
               </div>
             </AccordionSummary>
