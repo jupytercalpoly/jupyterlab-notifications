@@ -67,7 +67,6 @@ export default function NotificationCardSubitem(props: any) {
                 </Typography>
                 <Typography 
                   sx={{fontSize: '1rem', fontWeight: 'medium', lineSpacing: '1.2rem'}}
-                  // color="textSecondary"
                   component="p"
                 >
                   {props.body}

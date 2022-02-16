@@ -65,9 +65,10 @@ export default function SubjectAccordion(props: AppProps): JSX.Element {
                   justifyContent="space-between"
                 >
                   <Typography
-                    variant="subtitle1"
+                    // variant="subtitle1"
                     gutterBottom
-                    style={{ fontWeight: 700 }}
+                    // style={{ fontWeight: 700 }}
+                    sx={{fontSize: '1.2rem', fontWeight: 'bold', lineSpacing: '1.6rem'}}
                   >
                     {props.notifStoreObj.subject}
                   </Typography>
@@ -96,6 +97,7 @@ export default function SubjectAccordion(props: AppProps): JSX.Element {
                   ) : (
                     <Typography
                       variant="caption"
+                      color="textSecondary"
                       display="block"
                       style={{ fontWeight: 300 }}
                     >

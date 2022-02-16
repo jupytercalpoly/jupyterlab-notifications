@@ -3,11 +3,11 @@ import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardContent from "@material-ui/core/CardContent";
-import Typography from "@material-ui/core/Typography";
 import { getStore, setStore } from "./useStore";
 import IconButton from "@material-ui/core/IconButton";
 import ReportOffIcon from "@material-ui/icons/ReportOff";
 import ClearIcon from "@material-ui/icons/Clear";
+import Typography from '@mui/material/Typography';
 
 const useStyles = makeStyles({
   root: {
@@ -40,22 +40,12 @@ export default function NotificationCard(props: any) {
             root: classes.root,
           }}
         >
-          <Typography gutterBottom variant="body2">
+          <Typography gutterBottom sx={{fontSize: '1rem', fontWeight: 'bold', lineSpacing: '1.6rem'}}>
             {props.origin}
           </Typography>
-          <Typography
-            variant="body2"
-            color="textSecondary"
+          <Typography 
+            sx={{fontSize: '1rem', fontWeight: 'medium', lineSpacing: '1.2rem'}}
             component="p"
-            style={{ fontWeight: 500 }}
-          >
-            {props.title}
-          </Typography>
-          <Typography
-            variant="body2"
-            color="textSecondary"
-            component="p"
-            style={{ fontWeight: 500 }}
           >
             {props.body}
           </Typography>
