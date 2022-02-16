@@ -3,13 +3,13 @@ import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardContent from "@material-ui/core/CardContent";
-import Typography from "@material-ui/core/Typography";
 import { getStore, setStore } from "./useStore";
 import IconButton from "@material-ui/core/IconButton";
 import ClearIcon from "@material-ui/icons/Clear";
-import { Box } from "@material-ui/core";
 import { FormatAMPM } from "./FormatAMPM";
 import NotificationsOffIcon from "@material-ui/icons/NotificationsOff";
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
 
 const useStyles = makeStyles({
   root: {
@@ -61,23 +61,14 @@ export default function NotificationCardSubitem(props: any) {
               alignItems="center"
               justifyContent="space-between"
             >
-              <div>
-                <Typography gutterBottom variant="body2">
+              <div> 
+                <Typography gutterBottom sx={{fontSize: '1rem', fontWeight: 'bold', lineSpacing: '1.6rem'}}>
                   {props.origin}
                 </Typography>
-                <Typography
-                  variant="body2"
-                  color="textSecondary"
+                <Typography 
+                  sx={{fontSize: '1rem', fontWeight: 'medium', lineSpacing: '1.2rem'}}
+                  // color="textSecondary"
                   component="p"
-                  style={{ fontWeight: 500 }}
-                >
-                  {props.title}
-                </Typography>
-                <Typography
-                  variant="body2"
-                  color="textSecondary"
-                  component="p"
-                  style={{ fontWeight: 500 }}
                 >
                   {props.body}
                 </Typography>
@@ -111,6 +102,7 @@ export default function NotificationCardSubitem(props: any) {
               ) : (
                 <Typography
                   variant="caption"
+                  color="textSecondary"
                   display="block"
                   style={{ fontWeight: 300 }}
                 >

@@ -9,6 +9,7 @@ import ClearIcon from "@material-ui/icons/Clear";
 import { INotificationStoreObject } from ".";
 import { FormatAMPM } from "./FormatAMPM";
 import NotificationCardSubitem from "./NotificationCardSubitem";
+import ReportOffIcon from "@material-ui/icons/ReportOff";
 
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
@@ -71,16 +72,27 @@ export default function SubjectAccordion(props: AppProps): JSX.Element {
                     {props.notifStoreObj.subject}
                   </Typography>
                   {expanded ? null : mouseOver ? (
-                    <IconButton aria-label="delete" size="small">
-                      <ClearIcon
-                        fontSize="small"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          e.preventDefault();
-                          props.deleteSubject(props.notifStoreObj.subject);
-                        }}
-                      />
-                    </IconButton>
+                    <div>       
+                      <IconButton aria-label="ignoreOrigin">
+                        <ReportOffIcon
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            props.ignoreOrigin(props.notifStoreObj.notifications[0].origin);
+                          }}
+                        />
+                      </IconButton>
+                      <IconButton aria-label="delete" size="small">
+                        <ClearIcon
+                          fontSize="small"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            props.deleteSubject(props.notifStoreObj.subject);
+                          }}
+                        />
+                      </IconButton>
+                    </div> 
                   ) : (
                     <Typography
                       variant="caption"
