@@ -11,8 +11,9 @@ import { FormatAMPM } from "./FormatAMPM";
 import NotificationCardSubitem from "./NotificationCardSubitem";
 import ReportOffIcon from "@material-ui/icons/ReportOff";
 
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import { ExternalHeading } from "./styles";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -64,22 +65,19 @@ export default function SubjectAccordion(props: AppProps): JSX.Element {
                   alignItems="center"
                   justifyContent="space-between"
                 >
-                  <Typography
-                    // variant="subtitle1"
-                    gutterBottom
-                    // style={{ fontWeight: 700 }}
-                    sx={{fontSize: '1.2rem', fontWeight: 'bold', lineSpacing: '1.6rem'}}
-                  >
+                  <Typography gutterBottom sx={ExternalHeading}>
                     {props.notifStoreObj.subject}
                   </Typography>
                   {expanded ? null : mouseOver ? (
-                    <div>       
+                    <div>
                       <IconButton aria-label="ignoreOrigin">
                         <ReportOffIcon
                           onClick={(e) => {
                             e.stopPropagation();
                             e.preventDefault();
-                            props.ignoreOrigin(props.notifStoreObj.notifications[0].origin);
+                            props.ignoreOrigin(
+                              props.notifStoreObj.notifications[0].origin
+                            );
                           }}
                         />
                       </IconButton>
@@ -93,7 +91,7 @@ export default function SubjectAccordion(props: AppProps): JSX.Element {
                           }}
                         />
                       </IconButton>
-                    </div> 
+                    </div>
                   ) : (
                     <Typography
                       variant="caption"
@@ -120,14 +118,22 @@ export default function SubjectAccordion(props: AppProps): JSX.Element {
                 {expanded ? null : props.notifStoreObj.notifications.length >
                   1 ? (
                   <Typography component="div">
-                    <Box pt={1} sx={{fontSize: '0.8rem', fontWeight: 'medium', lineSpacing: '1.3rem'}}>
-                        {props.notifStoreObj.notifications.length - 1} more notifications
+                    <Box
+                      pt={1}
+                      sx={{
+                        fontSize: "0.875rem",
+                        fontWeight: "medium",
+                        lineSpacing: "0.56rem",
+                      }}
+                    >
+                      {props.notifStoreObj.notifications.length - 1} more
+                      notifications
                     </Box>
                   </Typography>
                 ) : null}
               </div>
             </AccordionSummary>
-            <AccordionDetails style={{ flexDirection: "column" }}> 
+            <AccordionDetails style={{ flexDirection: "column" }}>
               <Typography color="textSecondary">
                 {props.notifStoreObj.notifications.map((notif) => (
                   <NotificationCardSubitem

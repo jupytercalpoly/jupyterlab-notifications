@@ -8,8 +8,8 @@ import IconButton from "@material-ui/core/IconButton";
 import ClearIcon from "@material-ui/icons/Clear";
 import { FormatAMPM } from "./FormatAMPM";
 import NotificationsOffIcon from "@material-ui/icons/NotificationsOff";
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
 
 const useStyles = makeStyles({
   root: {
@@ -61,12 +61,23 @@ export default function NotificationCardSubitem(props: any) {
               alignItems="center"
               justifyContent="space-between"
             >
-              <div> 
-                <Typography gutterBottom sx={{fontSize: '1rem', fontWeight: 'bold', lineSpacing: '1.6rem'}}>
+              <div>
+                <Typography
+                  gutterBottom
+                  sx={{
+                    fontSize: "0.875rem",
+                    fontWeight: "bold",
+                    lineSpacing: "0.75rem",
+                  }}
+                >
                   {props.origin}
                 </Typography>
-                <Typography 
-                  sx={{fontSize: '1rem', fontWeight: 'medium', lineSpacing: '1.2rem'}}
+                <Typography
+                  sx={{
+                    fontSize: "1rem",
+                    fontWeight: "medium",
+                    lineSpacing: "1.2rem",
+                  }}
                   component="p"
                 >
                   {props.body}
@@ -76,9 +87,12 @@ export default function NotificationCardSubitem(props: any) {
                 <Box display="flex" flexDirection="row" alignItems="center">
                   <div>
                     <IconButton aria-label="block" size="small">
-                      <NotificationsOffIcon 
+                      <NotificationsOffIcon
                         fontSize="small"
-                        onClick={(e: { stopPropagation: () => void; preventDefault: () => void; }) => {
+                        onClick={(e: {
+                          stopPropagation: () => void;
+                          preventDefault: () => void;
+                        }) => {
                           e.stopPropagation();
                           e.preventDefault();
                           props.ignoreOrigin(props.origin);

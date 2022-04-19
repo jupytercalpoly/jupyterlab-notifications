@@ -70,7 +70,8 @@ export function NotificationCenter(props: any) {
           alignItems="center"
           justifyContent="space-between"
         >
-          <Typography variant="h6" style={{ fontWeight: 600 }}>
+          <Typography variant="h6" style={{ fontSize: "1rem" }}>
+            {/* , //lineSpacing: "1.25rem" }}> */}
             NOTIFICATIONS
           </Typography>
           <IconButton aria-label="settingsCog">
