@@ -7,15 +7,14 @@ import { Panel, Widget } from "@lumino/widgets";
 import "react-toastify/dist/ReactToastify.css";
 import "../style/main.css";
 import { NotebookActions } from "@jupyterlab/notebook";
+import { ICommandPalette } from "@jupyterlab/apputils";
 import { INotification } from "jupyterlab_toastify";
 import { getStore, setStore } from "./useStore";
 import { notificationWidget, notifyInCenter } from "./NotificationCenter";
 import notifIcon from "../style/icons/notifIcon.svg";
 import { LabIcon } from "@jupyterlab/ui-components";
-import { INotifier, Notifier } from "./token";
+import { activateNotifier } from "./token";
 import { v4 as uuidv4 } from "uuid";
-
-export { INotifier } from './token';
 
 const chatIcon = new LabIcon({
   name: "jitsi:notif",
@@ -62,12 +61,12 @@ export interface INotificationStoreObject {
 /**
  * Initialization data for the jupyterlab-todo extension.
  */
-const center: JupyterFrontEndPlugin<void> = {
-  id: "jupyterlab-notifications:center",
+const plugin: JupyterFrontEndPlugin<void> = {
+  id: "jupyterlab-todo:plugin",
   autoStart: true,
-  requires: [INotifier],
+  requires: [ICommandPalette],
 
-  activate: async (app: JupyterFrontEnd, notifier: INotifier) => {
+  activate: async (app: JupyterFrontEnd, palette: ICommandPalette) => {
     if (!localStorage.getItem("notifications-UUID")) {
       localStorage.setItem("notifications-UUID", uuidv4());
       let username = prompt("Enter your username", "");
@@ -98,7 +97,7 @@ const center: JupyterFrontEndPlugin<void> = {
         created: "",
       };
     }
-
+    let notifier = activateNotifier();
     let notificationsList = await notifier.getNotificationWithParameters(
       parameters
     );
@@ -151,11 +150,13 @@ const center: JupyterFrontEndPlugin<void> = {
         notifTimeout: 3000,
         notifType: "info",
       };
+      let notifier = activateNotifier();
       notifier.post(dataToSend);
       ws.send("Hello, world");
     };
-    ws.onmessage = async (rowId) => {
+    ws.onmessage = async function (rowId) {
       try {
+        let notifier = activateNotifier();
         const notification = await notifier.getNotification(rowId.data);
         if (notification) {
           let store = getStore();
@@ -221,6 +222,7 @@ const center: JupyterFrontEndPlugin<void> = {
             notifTimeout: 4000,
             notifType: "sucess",
           };
+          let notifier = activateNotifier();
           notifier.post(dataToSend);
         }
       } else {
@@ -233,11 +235,4 @@ const center: JupyterFrontEndPlugin<void> = {
   },
 };
 
-const notifier: JupyterFrontEndPlugin<INotifier> = {
-  id: "jupyterlab-notifications:notifier",
-  provides: INotifier,
-  autoStart: true,
-  activate: (app: JupyterFrontEnd): INotifier => new Notifier()
-}
-
-export default [center, notifier];
+export default plugin;
