@@ -4,13 +4,16 @@ import { makeStyles } from "@material-ui/core/styles";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
-import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import ClearIcon from "@material-ui/icons/Clear";
 import { INotificationStoreObject } from ".";
-import { Box } from "@material-ui/core";
 import { FormatAMPM } from "./FormatAMPM";
 import NotificationCardSubitem from "./NotificationCardSubitem";
+import ReportOffIcon from "@material-ui/icons/ReportOff";
+
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import { Heading, NotificationSubtext } from "./styles";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -62,27 +65,37 @@ export default function SubjectAccordion(props: AppProps): JSX.Element {
                   alignItems="center"
                   justifyContent="space-between"
                 >
-                  <Typography
-                    variant="subtitle1"
-                    gutterBottom
-                    style={{ fontWeight: 700 }}
-                  >
+                  <Typography gutterBottom sx={Heading}>
                     {props.notifStoreObj.subject}
                   </Typography>
                   {expanded ? null : mouseOver ? (
-                    <IconButton aria-label="delete" size="small">
-                      <ClearIcon
-                        fontSize="small"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          e.preventDefault();
-                          props.deleteSubject(props.notifStoreObj.subject);
-                        }}
-                      />
-                    </IconButton>
+                    <div>
+                      <IconButton aria-label="ignoreOrigin">
+                        <ReportOffIcon
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            props.ignoreOrigin(
+                              props.notifStoreObj.notifications[0].origin
+                            );
+                          }}
+                        />
+                      </IconButton>
+                      <IconButton aria-label="delete" size="small">
+                        <ClearIcon
+                          fontSize="small"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            props.deleteSubject(props.notifStoreObj.subject);
+                          }}
+                        />
+                      </IconButton>
+                    </div>
                   ) : (
                     <Typography
                       variant="caption"
+                      color="textSecondary"
                       display="block"
                       style={{ fontWeight: 300 }}
                     >
@@ -104,21 +117,16 @@ export default function SubjectAccordion(props: AppProps): JSX.Element {
                 )}
                 {expanded ? null : props.notifStoreObj.notifications.length >
                   1 ? (
-                  <Box pt={1}>
-                    <Typography
-                      variant="caption"
-                      display="block"
-                      gutterBottom
-                      style={{ fontWeight: 400 }}
-                    >
+                  <Typography component="div">
+                    <Box pt={1} sx={NotificationSubtext}>
                       {props.notifStoreObj.notifications.length - 1} more
                       notifications
-                    </Typography>
-                  </Box>
+                    </Box>
+                  </Typography>
                 ) : null}
               </div>
             </AccordionSummary>
-            <AccordionDetails style={{ flexDirection: "column" }}> 
+            <AccordionDetails style={{ flexDirection: "column" }}>
               <Typography color="textSecondary">
                 {props.notifStoreObj.notifications.map((notif) => (
                   <NotificationCardSubitem
