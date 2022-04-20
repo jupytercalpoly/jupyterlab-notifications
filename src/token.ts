@@ -18,7 +18,7 @@ export interface INotifier {
   ): Promise<INotificationResponse[] | undefined>;
 }
 
-class Notifier implements INotifier {
+export class Notifier implements INotifier {
   constructor() {
     console.log("Notifier constructed");
   }
@@ -75,8 +75,4 @@ class Notifier implements INotifier {
       );
     }
   };
-}
-
-export function activateNotifier(): INotifier {
-  return new Notifier();
 }
