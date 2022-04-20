@@ -10,6 +10,7 @@ import { FormatAMPM } from "./FormatAMPM";
 import NotificationsOffIcon from "@material-ui/icons/NotificationsOff";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+import { ActionType, NotificationText } from "./styles";
 
 const useStyles = makeStyles({
   root: {
@@ -62,24 +63,10 @@ export default function NotificationCardSubitem(props: any) {
               justifyContent="space-between"
             >
               <div>
-                <Typography
-                  gutterBottom
-                  sx={{
-                    fontSize: "0.875rem",
-                    fontWeight: "bold",
-                    lineSpacing: "0.75rem",
-                  }}
-                >
+                <Typography gutterBottom sx={ActionType}>
                   {props.origin}
                 </Typography>
-                <Typography
-                  sx={{
-                    fontSize: "1rem",
-                    fontWeight: "medium",
-                    lineSpacing: "1.2rem",
-                  }}
-                  component="p"
-                >
+                <Typography sx={NotificationText} component="p">
                   {props.body}
                 </Typography>
               </div>

@@ -12,6 +12,7 @@ import { INotification } from "jupyterlab_toastify";
 import SubjectAccordion from "./SubjectAccordion";
 import { Box } from "@material-ui/core";
 import { WithinHour } from "./WithinHour";
+import { ExternalHeading } from "./styles";
 
 export function NotificationCenter(props: any) {
   const [store, setStore] = useStore();
@@ -70,8 +71,7 @@ export function NotificationCenter(props: any) {
           alignItems="center"
           justifyContent="space-between"
         >
-          <Typography variant="h6" style={{ fontSize: "1rem" }}>
-            {/* , //lineSpacing: "1.25rem" }}> */}
+          <Typography variant="h6" style={ExternalHeading}>
             NOTIFICATIONS
           </Typography>
           <IconButton aria-label="settingsCog">
@@ -81,7 +81,7 @@ export function NotificationCenter(props: any) {
         <div>
           {settings ? (
             <div>
-              <Typography variant="h6" gutterBottom style={{ fontWeight: 600 }}>
+              <Typography variant="h6" gutterBottom style={ExternalHeading}>
                 Blocked Notifications
               </Typography>
               <FormGroup>
@@ -93,7 +93,7 @@ export function NotificationCenter(props: any) {
           ) : (
             <div>
               <div>
-                <Typography variant="h6" style={{ fontWeight: 600 }}>
+                <Typography variant="h6" style={ExternalHeading}>
                   New
                 </Typography>
               </div>
@@ -112,7 +112,7 @@ export function NotificationCenter(props: any) {
                 ))}
               </div>
               <div>
-                <Typography variant="h6" style={{ fontWeight: 600 }}>
+                <Typography variant="h6" style={ExternalHeading}>
                   Earlier
                 </Typography>
               </div>
